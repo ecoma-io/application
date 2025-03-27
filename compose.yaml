@@ -1,0 +1,4 @@
+include:
+  - .docker/compose.infras.yaml
+  - .docker/compose.services.yaml
+  - .docker/compose.sites.yaml
