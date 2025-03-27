@@ -1,0 +1,21 @@
+{
+  "name": "bum-events",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/domains/bum/bum-events/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/domains/bum/bum-events",
+        "main": "libs/domains/bum/bum-events/src/index.ts",
+        "tsConfig": "libs/domains/bum/bum-events/tsconfig.lib.json",
+        "assets": ["libs/domains/bum/bum-events/*.md"],
+        "format": ["cjs"],
+        "sourceMap": true
+      }
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "name": "alm-query-integration",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "implicitDependencies": ["alm-query"],
+  "// targets": "to see all targets run: nx show project alm-query-integration --web",
+  "targets": {}
+}

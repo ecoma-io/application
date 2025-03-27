@@ -1,0 +1,21 @@
+{
+  "name": "rdm-events",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/domains/rdm/rdm-events/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/domains/rdm/rdm-events",
+        "main": "libs/domains/rdm/rdm-events/src/index.ts",
+        "tsConfig": "libs/domains/rdm/rdm-events/tsconfig.lib.json",
+        "assets": ["libs/domains/rdm/rdm-events/*.md"],
+        "format": ["cjs"],
+        "sourceMap": true
+      }
+    }
+  }
+}

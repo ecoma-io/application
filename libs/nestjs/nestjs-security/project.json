@@ -1,0 +1,21 @@
+{
+  "name": "nestjs-security",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/nestjs/nestjs-security/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/nestjs/nestjs-security",
+        "main": "libs/nestjs/nestjs-security/src/index.ts",
+        "tsConfig": "libs/nestjs/nestjs-security/tsconfig.lib.json",
+        "assets": ["libs/nestjs/nestjs-security/*.md"],
+        "format": ["cjs"],
+        "sourceMap": true
+      }
+    }
+  }
+}

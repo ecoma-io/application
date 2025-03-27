@@ -1,0 +1,104 @@
+{
+  "name": "app-site",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "prefix": "app",
+  "sourceRoot": "apps/sites/app-site/src",
+  "tags": ["sites"],
+  "targets": {
+    "compile-browser": {
+      "executor": "@angular-devkit/build-angular:browser",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/sites/app-site/browser",
+        "index": "apps/sites/app-site/src/index.html",
+        "main": "apps/sites/app-site/src/main.ts",
+        "polyfills": ["zone.js"],
+        "tsConfig": "apps/sites/app-site/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "assets": [
+          {
+            "glob": "**/*",
+            "input": "apps/sites/app-site/public"
+          }
+        ],
+        "styles": ["apps/sites/app-site/src/styles.scss"],
+        "scripts": []
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "4kb",
+              "maximumError": "8kb"
+            }
+          ],
+          "outputHashing": "all"
+        },
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "compile-server": {
+      "dependsOn": ["compile-browser"],
+      "executor": "@angular-devkit/build-angular:server",
+      "options": {
+        "outputPath": "dist/apps/sites/app-site/server",
+        "main": "apps/sites/app-site/src/server.ts",
+        "tsConfig": "apps/sites/app-site/tsconfig.server.json",
+        "inlineStyleLanguage": "scss"
+      },
+      "configurations": {
+        "production": {
+          "outputHashing": "media"
+        },
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "sourceMap": true,
+          "extractLicenses": false,
+          "vendorChunk": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@angular-devkit/build-angular:ssr-dev-server",
+      "options": {
+        "host": "fbi.com",
+        "port": 4201,
+        "browserTarget": "app-site:compile-browser:development",
+        "serverTarget": "app-site:compile-server:development"
+      }
+    },
+    "build": {
+      "dependsOn": ["compile-server"],
+      "executor": "@nx-tools/nx-container:build",
+      "options": {
+        "load": true,
+        "quiet": true,
+        "target": "debug",
+        "tags": ["ghcr.io/ecoma-io/app-site:latest"]
+      }
+    },
+    "publish": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "INPUT_TARGET=distroless INPUT_TAGS=ghcr.io/ecoma-io/app-site:$VERSION npx nx build app-site --push"
+      }
+    }
+  }
+}

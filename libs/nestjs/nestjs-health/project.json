@@ -1,0 +1,21 @@
+{
+  "name": "nestjs-health",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/nestjs/nestjs-health/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/nestjs/nestjs-health",
+        "main": "libs/nestjs/nestjs-health/src/index.ts",
+        "tsConfig": "libs/nestjs/nestjs-health/tsconfig.lib.json",
+        "assets": ["libs/nestjs/nestjs-health/*.md"],
+        "format": ["cjs"],
+        "sourcemap": true
+      }
+    }
+  }
+}

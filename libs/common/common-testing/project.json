@@ -1,0 +1,24 @@
+{
+  "name": "common-testing",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/common/common-testing/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "gen-docs": {
+      "executor": "@ecoma/nx-internal:typedoc"
+    },
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/common/common-testing",
+        "main": "libs/common/common-testing/src/index.ts",
+        "tsConfig": "libs/common/common-testing/tsconfig.lib.json",
+        "assets": ["libs/common/common-testing/*.md"],
+        "format": ["cjs"],
+        "sourceMap": true
+      }
+    }
+  }
+}
