@@ -1,0 +1,21 @@
+{
+  "name": "@ecoma/common-infrastructure",
+  "version": "0.0.1",
+  "private": true,
+  "type": "commonjs",
+  "main": "./index.cjs",
+  "types": "./index.d.ts",
+  "dependencies": {
+    "@nestjs/common": "^11.0.13",
+    "@nestjs/config": "^4.0.2",
+    "@nestjs/microservices": "^11.0.13",
+    "@nestjs/terminus": "^11.0.0",
+    "pino": "^9.6.0",
+    "pino-pretty": "^13.0.0",
+    "joi": "^17.13.3",
+    "class-validator": "^0.14.1",
+    "@ecoma/common-application": "0.0.1",
+    "mongoose": "^8.13.2",
+    "@ecoma/common-domain": "0.0.1"
+  }
+}

@@ -1,0 +1,52 @@
+services:
+  home-site:
+    container_name: home-site
+    image: ghcr.io/ecoma-io/home-site:latest
+    networks:
+      ecomma:
+        ipv4_address: 10.10.30.1
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "--quiet", "http://127.0.0.1:4000"]
+      interval: 5s
+      timeout: 8s
+      retries: 10
+      start_period: 10s
+
+  accounts-site:
+    container_name: accounts-site
+    image: ghcr.io/ecoma-io/accounts-site:latest
+    networks:
+      ecomma:
+        ipv4_address: 10.10.30.2
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "--quiet", "http://127.0.0.1:4000"]
+      interval: 5s
+      timeout: 8s
+      retries: 10
+      start_period: 10s
+
+  admin-site:
+    container_name: admin-site
+    image: ghcr.io/ecoma-io/admin-site:latest
+    networks:
+      ecomma:
+        ipv4_address: 10.10.30.3
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "--quiet", "http://127.0.0.1:4000"]
+      interval: 5s
+      timeout: 8s
+      retries: 10
+      start_period: 10s
+
+  app-site:
+    container_name: app-site
+    image: ghcr.io/ecoma-io/app-site:latest
+    networks:
+      ecomma:
+        ipv4_address: 10.10.30.4
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "--quiet", "http://127.0.0.1:4000"]
+      interval: 5s
+      timeout: 8s
+      retries: 10
+      start_period: 10s

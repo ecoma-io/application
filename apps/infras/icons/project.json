@@ -1,0 +1,23 @@
+{
+  "name": "icons",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/infras/icons/src",
+  "prefix": "app",
+  "targets": {
+    "build": {
+      "executor": "@nx-tools/nx-container:build",
+      "options": {
+        "load": true,
+        "quiet": true,
+        "tags": ["ghcr.io/ecoma-io/icons:latest"]
+      }
+    },
+    "publish": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "INPUT_TAGS=ghcr.io/ecoma-io/icons:$VERSION npx nx build icons --push -c production"
+      }
+    }
+  }
+}

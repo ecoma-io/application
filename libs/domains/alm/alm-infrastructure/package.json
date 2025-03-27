@@ -1,0 +1,18 @@
+{
+  "name": "@ecoma/alm-infrastructure",
+  "version": "1.0.0",
+  "description": "Domain layer for ALM (Audit Log Management)",
+  "dependencies": {
+    "@ecoma/common-application": "0.0.1",
+    "@ecoma/common-domain": "0.0.1",
+    "uuid": "^11.1.0",
+    "@nestjs/common": "^11.0.13",
+    "@nestjs/mongoose": "^11.0.3",
+    "mongoose": "^8.13.2",
+    "@ecoma/alm-domain": "1.0.0",
+    "@ecoma/alm-application": "0.0.1",
+    "@ecoma/common-infrastructure": "0.0.1",
+    "@golevelup/nestjs-rabbitmq": "^5.1.0"
+  },
+  "peerDependencies": {}
+}

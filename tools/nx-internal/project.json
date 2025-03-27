@@ -1,0 +1,8 @@
+{
+  "name": "nx-internal",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "tools/nx-internal/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {}
+}
