@@ -1,0 +1,21 @@
+{
+  "name": "pim-domain",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/domains/pim/pim-domain/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/domains/pim/pim-domain",
+        "main": "libs/domains/pim/pim-domain/src/index.ts",
+        "tsConfig": "libs/domains/pim/pim-domain/tsconfig.lib.json",
+        "assets": ["libs/domains/pim/pim-domain/*.md"],
+        "format": ["cjs"],
+         "sourceMap": true
+      }
+    }
+  }
+}

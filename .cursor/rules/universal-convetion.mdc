@@ -1,0 +1,90 @@
+---
+description: 
+globs: **/*.ts
+alwaysApply: false
+---
+# Hướng dẫn Quy tắc Code 
+
+Tài liệu này mô tả các quy tắc code được áp dụng trong dự án Ecoma, được thực thi thông qua ESLint. Việc tuân thủ các quy tắc này giúp đảm bảo code nhất quán, dễ đọc và dễ bảo trì.
+
+
+## Tài liệu code (JSDoc)
+
+Bắt buộc sử dụng JSDoc cho tất cả các hàm, lớp, phương thức và các biến có ý nghĩa. Toàn bộ nội dung JSDoc phải được viết bằng tiếng Việt.
+
+## Quy ước Đặt tên
+
+Các quy tắc này áp dụng cho tất cả các file TypeScript và JavaScript để đảm bảo tính nhất quán trong việc đặt tên biến, hàm, class, v.v.
+
+-   **Mặc định (`default`)**:
+    -   Format: `camelCase`
+    -   Không cho phép dấu gạch dưới ở đầu (`leadingUnderscore: "forbid"`) hoặc cuối (`trailingUnderscore: "forbid"`).
+-   **Biến (`variable`)**:
+    -   Format: `camelCase`, `PascalCase`, `UPPER_CASE`
+    -   Cho phép dấu gạch dưới ở đầu (`leadingUnderscore: "allow"`).
+-   **Biến hằng số được export (`variable`, `modifiers: ["const", "exported"]`)**:
+    -   Format: `UPPER_CASE`, `camelCase`, `PascalCase`
+    -   Không cho phép dấu gạch dưới ở đầu (`leadingUnderscore: "forbid"`).
+-   **Biến hằng số (`variable`, `modifiers: ["const"]`)**:
+    -   Format: `camelCase`, `UPPER_CASE`
+    -   Cho phép dấu gạch dưới ở đầu (`leadingUnderscore: "allow"`).
+-   **Tham số hàm (`parameter`)**:
+    -   Format: `camelCase`
+    -   Cho phép dấu gạch dưới ở đầu (`leadingUnderscore: "allow"`) (Thường dùng cho các tham số không sử dụng).
+-   **Hàm (`function`)**:
+    -   Format: `camelCase`, `PascalCase` (PascalCase thường dùng cho constructor hoặc các hàm hoạt động như class).
+-   **Thuộc tính đối tượng (`property`)**:
+    -   Format: `camelCase`, `snake_case` (Cho phép snake_case để tương thích với API hoặc dữ liệu từ bên ngoài).
+    -   Cho phép dấu gạch dưới ở đầu (`leadingUnderscore: "allow"`).
+-   **Thuộc tính của Class (`classProperty`)**:
+    -   Format: `camelCase`
+    -   Không cho phép dấu gạch dưới ở đầu (`leadingUnderscore: "forbid"`).
+-   **Thuộc tính `private` hoặc `protected` của Class (`classProperty`, `modifiers: ["private", "protected"]`)**:
+    -   Format: `camelCase`
+    -   Yêu cầu có dấu gạch dưới ở đầu (`leadingUnderscore: "require"`) (ví dụ: `_privateField`).
+-   **Thuộc tính `public` của Class (`classProperty`, `modifiers: ["public"]`)**:
+    -   Format: `camelCase`
+    -   Không cho phép dấu gạch dưới ở đầu (`leadingUnderscore: "forbid"`).
+-   **Thuộc tính `readonly` của Class (`classProperty`, `modifiers: ["readonly"]`)**:
+    -   Format: `camelCase`, `UPPER_CASE` (UPPER_CASE cho các hằng số thực sự).
+    -   Không cho phép dấu gạch dưới ở đầu (`leadingUnderscore: "forbid"`).
+-   **Phương thức của Class (`classMethod`)**:
+    -   Format: `camelCase`
+    -   Không cho phép dấu gạch dưới ở đầu (`leadingUnderscore: "forbid"`).
+-   **Phương thức `private` hoặc `protected` của Class (`classMethod`, `modifiers: ["private", "protected"]`)**:
+    -   Format: `camelCase`
+    -   Yêu cầu có dấu gạch dưới ở đầu (`leadingUnderscore: "require"`) (ví dụ: `_privateMethod()`).
+-   **Phương thức `public` của Class (`classMethod`, `modifiers: ["public"]`)**:
+    -   Format: `camelCase`
+    -   Không cho phép dấu gạch dưới ở đầu (`leadingUnderscore: "forbid"`).
+-   **Phương thức `abstract` của Class (`classMethod`, `modifiers: ["abstract"]`)**:
+    -   Format: `camelCase`
+    -   Không cho phép dấu gạch dưới ở đầu (`leadingUnderscore: "forbid"`).
+-   **Accessor (getter/setter) (`accessor`)**:
+    -   Format: `camelCase`
+    -   Không cho phép dấu gạch dưới ở đầu (`leadingUnderscore: "forbid"`).
+-   **Class**:
+    -   Format: `PascalCase`
+-   **Class `abstract` (`class`, `modifiers: ["abstract"]`)**:
+    -   Format: `PascalCase`
+    -   Yêu cầu tiền tố `Abstract` (ví dụ: `AbstractService`).
+-   **Interface**:
+    -   Format: `PascalCase`
+    -   Yêu cầu tiền tố `I` (ví dụ: `IUserService`).
+-   **Type Alias (`typeAlias`)**:
+    -   Format: `PascalCase`
+-   **Enum**:
+    -   Format: `PascalCase`
+-   **Enum Member (`enumMember`)**:
+    -   Format: `PascalCase`, `UPPER_CASE`
+-   **Type Parameter (Generics) (`typeParameter`)**:
+    -   Format: `PascalCase`
+    -   Yêu cầu tiền tố `T` (ví dụ: `TInput`, `TOutput`).
+-   **Biến có tiền tố `__` (`variable`, `filter: { regex: "^__", match: true }`)**:
+    -   Format: `null` (Bỏ qua quy tắc đặt tên, thường dùng cho các biến đặc biệt hoặc internal).
+-   **Xử lý Ngoại lệ Linting cho Thư viện Ngoài**: Đối với các biến hoặc cấu trúc dữ liệu được nhập từ thư viện bên ngoài mà không thể tuân thủ các quy tắc đặt tên hoặc quy ước của dự án (ví dụ: quy tắc về kiểu chữ), cho phép sử dụng comment // eslint-disable-next-line <tên-quy-tắc> ngay phía trên dòng code vi phạm, hoặc khối /* eslint-disable <tên-quy-tắc> */ ... /* eslint-enable <tên-quy-tắc> */ để bao bọc đoạn code đó. Luôn kèm theo một bình luận ngắn gọn (bằng tiếng Việt) giải thích lý do tại sao quy tắc đó cần được bỏ qua cho trường hợp cụ thể này. Việc sử dụng eslint-disable cần được hạn chế tối đa và chỉ áp dụng khi thực sự cần thiết và không có cách giải quyết khác tốt hơn.
+
+
+
+
+

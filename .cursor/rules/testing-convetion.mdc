@@ -1,0 +1,13 @@
+---
+description: 
+globs: **/*.spec.ts,**/*.test.ts
+alwaysApply: false
+---
+# Hướng dẫn Quy tắc Code Test (Unit Test, E2E Test, Intergration Test, Security Test, Performace Test)
+
+
+# Tên các test case 
+
+Tên các test case phải viết bằng tiếng việt
+
+

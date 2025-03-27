@@ -1,0 +1,30 @@
+{
+  "name": "iam-application",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/domains/iam/iam-application/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/domains/iam/iam-application",
+        "main": "libs/domains/iam/iam-application/src/index.ts",
+        "tsConfig": "libs/domains/iam/iam-application/tsconfig.lib.json",
+        "assets": ["libs/domains/iam/iam-application/*.md"],
+        "format": ["cjs"],
+         "sourceMap": true
+      }
+    }
+  },
+  "implicitDependencies": [],
+  "dependencies": [
+    "iam-domain",
+    "common-utils",
+    "common-types",
+    "common-testing",
+    "common-application",
+    "common-domain"
+  ]
+}

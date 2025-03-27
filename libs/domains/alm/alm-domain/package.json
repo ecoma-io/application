@@ -1,0 +1,7 @@
+{
+  "name": "alm-domain",
+  "version": "1.0.0",
+  "description": "Domain layer for ALM (Audit Log Management)",
+  "dependencies": {},
+  "peerDependencies": {}
+}

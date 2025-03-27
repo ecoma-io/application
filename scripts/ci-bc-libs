@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# Kiểm tra xem có tham số đầu vào không
+if [ -z "$1" ]; then
+  echo "Lỗi: Thiếu tham số tên bounded context (BC)"
+  echo "Sử dụng: $0 <tên-bc>"
+  echo "Ví dụ: $0 alm"
+  exit 1
+fi
+
+# Lấy tên BC từ tham số đầu vào
+BC_NAME="$1"
+
+echo "Chạy lint, test và build cho BC: $BC_NAME"
+
+# Chạy lệnh nx run-many với các package của BC
+nx run-many -t lint,test,build -p "$BC_NAME-domain","$BC_NAME-application","$BC_NAME-infrastructure"
+
+# Kiểm tra kết quả thực thi
+if [ $? -eq 0 ]; then
+  echo "✅ Hoàn thành CI cho BC: $BC_NAME"
+else
+  echo "❌ CI thất bại cho BC: $BC_NAME"
+  exit 1
+fi

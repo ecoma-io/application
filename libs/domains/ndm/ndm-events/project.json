@@ -1,0 +1,21 @@
+{
+  "name": "ndm-events",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/domains/ndm/ndm-events/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/domains/ndm/ndm-events",
+        "main": "libs/domains/ndm/ndm-events/src/index.ts",
+        "tsConfig": "libs/domains/ndm/ndm-events/tsconfig.lib.json",
+        "assets": ["libs/domains/ndm/ndm-events/*.md"],
+        "format": ["cjs"],
+        "sourceMap": true
+      }
+    }
+  }
+}

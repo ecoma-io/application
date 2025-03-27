@@ -1,0 +1,21 @@
+{
+  "name": "alm-events",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/domains/alm/alm-events/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/domains/alm/alm-events",
+        "main": "libs/domains/alm/alm-events/src/index.ts",
+        "tsConfig": "libs/domains/alm/alm-events/tsconfig.lib.json",
+        "assets": ["libs/domains/alm/alm-events/*.md"],
+        "format": ["cjs"],
+        "sourceMap": true
+      }
+    }
+  }
+}

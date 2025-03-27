@@ -1,0 +1,21 @@
+{
+  "name": "lzm-application",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/domains/lzm/lzm-application/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/domains/lzm/lzm-application",
+        "main": "libs/domains/lzm/lzm-application/src/index.ts",
+        "tsConfig": "libs/domains/lzm/lzm-application/tsconfig.lib.json",
+        "assets": ["libs/domains/lzm/lzm-application/*.md"],
+        "format": ["cjs"],
+         "sourceMap": true
+      }
+    }
+  }
+}

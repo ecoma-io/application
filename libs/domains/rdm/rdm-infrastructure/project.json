@@ -1,0 +1,21 @@
+{
+  "name": "rdm-infrastructure",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/domains/rdm/rdm-infrastructure/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/domains/rdm/rdm-infrastructure",
+        "main": "libs/domains/rdm/rdm-infrastructure/src/index.ts",
+        "tsConfig": "libs/domains/rdm/rdm-infrastructure/tsconfig.lib.json",
+        "assets": ["libs/domains/rdm/rdm-infrastructure/*.md"],
+        "format": ["cjs"],
+         "sourceMap": true
+      }
+    }
+  }
+}

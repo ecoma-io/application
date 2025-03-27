@@ -1,0 +1,21 @@
+{
+  "name": "dam-events",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/domains/dam/dam-events/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/domains/dam/dam-events",
+        "main": "libs/domains/dam/dam-events/src/index.ts",
+        "tsConfig": "libs/domains/dam/dam-events/tsconfig.lib.json",
+        "assets": ["libs/domains/dam/dam-events/*.md"],
+        "format": ["cjs"],
+        "sourceMap": true
+      }
+    }
+  }
+}

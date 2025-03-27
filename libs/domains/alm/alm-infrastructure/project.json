@@ -1,0 +1,28 @@
+{
+  "name": "alm-infrastructure",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/domains/alm/alm-infrastructure/src",
+  "projectType": "library",
+  "tags": [],
+  "implicitDependencies": [
+    "alm-domain",
+    "common-infrastructure",
+    "common-utils",
+    "common-types",
+    "common-testing"
+  ],
+  "targets": {
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/domains/alm/alm-infrastructure",
+        "main": "libs/domains/alm/alm-infrastructure/src/index.ts",
+        "tsConfig": "libs/domains/alm/alm-infrastructure/tsconfig.lib.json",
+        "assets": ["libs/domains/alm/alm-infrastructure/*.md"],
+        "format": ["cjs"],
+        "sourceMap": true
+      }
+    }
+  }
+}

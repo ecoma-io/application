@@ -1,0 +1,71 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+# Ngữ cảnh cho dự án Ecoma
+
+Tài liệu này cung cấp ngữ cảnh thiết yếu, tổng quan kiến trúc và các quy ước code hóa cho các công cụ AI tương tác với codebase của Ecoma. Mục đích của nó là giúp AI hiểu rõ hơn về cấu trúc dự án, các nguyên tắc thiết kế và các mẫu code mong đợi để cung cấp hỗ trợ chính xác và phù hợp hơn.
+
+## **1\. Tổng quan Dự án**
+
+* **Tên Dự án:** Ecoma
+* **Mô tả:** Một nền tảng SaaS để quản lý hoạt động thương mại điện tử, tập trung vào số hóa, tự động hóa và tối ưu hóa.
+* **Mục tiêu Thiết kế Chính:** High Availability, Fault Tolerance, Scalability, Maintainability, Developer Experience (gián tiếp thông qua cấu trúc rõ ràng), Ease of Adding New Features, Security from Design.
+* **Nguyên tắc Thiết kế Cốt lõi:** Focus on business value, Design for extensibility, Data-centric, Intelligent automation eliminates manual operations, User experience at the core (gián tiếp), Secure and reliable by default.
+
+## **2\. Mô hình Kiến trúc Cốt lõi**
+
+* **Kiến trúc Cao cấp:** Microservices, Event-Driven Architecture (EDA). Hệ thống được phân rã dựa trên các Bounded Context của DDD.
+* **Kiến trúc Nội bộ Service:** **Bắt buộc áp dụng CQRS và Clean Architecture bên trong mỗi Microservice.**
+  * **CQRS:** Tách biệt rõ ràng các mô hình và handler cho Command (ghi) và Query (đọc). Tối ưu hóa luồng đọc/ghi.
+  * **Clean Architecture:** Code được tổ chức thành các lớp riêng biệt: **Domain** (logic nghiệp vụ cốt lõi, entities, value objects, aggregates, domain events, domain services), **Application** (use cases/interactors, command/query handlers, interfaces/ports), **Infrastructure** (các triển khai của interfaces, các phụ thuộc bên ngoài như DB clients, message broker clients, adapters dịch vụ bên ngoài).
+* **Giao tiếp:**
+  * **Client đến Backend:** Đồng bộ HTTP(S) thông qua API Gateway.
+  * **Giữa các Service Backend (Bất đồng bộ):** Chủ yếu thông qua **RabbitMQ** cho các Sự kiện dạng Fire-and-Forget (Domain Events) và các Hàng đợi Tác vụ Nền (Background Job Queues). RabbitMQ được chọn vì các tính năng đảm bảo độ tin cậy (persistence, acks, DLX).
+  * **Giữa các Service Backend (Đồng bộ):** Thông qua **NATS Request/Reply** cho các cuộc gọi đồng bộ nội bộ giữa các service, bao gồm cả giao tiếp từ API Gateway đến service, nơi cần độ trễ thấp và phản hồi tức thời.
+  * **Tránh:** **KHÔNG** giao tiếp HTTP trực tiếp giữa các service backend.
+* **Sở hữu Dữ liệu:** Mỗi BC/Microservice sở hữu cơ sở dữ liệu riêng của mình. KHÔNG chia sẻ hoặc truy cập dữ liệu trực tiếp giữa các BC.
+
+## **3\. Bounded Contexts (BCs) và Trách nhiệm**
+
+* **Cấu trúc:** Hệ thống được phân rã thành các BC độc lập dựa trên các miền nghiệp vụ (nguyên lý DDD). Mỗi BC lý tưởng ánh xạ tới một hoặc nhiều Microservices (Service/Worker trong apps/).
+* **Ranh giới:** Code và logic nghiệp vụ cho một BC phải nằm *bên trong* ranh giới của nó. Tránh rò rỉ logic xuyên BC.
+* **Phân nhóm:** Các BC được nhóm theo chức năng:
+  * **Nhóm Core:** Các dịch vụ nền tảng (IAM, BUM, NDM, LZM, RDM, ALM, DAM, PPM). Cung cấp các khả năng thiết yếu xuyên suốt.
+  * **Nhóm Feature:** Các miền thương mại điện tử cụ thể, được chia nhỏ hơn thành:
+    * **Value Stream:** Luồng giao dịch cốt lõi (PIM, OSM, ODM, SFM, ICM). Trực tiếp tham gia vào các giao dịch của khách hàng.
+    * **Supporting:** Các chức năng nội bộ/hỗ trợ (ITM, CRM, HRM, WPM, MPM, FAM). Hỗ trợ luồng giá trị cốt lõi và hoạt động nội bộ.
+* **Trách nhiệm & Tương tác Chính (Tập trung Kỹ thuật):**
+  * IAM: Quản lý định danh User/Org, AuthN/AuthZ, Sessions, phụ thuộc BUM cho Entitlements. Lưu trữ locale người dùng/quốc gia tổ chức. Sử dụng LZM/RDM cho bản địa hóa và tra cứu dữ liệu tham chiếu của chính nó.
+  * BUM: Subscriptions, Pricing, Billing, Usage, Entitlements. Phụ thuộc PPM. Cung cấp Entitlements/trạng thái Subscription cho IAM. Sử dụng LZM/RDM cho định dạng/tra cứu dữ liệu tham chiếu. Nhận dữ liệu sử dụng/kết quả thanh toán qua Events.
+  * NDM: Gửi thông báo, render template, bản địa hóa. Phụ thuộc IAM (người nhận), LZM/RDM (bản địa hóa, định dạng, dữ liệu tham chiếu). Nhận yêu cầu thông báo qua Events.
+  * LZM: Khóa/dữ liệu bản dịch, dịch vụ bản địa hóa (tra cứu bản dịch, định dạng dữ liệu). Phụ thuộc RDM (locales, quy tắc định dạng). Tương tác với các nhà cung cấp dịch thuật bên ngoài. Cung cấp API đồng bộ để tra cứu bản dịch/định dạng. Quản lý trạng thái ngôn ngữ và dịch tự động.
+  * RDM: Dữ liệu tham chiếu toàn cục (quốc gia, tiền tệ, locales, quy tắc định dạng). Cung cấp API chỉ đọc. LZM phụ thuộc RDM cho quy tắc định dạng. Nguồn sự thật cho các danh sách chuẩn và quy tắc định dạng.
+  * ALM: Thu thập, lưu trữ, truy vấn audit logs từ tất cả các BC. Nhận logs qua Events/API chuyên dụng. Tập trung vào ghi nhận và lưu trữ, không phải logic BC gốc.
+  * DAM: Lưu trữ, quản lý, phân phối tài sản kỹ thuật số. Được sử dụng bởi các BC như PIM.
+  * PIM: Dữ liệu master thông tin sản phẩm (thuộc tính, danh mục, quan hệ). Nguồn sự thật cho chi tiết sản phẩm. Cung cấp dữ liệu cho OSM, ODM, ICM.
+  * OSM: Điểm vào bán hàng đa kênh, nhận giao dịch, xác thực, khởi tạo đơn hàng (phát sự kiện). Phụ thuộc PIM, MPM, CRM.
+  * ODM: Quản lý vòng đời đơn hàng. Tiêu thụ sự kiện từ OSM. Phối hợp với PPM, ICM, SFM, FAM, CRM qua Events/gọi đồng bộ. Phụ thuộc PIM, MPM.
+  * SFM: Vận chuyển & Hoàn tất. Tiêu thụ sự kiện từ ODM. Tương tác với ICM, nhà vận chuyển bên ngoài. Phát sự kiện về theo dõi/trạng thái.
+  * PPM: Xử lý thanh toán. Nhận yêu cầu từ ODM, BUM. Tương tác với các cổng thanh toán bên ngoài. Phát sự kiện kết quả thanh toán cho ODM, BUM, FAM.
+  * ICM: Theo dõi tồn kho. Nhận cập nhật (nhập/xuất) từ SFM, ODM, v.v. Cung cấp dữ liệu tồn kho cho OSM, ODM, SFM. Phụ thuộc PIM.
+  * FAM: Kế toán tài chính. Nhận các sự kiện/dữ liệu tài chính từ ODM, PPM, BUM.
+  * CRM: Thông tin khách hàng, lịch sử tương tác, ticket dịch vụ. Tiêu thụ sự kiện từ ODM, SFM, PPM, MPM. Sử dụng NDM để giao tiếp với khách hàng. Phụ thuộc ODM, SFM, PPM để tra cứu lịch sử.
+
+* **Mô hình Tương tác:** Chủ yếu Event-Driven (RabbitMQ) để coupling lỏng lẻo. Request/Reply đồng bộ (NATS) cho phản hồi tức thời hoặc các phụ thuộc dịch vụ cốt lõi (Feature \-\> Core, API Gateway \-\> Service).
+
+## **4\. Nguyên lý Domain-Driven Design (DDD) & Ngôn ngữ Chung**
+
+* **Tập trung DDD:** Cấu trúc và thiết kế code phù hợp với các miền nghiệp vụ (BCs).
+* **Ngôn ngữ Chung (Ubiquitous Language):** Một ngôn ngữ được chia sẻ, nhất quán giữa các nhà phát triển và chuyên gia nghiệp vụ *trong một Bounded Context cụ thể*. Các thuật ngữ chỉ có ý nghĩa chính xác trong phạm vi BC đó. AI nên nhận thức rằng cùng một thuật ngữ có thể có sắc thái hoặc cấu trúc khác nhau trong các BC khác nhau.
+
+## **5\. Quy ước Code hóa & Cấu trúc**
+
+* **Ngôn ngữ Chính:** TypeScript.
+* **Backend Framework:** NestJS.
+* **Runtime:** Node.js.
+* **Frontend Framework:** Angular.
+* **Định dạng Code:** Tuân thủ các quy tắc trong .editorconfig. Sử dụng dấu ngoặc nhọn {} cho tất cả các khối lệnh.
+
+

@@ -1,0 +1,13 @@
+{
+  "name": "@ecoma/common-domain",
+  "version": "0.0.1",
+  "private": true,
+  "type": "commonjs",
+  "main": "./index.cjs",
+  "types": "./index.d.ts",
+  "dependencies": {
+    "@ecoma/common-types": "0.0.1",
+    "@ecoma/common-utils": "0.0.1",
+    "uuid": "^11.1.0"
+  }
+}

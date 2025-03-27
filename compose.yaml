@@ -1,0 +1,4 @@
+include:
+  - compose.infras.yaml
+  - compose.services.yaml
+  - compose.sites.yaml

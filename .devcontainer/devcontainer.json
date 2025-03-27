@@ -1,0 +1,64 @@
+{
+  "image": "ghcr.io/ebizbase/node-dind-playwright-devcontainer:1@sha256:5fcfb3682c2b1b9ae5e54e9670fdba680de7654d47b4173e3a460ac2e6ab5939",
+  "runArgs": ["--name=ecoma-application-devcontainer"],
+  "mounts": [
+    "source=ecoma-application-devcontainer-dind,target=/var/lib/docker,type=volume"
+  ],
+  "remoteEnv": {
+    "NX_DAEMON": "true"
+  },
+  "containerUser": "vscode",
+  "remoteUser": "vscode",
+  "postCreateCommand": "sh .devcontainer/post-create.sh",
+  "postStartCommand": "sh .devcontainer/post-start.sh",
+  "appPort": [80, 443],
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "docker-stats.statusBarShowCpu": true,
+        "docker-stats.statusBarShowRamTotal": true,
+        "docker-stats.statusBarShowRamPercentage": false,
+        "remote.autoForwardPorts": false,
+        "[latex]": {
+          "files.autoSave": "onFocusChange"
+        },
+        "files.associations": {
+          "*.json": "jsonc"
+        },
+        "files.exclude": {
+          "**/.git": true,
+          "**/.svn": true,
+          "**/.hg": true,
+          "**/.DS_Store": true,
+          "**/Thumbs.db": true
+        },
+        "json.schemas": [
+          {
+            "fileMatch": ["*/devcontainer.json"],
+            "url": "https://github.com/devcontainers/spec/raw/refs/heads/main/schemas/devContainer.schema.json"
+          },
+          {
+            "fileMatch": ["*/package.json"],
+            "url": "https://raw.githubusercontent.com/SchemaStore/schemastore/refs/heads/master/src/schemas/json/package.json"
+          }
+        ]
+      },
+      "extensions": [
+        "editorconfig.editorconfig",
+        "esbenp.prettier-vscode",
+        "shd101wyy.markdown-preview-enhanced",
+        "steoates.autoimport",
+        "github.vscode-github-actions",
+        "redhat.vscode-yaml",
+        "mads-hartmann.bash-ide-vscode",
+        "firsttris.vscode-jest-runner",
+        "Angular.ng-template",
+        "mrmlnc.vscode-scss",
+        "bradlc.vscode-tailwindcss",
+        "igorjrd.docker-stats",
+        "stivo.tailwind-fold",
+        "redhat.vscode-xml"
+      ]
+    }
+  }
+}

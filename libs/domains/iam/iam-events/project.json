@@ -1,0 +1,21 @@
+{
+  "name": "iam-events",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/domains/iam/iam-events/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/domains/iam/iam-events",
+        "main": "libs/domains/iam/iam-events/src/index.ts",
+        "tsConfig": "libs/domains/iam/iam-events/tsconfig.lib.json",
+        "assets": ["libs/domains/iam/iam-events/*.md"],
+        "format": ["cjs"],
+        "sourceMap": true
+      }
+    }
+  }
+}
