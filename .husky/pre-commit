@@ -1,0 +1,30 @@
+start_time=$(date +%s)
+
+echo ""
+echo "Running check github actions..."
+scan_count=0
+for action in $(git diff --cached --name-only --diff-filter=ACM | grep -E '^\.github/(workflows|actions)/.*\.ya?ml$'); do
+  if action-validator "$action"; then
+    echo "✅ $action"
+  else
+    echo "❌ $action"
+    exit 1
+  fi
+  scan_count=$((scan_count+1))
+done
+echo "Sanned $scan_count gitHub actions and found no errors!"
+echo ""
+
+
+echo "Running lint targets with affected projects..."
+npx nx affected --base=origin/main -t lint --fix --output-style static
+echo ""
+
+
+echo "Formating all change files...\n"
+npx lint-staged --relative
+echo ""
+
+end_time=$(date +%s)
+elapsed_time=$((end_time - start_time))
+echo "Pre-commit hook completed in ${elapsed_time}s"

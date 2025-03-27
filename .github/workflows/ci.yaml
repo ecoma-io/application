@@ -1,0 +1,47 @@
+name: Intergration
+
+on:
+  pull_request_target:
+    branches:
+      - main
+  merge_group:
+    branches:
+      - main
+  push:
+    branches:
+      - dev
+jobs:
+  intergration:
+    name: Intergration checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+
+      - name: Setup project
+        uses: ./.github/actions/setup
+
+      - name: Lint
+        run: npx nx run-many -t lint --parallel=4
+
+      - name: Unit test
+        run: npx nx run-many -t test --parallel=4
+
+      - name: Build
+        run: npx nx run-many -t build --parallel=4
+
+      - uses: actions/cache@v4
+        id: playwright-cache
+        with:
+          path: |
+            ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Install playwright deps
+        run: npx playwright install --with-deps chromium
+
+      - name: Deploy local enviroment
+        run: docker compose up -d --wait || true
+
+      - name: E2E test
+        run: npx nx e2e e2e-test

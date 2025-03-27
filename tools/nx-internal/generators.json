@@ -1,0 +1,14 @@
+{
+  "generators": {
+    "executor": {
+      "factory": "./src/generators/executor/generator",
+      "schema": "./src/generators/executor/schema.json",
+      "description": "executor generator"
+    },
+    "generator": {
+      "factory": "./src/generators/generator/generator",
+      "schema": "./src/generators/generator/schema.json",
+      "description": "generator generator"
+    }
+  }
+}
