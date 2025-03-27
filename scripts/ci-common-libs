@@ -1,0 +1,3 @@
+#!/bin/bash
+
+nx run-many -t lint,test,build -p common-utils,common-testing,common-types,common-domain,common-application,common-infrastructure

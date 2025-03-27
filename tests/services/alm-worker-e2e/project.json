@@ -1,0 +1,9 @@
+{
+  "name": "alm-worker-e2e",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "tests/services/alm-worker-e2e/src",
+  "tags": [],
+  "implicitDependencies": ["alm-worker"],
+  "targets": {}
+}

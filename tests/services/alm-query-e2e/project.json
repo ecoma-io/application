@@ -1,0 +1,7 @@
+{
+  "name": "alm-query-e2e",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "implicitDependencies": ["alm-query"],
+  "targets": {}
+}

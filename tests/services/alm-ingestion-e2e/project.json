@@ -1,0 +1,9 @@
+{
+  "name": "alm-ingestion-e2e",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "implicitDependencies": ["alm-ingestion"],
+  "tags": [],
+  "sourceRoot": "tests/services/alm-ingestion-e2e/src",
+  "targets": {}
+}

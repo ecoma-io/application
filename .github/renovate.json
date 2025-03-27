@@ -1,0 +1,58 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+  "baseBranches": ["dev"],
+  "rangeStrategy": "replace",
+  "pinDigests": true,
+  "prConcurrentLimit": 5,
+  "semanticCommits": "enabled",
+  "semanticCommitScope": "deps",
+  "semanticCommitType": "chore",
+  "dependencyDashboard": true,
+  "branchPrefix": "renovate/",
+  "dependencyDashboardAutoclose": true,
+  "commitBodyTable": true,
+  "timezone": "Asia/Bangkok",
+  "schedule": ["on sunday at 6am"],
+  "automerge": false,
+  "lockFileMaintenance": {
+    "enabled": true
+  },
+  "packageRules": [
+    {
+      "extends": ["monorepo:angular"],
+      "groupName": "angular monorepo",
+      "matchUpdateTypes": ["digest", "patch", "minor", "major"]
+    },
+    {
+      "groupName": "All patch dependencies",
+      "matchPackageNames": ["*"],
+      "matchUpdateTypes": ["patch"],
+      "automerge": true
+    },
+    {
+      "groupName": "Linting packages",
+      "matchPackageNames": [
+        "@types/eslint",
+        "babel-eslint",
+        "@babel/eslint-parser",
+        "@eslint/**",
+        "@eslint-community/**",
+        "@stylistic/eslint-plugin**",
+        "@types/eslint__**",
+        "@typescript-eslint/**",
+        "typescript-eslint",
+        "eslint**",
+        "@commitlint/**"
+      ]
+    },
+    {
+      "groupName": "Testing libraries",
+      "matchPackageNames": ["/jest/", "/ts-jest/", "/@playwright/test/"]
+    },
+    {
+      "groupName": "Nx packages",
+      "matchPackageNames": ["/^@nx//", "/nx/", "@nx/jest"]
+    }
+  ]
+}
