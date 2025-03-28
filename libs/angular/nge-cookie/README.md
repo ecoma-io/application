@@ -169,9 +169,3 @@ Deletes all cookies.
 ```ts
 cookies.deleteAll();
 ```
-
----
-
-## License
-
-MIT License © 2025 [Ecoma](https://github.com/ecoma)
