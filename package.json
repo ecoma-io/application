@@ -61,7 +61,7 @@
     "autoprefixer": "^10.4.0",
     "browser-sync": "^3.0.0",
     "daisyui": "^5.0.9",
-    "esbuild": "^0.19.2",
+    "esbuild": "^0.25.0",
     "eslint": "^9.8.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-playwright": "^1.6.2",
