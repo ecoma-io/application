@@ -4,6 +4,9 @@
   "mounts": [
     "source=ecoma-application-devcontainer-dind,target=/var/lib/docker,type=volume"
   ],
+  "remoteEnv": {
+    "NX_DAEMON": "true"
+  },
   "containerUser": "vscode",
   "remoteUser": "vscode",
   "postCreateCommand": "sh .devcontainer/post-create.sh",
@@ -50,9 +53,10 @@
         "firsttris.vscode-jest-runner",
         "Angular.ng-template",
         "mrmlnc.vscode-scss",
-        "alexkrechik.cucumberautocomplete",
         "bradlc.vscode-tailwindcss",
-        "igorjrd.docker-stats"
+        "igorjrd.docker-stats",
+        "stivo.tailwind-fold",
+        "redhat.vscode-xml"
       ]
     }
   }

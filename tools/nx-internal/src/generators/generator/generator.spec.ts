@@ -3,17 +3,17 @@ import { existsSync } from "fs";
 import * as path from "path";
 
 import { generatorGenerator } from "./generator";
-import { GeneratorGeneratorSchema } from "./schema";
+import { IGeneratorGeneratorSchema } from "./schema";
 
-interface Generator {
+interface IGenerator {
   factory: string;
   schema: string;
   description: string;
 }
 
-interface GeneratorJson {
+interface IGeneratorJson {
   generators: {
-    [key: string]: Generator;
+    [key: string]: IGenerator;
   };
 }
 
@@ -32,7 +32,7 @@ jest.mock("@nx/devkit", () => ({
 
 describe("generatorGenerator", () => {
   let tree: Tree;
-  const options: GeneratorGeneratorSchema = { name: "testgenerator" };
+  const options: IGeneratorGeneratorSchema = { name: "testgenerator" };
 
   beforeEach(() => {
     tree = {
@@ -88,7 +88,7 @@ describe("generatorGenerator", () => {
 
     const updateJsonCallback = (require("@nx/devkit").updateJson as jest.Mock)
       .mock.calls[0][2];
-    const json: GeneratorJson = { generators: {} };
+    const json: IGeneratorJson = { generators: {} };
     updateJsonCallback(json);
 
     expect(json.generators[options.name]).toEqual({

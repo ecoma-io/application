@@ -1,1 +1,1 @@
-export interface <%= className %>ExecutorSchema {} // eslint-disable-line
+export interface I<%= className %>ExecutorSchema {} // eslint-disable-line

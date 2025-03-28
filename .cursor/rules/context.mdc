@@ -1,0 +1,270 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+# Ngữ cảnh cho dự án Ecoma
+
+Tài liệu này cung cấp ngữ cảnh thiết yếu, tổng quan kiến trúc và các quy ước code hóa cho các công cụ AI tương tác với codebase của Ecoma. Mục đích của nó là giúp AI hiểu rõ hơn về cấu trúc dự án, các nguyên tắc thiết kế và các mẫu code mong đợi để cung cấp hỗ trợ chính xác và phù hợp hơn.
+
+## **1\. Tổng quan Dự án**
+
+* **Tên Dự án:** Ecoma
+* **Mô tả:** Một nền tảng SaaS để quản lý hoạt động thương mại điện tử, tập trung vào số hóa, tự động hóa và tối ưu hóa.
+* **Mục tiêu Thiết kế Chính:** High Availability, Fault Tolerance, Scalability, Maintainability, Developer Experience (gián tiếp thông qua cấu trúc rõ ràng), Ease of Adding New Features, Security from Design.
+* **Nguyên tắc Thiết kế Cốt lõi:** Focus on business value, Design for extensibility, Data-centric, Intelligent automation eliminates manual operations, User experience at the core (gián tiếp), Secure and reliable by default.
+
+## **2\. Mô hình Kiến trúc Cốt lõi**
+
+* **Kiến trúc Cao cấp:** Microservices, Event-Driven Architecture (EDA). Hệ thống được phân rã dựa trên các Bounded Context của DDD.
+* **Kiến trúc Nội bộ Service:** **Bắt buộc áp dụng CQRS và Clean Architecture bên trong mỗi Microservice.**
+  * **CQRS:** Tách biệt rõ ràng các mô hình và handler cho Command (ghi) và Query (đọc). Tối ưu hóa luồng đọc/ghi.
+  * **Clean Architecture:** Code được tổ chức thành các lớp riêng biệt: **Domain** (logic nghiệp vụ cốt lõi, entities, value objects, aggregates, domain events, domain services), **Application** (use cases/interactors, command/query handlers, interfaces/ports), **Infrastructure** (các triển khai của interfaces, các phụ thuộc bên ngoài như DB clients, message broker clients, adapters dịch vụ bên ngoài).
+* **Giao tiếp:**
+  * **Client đến Backend:** Đồng bộ HTTP(S) thông qua API Gateway.
+  * **Giữa các Service Backend (Bất đồng bộ):** Chủ yếu thông qua **RabbitMQ** cho các Sự kiện dạng Fire-and-Forget (Domain Events) và các Hàng đợi Tác vụ Nền (Background Job Queues). RabbitMQ được chọn vì các tính năng đảm bảo độ tin cậy (persistence, acks, DLX).
+  * **Giữa các Service Backend (Đồng bộ):** Thông qua **NATS Request/Reply** cho các cuộc gọi đồng bộ nội bộ giữa các service, bao gồm cả giao tiếp từ API Gateway đến service, nơi cần độ trễ thấp và phản hồi tức thời.
+  * **Tránh:** **KHÔNG** giao tiếp HTTP trực tiếp giữa các service backend.
+* **Sở hữu Dữ liệu:** Mỗi BC/Microservice sở hữu cơ sở dữ liệu riêng của mình. KHÔNG chia sẻ hoặc truy cập dữ liệu trực tiếp giữa các BC.
+
+## **3\. Bounded Contexts (BCs) và Trách nhiệm**
+
+* **Cấu trúc:** Hệ thống được phân rã thành các BC độc lập dựa trên các miền nghiệp vụ (nguyên lý DDD). Mỗi BC lý tưởng ánh xạ tới một hoặc nhiều Microservices (Service/Worker trong apps/).
+* **Ranh giới:** Code và logic nghiệp vụ cho một BC phải nằm *bên trong* ranh giới của nó. Tránh rò rỉ logic xuyên BC.
+* **Phân nhóm:** Các BC được nhóm theo chức năng:
+  * **Nhóm Core:** Các dịch vụ nền tảng (IAM, BUM, NDM, LZM, RDM, ALM, DAM). Cung cấp các khả năng thiết yếu xuyên suốt.
+  * **Nhóm Feature:** Các miền thương mại điện tử cụ thể, được chia nhỏ hơn thành:
+    * **Value Stream:** Luồng giao dịch cốt lõi (PIM, OSM, ODM, SFM, PPM, ICM). Trực tiếp tham gia vào các giao dịch của khách hàng.
+    * **Supporting:** Các chức năng nội bộ/hỗ trợ (ITM, CRM, HRM, WPM, MPM, FAM). Hỗ trợ luồng giá trị cốt lõi và hoạt động nội bộ.
+* **Trách nhiệm & Tương tác Chính (Tập trung Kỹ thuật):**
+  * IAM: Quản lý định danh User/Org, AuthN/AuthZ, Sessions, phụ thuộc BUM cho Entitlements. Lưu trữ locale người dùng/quốc gia tổ chức. Sử dụng LZM/RDM cho bản địa hóa và tra cứu dữ liệu tham chiếu của chính nó.
+  * BUM: Subscriptions, Pricing, Billing, Usage, Entitlements. Phụ thuộc PPM. Cung cấp Entitlements/trạng thái Subscription cho IAM. Sử dụng LZM/RDM cho định dạng/tra cứu dữ liệu tham chiếu. Nhận dữ liệu sử dụng/kết quả thanh toán qua Events.
+  * NDM: Gửi thông báo, render template, bản địa hóa. Phụ thuộc IAM (người nhận), LZM/RDM (bản địa hóa, định dạng, dữ liệu tham chiếu). Nhận yêu cầu thông báo qua Events.
+  * LZM: Khóa/dữ liệu bản dịch, dịch vụ bản địa hóa (tra cứu bản dịch, định dạng dữ liệu). Phụ thuộc RDM (locales, quy tắc định dạng). Tương tác với các nhà cung cấp dịch thuật bên ngoài. Cung cấp API đồng bộ để tra cứu bản dịch/định dạng. Quản lý trạng thái ngôn ngữ và dịch tự động.
+  * RDM: Dữ liệu tham chiếu toàn cục (quốc gia, tiền tệ, locales, quy tắc định dạng). Cung cấp API chỉ đọc. LZM phụ thuộc RDM cho quy tắc định dạng. Nguồn sự thật cho các danh sách chuẩn và quy tắc định dạng.
+  * ALM: Thu thập, lưu trữ, truy vấn audit logs từ tất cả các BC. Nhận logs qua Events/API chuyên dụng. Tập trung vào ghi nhận và lưu trữ, không phải logic BC gốc.
+  * DAM: Lưu trữ, quản lý, phân phối tài sản kỹ thuật số. Được sử dụng bởi các BC như PIM.
+  * PIM: Dữ liệu master thông tin sản phẩm (thuộc tính, danh mục, quan hệ). Nguồn sự thật cho chi tiết sản phẩm. Cung cấp dữ liệu cho OSM, ODM, ICM.
+  * OSM: Điểm vào bán hàng đa kênh, nhận giao dịch, xác thực, khởi tạo đơn hàng (phát sự kiện). Phụ thuộc PIM, MPM, CRM.
+  * ODM: Quản lý vòng đời đơn hàng. Tiêu thụ sự kiện từ OSM. Phối hợp với PPM, ICM, SFM, FAM, CRM qua Events/gọi đồng bộ. Phụ thuộc PIM, MPM.
+  * SFM: Vận chuyển & Hoàn tất. Tiêu thụ sự kiện từ ODM. Tương tác với ICM, nhà vận chuyển bên ngoài. Phát sự kiện về theo dõi/trạng thái.
+  * PPM: Xử lý thanh toán. Nhận yêu cầu từ ODM, BUM. Tương tác với các cổng thanh toán bên ngoài. Phát sự kiện kết quả thanh toán cho ODM, BUM, FAM.
+  * ICM: Theo dõi tồn kho. Nhận cập nhật (nhập/xuất) từ SFM, ODM, v.v. Cung cấp dữ liệu tồn kho cho OSM, ODM, SFM. Phụ thuộc PIM.
+  * FAM: Kế toán tài chính. Nhận các sự kiện/dữ liệu tài chính từ ODM, PPM, BUM.
+  * CRM: Thông tin khách hàng, lịch sử tương tác, ticket dịch vụ. Tiêu thụ sự kiện từ ODM, SFM, PPM, MPM. Sử dụng NDM để giao tiếp với khách hàng. Phụ thuộc ODM, SFM, PPM để tra cứu lịch sử.
+  * *(Các BC khác được định nghĩa trong tài liệu)*
+* **Mô hình Tương tác:** Chủ yếu Event-Driven (RabbitMQ) để coupling lỏng lẻo. Request/Reply đồng bộ (NATS) cho phản hồi tức thời hoặc các phụ thuộc dịch vụ cốt lõi (Feature \-\> Core, API Gateway \-\> Service).
+
+## **4\. Nguyên lý Domain-Driven Design (DDD) & Ngôn ngữ Chung**
+
+* **Tập trung DDD:** Cấu trúc và thiết kế code phù hợp với các miền nghiệp vụ (BCs).
+* **Ngôn ngữ Chung (Ubiquitous Language):** Một ngôn ngữ được chia sẻ, nhất quán giữa các nhà phát triển và chuyên gia nghiệp vụ *trong một Bounded Context cụ thể*. Các thuật ngữ chỉ có ý nghĩa chính xác trong phạm vi BC đó. AI nên nhận thức rằng cùng một thuật ngữ có thể có sắc thái hoặc cấu trúc khác nhau trong các BC khác nhau.
+
+## **5\. Quy ước Code hóa & Cấu trúc**
+
+* **Ngôn ngữ Chính:** TypeScript.
+* **Backend Framework:** NestJS.
+* **Runtime:** Node.js.
+* **Frontend Framework:** Angular.
+* **Định dạng Code:** Tuân thủ các quy tắc trong .editorconfig. Sử dụng dấu ngoặc nhọn {} cho tất cả các khối lệnh.
+* **Quy tắc Chung:** Mặc định sử dụng camelCase, không có dấu gạch dưới ở đầu hoặc cuối trừ khi được cho phép cụ thể, không có dấu gạch dưới kép (\_\_) ngoại trừ các trường hợp đặc biệt như destructuring, không sử dụng console statements trong code production.
+
+### **Quy tắc Đặt tên**
+
+* Namespaces: Ecoma.\[BoundedContext\].\[Layer\].\[ModuleName\] (Áp dụng cho cấu trúc module/thư mục TypeScript).
+* Biến: camelCase (thông thường), PascalCase (React Components \- nếu áp dụng), UPPER\_CASE (hằng số).
+* Hàm: camelCase (thông thường), PascalCase (React Components \- nếu áp dụng). Dấu gạch dưới ở đầu cho hàm private/protected.
+* Thuộc tính Object: camelCase (ưu tiên) hoặc snake\_case (khi mapping từ API/DB). Dấu gạch dưới ở đầu cho thuộc tính private.
+* Thuộc tính Class: camelCase (public), \_camelCase (private/protected với dấu gạch dưới). UPPER\_CASE hoặc camelCase cho readonly.
+* Phương thức Class: camelCase (public), \_camelCase (private/protected với dấu gạch dưới). Phương thức abstract: camelCase.
+* Accessors (get/set): camelCase.
+* Class: Sử dụng PascalCase. Abstract class phải bắt đầu bằng "Abstract".
+* Interface: Sử dụng PascalCase, phải bắt đầu bằng "I".
+* Type Alias: Sử dụng PascalCase.
+* Enum: Sử dụng PascalCase cho tên enum, PascalCase hoặc UPPER\_CASE cho các thành viên enum.
+* Tham số Kiểu (Generics): Sử dụng PascalCase, thường bắt đầu bằng "T".
+
+## **6\. Cấu trúc Thư mục Dự án (Nx Monorepo)**
+
+Hệ thống Ecoma được quản lý trong một **Nx Monorepo**. Cấu trúc này giúp tổ chức các project độc lập (service, worker, thư viện, test) và quản lý dependencies, build/test hiệu quả.
+
+* **Cấp Cao nhất:**
+  * apps/: Chứa các project có thể triển khai (deployable projects).
+  * libs/: Chứa các project thư viện (library projects).
+  * tests/: Chứa các project kiểm thử (E2E, Integration, Performance) cho toàn bộ hệ thống.
+  * docs/: Chứa tài liệu dự án.
+    * Bên trong thư mục docs/ bao gồm các thư mục con: assets, domain-design, domain-implement, explain-decisions, libraries.
+  * scripts/: Chứa các script tự động hóa.
+  * tools/: Chứa các công cụ tùy chỉnh/cấu hình monorepo.
+* **Bên trong apps/:**
+  * apps/services/\[tên-service\]/: Microservice xử lý các luồng chính (Command/Query).
+  * apps/workers/\[tên-worker\]/: Worker xử lý các tác vụ nền hoặc theo lịch.
+  * Mỗi thư mục con là một Nx project service/worker. Chứa điểm khởi chạy (main.ts), module gốc (app.module.ts), Health Check, Dockerfile.
+* **Bên trong libs/:**
+  * libs/domains/\[tên-bc\]/: Chứa các thư viện dành riêng cho một Bounded Context, được tổ chức theo các lớp của Clean Architecture.
+    * libs/domains/\[tên-bc\]/\[tên-bc\]-domain/: Lớp Domain (Entities, Value Objects, Aggregates, Domain Events, Domain Services).
+    * libs/domains/\[tên-bc\]/\[tên-bc\]-application/: Lớp Application (Use Cases, Command/Query Handlers, Interfaces/Ports). Phụ thuộc \[tên-bc\]-domain.
+    * libs/domains/\[tên-bc\]/\[tên-bc\]-infrastructure/: Lớp Infrastructure (Triển khai Interfaces/Ports, Adapters cho DB, Message Broker, External Services). Phụ thuộc \[tên-bc\]-application.
+  * libs/common/: Các thư viện tiện ích dùng chung không thuộc BC cụ thể.
+  * libs/\[tên-framework\]/: Các thư viện dùng chung liên quan đến framework (ví dụ: libs/nestjs).
+  * Bên trong các thư viện (src/lib/): Cấu trúc được tổ chức theo thành phần (ví dụ: aggregates/, use-cases/, interfaces/, persistence/).
+* **Bên trong tests/:**
+  * Chứa các project kiểm thử cho toàn bộ hệ thống, bao gồm E2E, Integration, và Performance tests.
+  * Cấu trúc bên trong tests/ được tổ chức tương tự như apps/, phản ánh các loại ứng dụng/thành phần được kiểm thử:
+    * tests/sites/: Chứa các project kiểm thử (E2E, Integration) cho các ứng dụng Frontend/Client (ví dụ: Web Admin Panel, User Portal).
+    * tests/services/\[tên-service\]-e2e/: Project E2E test cho service tương ứng trong apps/services/.
+    * tests/services/\[tên-service\]-integration/: Project Integration test cho service tương ứng trong apps/services/ (kiểm thử tương tác giữa các lớp nội bộ service hoặc với các phụ thuộc bên ngoài như DB, Message Broker).
+    * tests/infras/: Chứa các project kiểm thử cho hạ tầng (ví dụ: kiểm thử kết nối broker, kiểm thử cấu hình triển khai).
+    * tests/performance/: Chứa các project kiểm thử hiệu năng cho các service/luồng quan trọng.
+  * Mỗi thư mục con bên trong tests/ là một Nx project kiểm thử.
+* index.ts export các API public từ mỗi thư mục.
+
+### **Nhận dạng Project và Phụ thuộc với nx graph**
+
+Trong môi trường Nx monorepo, việc hiểu rõ danh sách các project và mối quan hệ phụ thuộc giữa chúng là rất quan trọng. Công cụ nx graph cung cấp một biểu đồ trực quan về cấu trúc này.
+
+* **Cách sử dụng:** Chạy lệnh nx graph \--file=stdout để xuất biểu đồ phụ thuộc dưới dạng JSON ra standard output. Định dạng JSON này giúp các công cụ tự động hóa và AI dễ dàng phân tích cấu trúc và mối quan hệ giữa các project hơn so với output đồ họa mặc định.
+* **Mục đích:** AI có thể sử dụng thông tin từ output JSON của nx graph để:
+  * Xác định project nào bị ảnh hưởng khi một project khác thay đổi.
+  * Hiểu luồng phụ thuộc giữa các thư viện (libs/) và các ứng dụng (apps/).
+  * Tìm kiếm các project liên quan đến một Bounded Context hoặc một tính năng cụ thể.
+  * Đảm bảo các quy tắc phụ thuộc giữa các lớp (Domain \-\> Application \-\> Infrastructure) và giữa các BC được tuân thủ.
+
+### **Cấu trúc Thư mục Chi tiết bên trong Thư viện Bounded Context (**libs/domains/\[tên-bc\]/**)**
+
+Mỗi thư viện Bounded Context trong libs/domains/ được tổ chức theo các lớp của **Clean Architecture** để tách biệt các mối quan tâm và tuân thủ nguyên tắc phụ thuộc hướng vào trong (dependency rule).
+
+* \[tên-bc\]-domain/**:**
+  * Chứa logic nghiệp vụ cốt lõi của BC.
+  * **Không có bất kỳ phụ thuộc nào vào các lớp bên ngoài (Application, Infrastructure) hoặc framework bên ngoài.**
+  * Các thư mục con phổ biến:
+    * aggregates/: Chứa các Aggregate Root và các Entities, Value Objects thuộc về Aggregate đó.
+    * entities/: Chứa các Entities độc lập không thuộc Aggregate Root cụ thể (ít phổ biến trong DDD hiện đại, thường được đưa vào Aggregate).
+    * value-objects/: Chứa các Value Object (immutable, được định nghĩa bằng các thuộc tính của nó).
+    * domain-events/: Chứa định nghĩa các Domain Event mà Aggregate/Entity có thể phát ra.
+    * domain-services/: Chứa các dịch vụ nghiệp vụ thực hiện logic liên quan đến nhiều Aggregate hoặc không phù hợp đặt trong Aggregate.
+    * exceptions/: Chứa các Custom Exception cho các lỗi nghiệp vụ.
+    * interfaces/: Chứa các interfaces (Ports) được định nghĩa bởi lớp Domain nhưng được triển khai ở lớp Infrastructure (ví dụ: IRepository).
+* \[tên-bc\]-application/**:**
+  * Chứa các Use Case (Application Services) và định nghĩa các interfaces (Ports) mà lớp Infrastructure cần triển khai.
+  * **Phụ thuộc vào lớp Domain.**
+  * **Không có bất kỳ phụ thuộc nào vào lớp Infrastructure hoặc framework bên ngoài.**
+  * Các thư mục con phổ biến:
+    * use-cases/: Chứa các Use Case, thường được chia nhỏ thành commands/ và queries/.
+      * use-cases/commands/: Chứa định nghĩa các Command và Command Handler tương ứng.
+      * use-cases/queries/: Chứa định nghĩa các Query và Query Handler tương ứng.
+    * interfaces/: Chứa các interfaces (Ports) mà lớp Infrastructure cần triển khai (ví dụ: IPersistencePort, IMessageBrokerPort, IExternalServicePort).
+    * dtos/: Chứa các Data Transfer Object (DTO) được sử dụng làm input/output cho các Use Case.
+* \[tên-bc\]-infrastructure/**:**
+  * Chứa các triển khai cụ thể của các interfaces (Adapters) được định nghĩa ở lớp Application và Domain.
+  * **Phụ thuộc vào lớp Application và các framework/thư viện bên ngoài** (TypeORM, Mongoose, NATS client, RabbitMQ client, v.v.).
+  * **Không có bất kỳ phụ thuộc nào vào lớp Domain (trực tiếp).**
+  * Các thư mục con phổ biến:
+    * persistence/: Chứa các triển khai Repository sử dụng ORM/ODM (ví dụ: typeorm/, mongoose/).
+    * message-broker/: Chứa các triển khai gửi/nhận message qua NATS/RabbitMQ (ví dụ: nats-rpc/, rabbitmq-events/).
+    * external-services/: Chứa các client để gọi các dịch vụ bên ngoài.
+    * adapters/: Chứa các adapter khác (ví dụ: cho caching, logging cụ thể).
+    * models/: Chứa các mô hình dữ liệu dành riêng cho lớp Infrastructure (ví dụ: Entity của TypeORM, Schema của Mongoose).
+* index.ts**:** Mỗi thư mục con trong src/lib/ của các thư viện Domain, Application, Infrastructure nên có một file index.ts để export các thành phần public, giúp dễ dàng import từ các project khác.
+
+## **7\. Tài liệu cho AI (Yêu cầu Tài liệu hóa)**
+
+* **Docstrings (JSDoc trong TS/JS):** Rất cần thiết cho AI hiểu code.
+  * TẤT CẢ các thành viên public, các thành phần được export (hàm, class, interface, type), và các file PHẢI có JSDoc comments đầy đủ.
+  * Docstrings PHẢI được viết bằng **Tiếng Việt**.
+  * Nội dung PHẢI bao gồm: Mô tả chức năng, @param, @returns, @throws, @example (cho các mục phức tạp), @since, @deprecated.
+  * Sử dụng comments cho logic private phức tạp để giải thích *lý do* (why).
+
+## **8\. Tiêu chuẩn Kiểm thử (Yêu cầu Kiểm thử)**
+
+* **Triết lý:** Kiểm thử là một phần cốt lõi của quá trình phát triển. Tập trung vào **Unit Testing** (đặt cùng source) và các loại kiểm thử trong thư mục **tests/** (bao gồm E2E, Integration, Performance).
+* **Các loại:** Unit Tests (logic cô lập), Integration Tests (tương tác thành phần, ví dụ: repository với DB), End-to-End Tests (luồng hoàn chỉnh xuyên service/hạ tầng, mô phỏng tương tác bên ngoài qua NATS/RabbitMQ), Performance Tests (đo lường hiệu năng dưới tải).
+* **Ngôn ngữ:** TẤT CẢ tên và mô tả của các test case (trong các block describe, it) PHẢI được viết bằng **Tiếng Việt**.
+* **Cấu trúc:** Tuân theo cấu trúc framework kiểm thử chuẩn (ví dụ: describe('Tên Component/Class', ()mô tả \=\> { it('nên \[mô tả hành vi mong đợi\]', ()sẽ { ... }); });).
+* **Độ bao phủ:** Phải bao gồm Happy path, Error cases, Edge cases, Async operations, State management.
+
+## **9\. Tóm tắt Chiến lược Giao tiếp**
+
+* **Client \-\> API Gateway:** Đồng bộ HTTP(S).
+* **API Gateway \-\> Service Backend:** Đồng bộ NATS Request/Reply.
+* **Service Backend \-\> Service Backend (Bất đồng bộ):** RabbitMQ cho Domain Events (Fire-and-Forget) và Background Jobs.
+* **Service Backend \-\> Service Backend (Đồng bộ):** NATS Request/Reply cho các cuộc gọi nội bộ trực tiếp cần phản hồi tức thời.
+* **KHÔNG sử dụng HTTP cho giao tiếp giữa các service backend.**
+* **Contract-first:** API (OpenAPI), Schema Message (JSON Schema).
+
+## **10\. Chiến lược Versioning**
+
+* **API (Client-facing):** Semantic Versioning trong đường dẫn URL (ví dụ: /api/v1/). Hỗ trợ song song N-1 phiên bản Major.
+* **Schema Event (Giữa các Service):** Semantic Versioning hoặc tương tự. Tránh các breaking changes bằng cách chỉ thêm các trường tùy chọn. Phiên bản được chỉ định trong message headers/routing keys.
+* **Triển khai:** Sử dụng tag Docker image (ví dụ: Git commit SHA). Được quản lý bởi Kubernetes.
+
+## **11\. Chiến lược Quan sát (Observability)**
+
+* **Ba Trụ cột:** Logs, Metrics, Traces.
+* **Logs:** Bắt buộc Structured Logging với các trường chuẩn (traceId, spanId, serviceName).
+* **Traces:** Bắt buộc lan truyền Trace Context qua mọi kênh giao tiếp (HTTP headers, Message headers) cho Distributed Tracing.
+* **Metrics:** Thu thập cả metrics kỹ thuật và nghiệp vụ. Định nghĩa SLIs/SLOs và các cảnh báo.
+
+## **12\. Các Công nghệ Chính được Sử dụng**
+
+* **Ngôn ngữ:** TypeScript
+* **Backend Framework:** NestJS
+* **Runtime:** Node.js
+* **Frontend Framework:** Angular
+* **RDBMS:** PostgreSQL (ORM: TypeORM)
+* **NoSQL:** MongoDB (ODM: Mongoose)
+* **Caching/In-Memory:** Redis
+* **Message Broker (Sync Req/Reply):** NATS
+* **Message Broker (Async Events/Jobs):** RabbitMQ
+* **Containerization:** Docker (sử dụng multi-stage builds và distroless images)
+* **Orchestration:** Kubernetes (K8s)
+* **IaC:** Helm
+* **GitOps CD:** ArgoCD
+* **CI Automation:** GitHub Actions
+* **Công cụ Monorepo:** Nx
+* **Đặc tả API:** OpenAPI
+
+## **13\. Quy trình Chỉnh sửa Code và Kiểm tra Chất lượng**
+
+Khi chỉnh sửa code trong bất kỳ project nào trong monorepo, cần tuân thủ quy trình kiểm tra chất lượng sau để đảm bảo tính nhất quán và đúng đắn:
+
+1. **Chỉnh sửa Code:** Thực hiện các thay đổi code cần thiết.
+2. **Chạy Linting và Formatting:** Chạy lệnh nx lint \[tên-project\] \--fix để tự động sửa các lỗi định dạng và linting. Kiểm tra output để sửa các lỗi linting không thể tự động sửa.
+3. **Build Project:** Chạy lệnh nx build \[tên-project\] để đảm bảo code biên dịch thành công. Sửa các lỗi biên dịch nếu có.
+4. **Chạy Unit Tests:** Chạy lệnh nx test \[tên-project\] để thực thi các unit test của project. Đảm bảo tất cả unit test vượt qua. Sửa code và test nếu cần.
+5. **Tạo/Cập nhật Tài liệu:** Nếu thay đổi ảnh hưởng đến các thành phần public hoặc cấu trúc, chạy lệnh tạo tài liệu (ví dụ: nx gen-docs \[tên-project\] nếu có script hoặc sử dụng tool tương ứng) để cập nhật Docstrings/comments. Kiểm tra lại Docstrings/comments bằng tiếng Việt theo quy định (Mục 7).
+6. **Kiểm tra Tài liệu Liên quan:** Xem xét và cập nhật các tài liệu khác có liên quan trong thư mục docs/ (ví dụ: tài liệu thiết kế domain, tài liệu kiến trúc, tài liệu giải thích quyết định) để phản ánh các thay đổi code.
+7. **Chạy các bài kiểm thử Cấp cao hơn (nếu cần):** Tùy thuộc vào phạm vi thay đổi, chạy các bài kiểm thử Integration hoặc E2E liên quan trong thư mục tests/ để đảm bảo sự tích hợp với các thành phần khác hoạt động đúng.
+
+Việc tuân thủ quy trình này giúp duy trì chất lượng code, đảm bảo tài liệu luôn cập nhật và giảm thiểu rủi ro khi tích hợp các thay đổi.
+
+## **14\. Các Thực hành Cần Tránh**
+
+Để duy trì kiến trúc, chất lượng code và tính nhất quán của hệ thống Ecoma, cần nghiêm túc tránh các thực hành sau:
+
+* **Quản lý trạng thái Static trong các service:** Tránh sử dụng biến hoặc thuộc tính static để lưu trữ trạng thái thay đổi, đặc biệt trong các service stateless được triển khai trên Kubernetes. Điều này gây khó khăn cho việc mở rộng ngang và quản lý vòng đời trạng thái.
+* **Phụ thuộc trực tiếp vào implementation class của các BC khác:** Luôn tương tác với các BC khác thông qua các interfaces (Ports) được định nghĩa trong lớp Application của BC đó, hoặc thông qua các Anti-Corruption Layer (ACLs) được thiết kế rõ ràng. Điều này giúp duy trì sự độc lập giữa các BC và cho phép thay đổi implementation mà không ảnh hưởng đến các BC phụ thuộc.
+* **Chia sẻ Database giữa các BC:** Mỗi BC/Microservice phải sở hữu và quản lý cơ sở dữ liệu riêng của mình. KHÔNG cho phép BC khác truy cập trực tiếp vào database của mình. Mọi tương tác dữ liệu giữa các BC phải thông qua API hoặc Events.
+* **Anemic Domain Models:** Tránh tạo các Domain Entity chỉ chứa dữ liệu (getters/setters) mà không có hành vi (logic nghiệp vụ). Logic nghiệp vụ cốt lõi phải nằm trong Domain Objects (Entities, Value Objects, Aggregates) hoặc Domain Services, không tập trung hết vào Application Services.
+* **Sử dụng HTTP cho giao tiếp giữa các service backend:** Như đã nêu trong mô hình kiến trúc, giao tiếp đồng bộ nội bộ sử dụng NATS Request/Reply và bất đồng bộ sử dụng RabbitMQ. Tránh sử dụng HTTP trực tiếp giữa các service backend để tuân thủ chiến lược giao tiếp đã định.
+* **Commit secrets trực tiếp trong code/cấu hình:** Thông tin nhạy cảm (như mật khẩu database, khóa API) không được lưu trữ trực tiếp trong mã nguồn hoặc file cấu hình được commit vào Git. Sử dụng các giải pháp quản lý secrets an toàn của Kubernetes (Secrets) hoặc các hệ thống quản lý secrets chuyên dụng.
+* **Tạo các thư viện dùng chung lớn, không rõ ràng (God Libraries):** Tránh tạo các thư viện trong libs/ chứa code không liên quan hoặc trộn lẫn logic từ nhiều BC hoặc nhiều lớp kiến trúc. Các thư viện dùng chung nên có mục đích rõ ràng (ví dụ: tiện ích chung, code dành riêng cho một framework, code của một lớp Domain/Application/Infrastructure của một BC).
+* **Tạo phụ thuộc ngầm (Implicit Dependencies) không được khai báo trong Nx:** Luôn đảm bảo các phụ thuộc giữa các project được khai báo rõ ràng trong file project.json của Nx. Tránh import code từ một project khác mà không khai báo dependency, điều này làm hỏng biểu đồ phụ thuộc của Nx và gây khó khăn cho việc phân tích ảnh hưởng và tối ưu hóa build/test.
+* **Thực hiện logic nghiệp vụ phức tạp trực tiếp trong Message Consumer hoặc Controller:** Message Consumer (lắng nghe RabbitMQ) và Controller (xử lý yêu cầu API) chỉ nên là lớp mỏng điều phối. Logic nghiệp vụ phức tạp phải được ủy thác cho Application Services (Use Cases) hoặc Domain Objects.
+* **Bỏ qua ORM/ODM (TypeORM/Mongoose) cho các thao tác DB thông thường:** Sử dụng ORM/ODM đã được chọn (TypeORM cho PostgreSQL, Mongoose cho MongoDB) cho hầu hết các thao tác truy cập cơ sở dữ liệu. Chỉ cân nhắc bỏ qua ORM/ODM và sử dụng client DB trực tiếp trong các trường hợp đặc biệt khi đã chứng minh được vấn đề hiệu năng nghiêm trọng và không có giải pháp nào khác.
+* **Không tuân thủ quy tắc sở hữu dữ liệu của BC:** Bất kỳ code nào cố gắng truy cập trực tiếp vào database của BC khác đều vi phạm nguyên tắc sở hữu dữ liệu và phải được sửa đổi để sử dụng các cơ chế giao tiếp đã định.
+
+## **15\. Quy ước Commit Message Git**
+
+* Tuân thủ tiêu chuẩn Angular Commit Message Format.
+* Định dạng: \<type\>(\<scope\>): \<subject\>
+  * type: Bắt buộc (feat, fix, docs, style, refactor, perf, test, chore).
+  * scope: Tùy chọn (auth, ui, api, db, config, deps, hoặc tên BC cụ thể).
+  * subject: Bắt buộc, mô tả ngắn gọn bằng **Tiếng Việt**, sử dụng thì hiện tại, không viết hoa chữ cái đầu, không kết thúc bằng dấu chấm.
+* Thông tin chi tiết thêm vào phần body sau một dòng trống.
+Tài liệu này là một tài liệu "sống" và có thể được cập nhật khi dự án phát triển.
+
+## Công cụ tài liệu hóa
+
+- Sử dụng **docsify** để render tài liệu markdown (docs/) thành trang web tài liệu động cho developer và AI.
+- Sử dụng **typedoc** để sinh tài liệu API tự động từ code TypeScript, xuất ra docs/libraries/.

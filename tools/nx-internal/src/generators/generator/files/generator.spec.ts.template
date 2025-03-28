@@ -2,11 +2,11 @@ import { createTreeWithEmptyWorkspace } from '@nx/devkit/testing';
 import { Tree, readProjectConfiguration } from '@nx/devkit';
 
 import { <%= name %>Generator } from './generator';
-import { <%= name %>GeneratorSchema } from './schema';
+import { I<%= name %>GeneratorSchema } from './schema';
 
 describe('<%= name %> generator', () => {
   let tree: Tree;
-  const options: <%= name %>GeneratorSchema = { name: 'test' };
+  const options: I<%= name %>GeneratorSchema = { name: 'test' };
 
   beforeEach(() => {
     tree = createTreeWithEmptyWorkspace();

@@ -4,21 +4,5 @@
   "sourceRoot": "tools/nx-internal/src",
   "projectType": "library",
   "tags": [],
-  "targets": {
-    "test": {
-      "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/.coverage/{projectRoot}"],
-      "options": {
-        "jestConfig": "tools/nx-internal/jest.config.ts"
-      },
-      "configurations": {
-        "ci": {
-          "ci": true,
-          "codeCoverage": true
-        },
-        "development": {}
-      },
-      "defaultConfiguration": "development"
-    }
-  }
+  "targets": {}
 }

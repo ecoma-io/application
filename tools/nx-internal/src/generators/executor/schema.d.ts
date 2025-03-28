@@ -1,3 +1,3 @@
-export interface executorGeneratorSchema {
+export interface IExecutorGeneratorSchema {
   name: string;
 }

@@ -8,11 +8,11 @@ import {
 import { existsSync } from "fs";
 import * as path from "path";
 
-import { executorGeneratorSchema } from "./schema";
+import { IExecutorGeneratorSchema } from "./schema";
 
 export async function executorGenerator(
   tree: Tree,
-  options: executorGeneratorSchema
+  options: IExecutorGeneratorSchema
 ) {
   const generatorRoot = getGeneratorRoot(options.name);
 
@@ -42,7 +42,7 @@ function getClassName(name: string): string {
 function generateExecutorFiles(
   tree: Tree,
   generatorRoot: string,
-  options: executorGeneratorSchema & { className: string }
+  options: IExecutorGeneratorSchema & { className: string }
 ): void {
   generateFiles(
     tree,
@@ -54,7 +54,7 @@ function generateExecutorFiles(
 
 function updateExecutorsJson(
   tree: Tree,
-  options: executorGeneratorSchema
+  options: IExecutorGeneratorSchema
 ): void {
   const executorsJsonPath = path
     .join(__dirname, "../../../executors.json")

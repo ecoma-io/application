@@ -1,0 +1,104 @@
+#!/bin/bash
+
+# === Helper: Usage ===
+usage() {
+  echo "Usage: $0 <directory> [-o <output.md>] [--include <pattern>] [--exclude <pattern>]"
+  echo ""
+  echo "Or:    $0 -d <directory> ..."
+  echo ""
+  echo "Options:"
+  echo "  <directory>       Target directory to scan (positional or with -d/--dir)"
+  echo "  -o, --output      Output Markdown file (default: output.md)"
+  echo "  --include         Glob pattern to include files (e.g. '**/*.ts')"
+  echo "  --exclude         Glob pattern to exclude files (e.g. '**/*.spec.ts')"
+  echo ""
+  echo "Examples:"
+  echo "  $0 ./src"
+  echo "  $0 -d ./src -o all-code.md --include '**/*.ts' --exclude '**/*.spec.ts'"
+  exit 1
+}
+
+# === Defaults ===
+OUTPUT_FILE="output.md"
+INCLUDE_PATTERN="**/*"
+EXCLUDE_PATTERN=""
+
+# === Handle positional directory
+if [[ $# -gt 0 && "$1" != -* ]]; then
+  TARGET_DIR="$1"
+  shift
+fi
+
+# === Parse arguments ===
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    -d|--dir)
+      TARGET_DIR="$2"
+      shift 2
+      ;;
+    -o|--output)
+      OUTPUT_FILE="$2"
+      shift 2
+      ;;
+    --include)
+      INCLUDE_PATTERN="$2"
+      shift 2
+      ;;
+    --exclude)
+      EXCLUDE_PATTERN="$2"
+      shift 2
+      ;;
+    *)
+      echo "❌ Unknown argument: $1"
+      usage
+      ;;
+  esac
+done
+
+# === Validation ===
+if [ -z "$TARGET_DIR" ]; then
+  echo "❌ Error: Missing target directory."
+  usage
+fi
+
+if [ ! -d "$TARGET_DIR" ]; then
+  echo "❌ Error: The directory '$TARGET_DIR' does not exist."
+  exit 1
+fi
+
+# === Processing ===
+echo "🔍 Scanning: $TARGET_DIR"
+echo "📄 Output: $OUTPUT_FILE"
+echo "📦 Include: $INCLUDE_PATTERN"
+[ -n "$EXCLUDE_PATTERN" ] && echo "🚫 Exclude: $EXCLUDE_PATTERN"
+
+# Clear output file
+rm -f "$OUTPUT_FILE"
+
+# Convert glob to regex
+glob_to_regex() {
+  echo "$1" | sed 's/\./\\./g; s/\*\*/.*/g; s/\*/[^\/]*/g'
+}
+
+INCLUDE_REGEX=$(glob_to_regex "$INCLUDE_PATTERN")
+EXCLUDE_REGEX=$(glob_to_regex "$EXCLUDE_PATTERN")
+
+# Find and filter files
+MATCHED_FILES=$(find "$TARGET_DIR" -type f | grep -E "$INCLUDE_REGEX")
+if [ -n "$EXCLUDE_PATTERN" ]; then
+  MATCHED_FILES=$(echo "$MATCHED_FILES" | grep -Ev "$EXCLUDE_REGEX")
+fi
+
+# Write to output file
+while IFS= read -r file; do
+  echo "➕ Adding $file"
+  {
+    echo "[$file]"
+    echo '```'
+    cat "$file"
+    echo '```'
+    echo ""
+  } >> "$OUTPUT_FILE"
+done <<< "$MATCHED_FILES"
+
+echo "✅ Done. All content has been saved to '$OUTPUT_FILE'."
