@@ -1,27 +1,32 @@
-import baseConfig from "../../eslint.config.mjs";
 import jsoncParser from "jsonc-eslint-parser";
+import baseConfig from "../../eslint.config.mjs";
 
 export default [
   ...baseConfig,
   {
-    files: ['**/*.json'],
+    files: ["**/*.json"],
     rules: {
-      '@nx/dependency-checks': [
-        'error',
+      "@nx/dependency-checks": [
+        "error",
         {
-          ignoredFiles: ['{projectRoot}/eslint.config.{js,cjs,mjs}'],
+          ignoredFiles: ["{projectRoot}/eslint.config.{js,cjs,mjs}"],
         },
       ],
     },
     languageOptions: {
-      parser: jsoncParser
+      parser: jsoncParser,
     },
   },
   {
-    files: ['**/package.json', '**/generators.json', '**/package.json', '**/generators.json'],
-    rules: { '@nx/nx-plugin-checks': 'error' },
+    files: [
+      "**/package.json",
+      "**/generators.json",
+      "**/package.json",
+      "**/generators.json",
+    ],
+    rules: { "@nx/nx-plugin-checks": "error" },
     languageOptions: {
-      parser: jsoncParser
+      parser: jsoncParser,
     },
   },
 ];

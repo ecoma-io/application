@@ -1,0 +1,31 @@
+{
+  "name": "common-utils",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/common/common-utils/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "gen-docs": {
+      "executor": "@ecoma/nx-internal:typedoc"
+    },
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/common/common-utils",
+        "main": "libs/common/common-utils/src/index.ts",
+        "tsConfig": "libs/common/common-utils/tsconfig.lib.json",
+        "assets": ["libs/common/common-utils/*.md"],
+        "format": ["cjs"],
+        "sourceMap": true
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/common/common-utils/jest.config.ts"
+      }
+    }
+  }
+}

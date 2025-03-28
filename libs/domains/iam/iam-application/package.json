@@ -1,0 +1,15 @@
+{
+  "name": "@ecoma/iam-application",
+  "version": "0.0.1",
+  "private": true,
+  "type": "commonjs",
+  "main": "./index.cjs",
+  "types": "./index.d.ts",
+  "dependencies": {
+    "@ecoma/iam-domain": "0.0.1",
+    "@ecoma/common-application": "0.0.1",
+    "@nestjs/cqrs": "^11.0.3",
+    "@nestjs/common": "^11.0.13",
+    "@ecoma/common-domain": "0.0.1"
+  }
+}

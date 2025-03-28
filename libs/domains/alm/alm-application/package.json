@@ -1,0 +1,15 @@
+{
+  "name": "@ecoma/alm-application",
+  "version": "0.0.1",
+  "private": true,
+  "type": "commonjs",
+  "main": "./index.cjs",
+  "types": "./index.d.ts",
+  "dependencies": {
+    "@ecoma/alm-domain": "0.0.1",
+    "@ecoma/common-application": "0.0.1",
+    "@ecoma/common-domain": "0.0.1",
+    "@nestjs/common": "^11.0.13",
+    "@ecoma/nestjs-logging": "0.0.1"
+  }
+}

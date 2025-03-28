@@ -3,17 +3,17 @@ import * as fs from "fs";
 import { join } from "path";
 
 import { executorGenerator } from "./generator";
-import { executorGeneratorSchema } from "./schema";
+import { IExecutorGeneratorSchema } from "./schema";
 
-interface Generator {
+interface IGenerator {
   factory: string;
   schema: string;
   description: string;
 }
 
-interface ExecutorJson {
+interface IExecutorJson {
   executors: {
-    [key: string]: Generator;
+    [key: string]: IGenerator;
   };
 }
 
@@ -32,7 +32,7 @@ jest.mock("fs", () => ({
 
 describe("executorGenerator", () => {
   let tree: Tree;
-  const options: executorGeneratorSchema = { name: "test-executor" };
+  const options: IExecutorGeneratorSchema = { name: "test-executor" };
 
   beforeEach(() => {
     tree = {
@@ -92,7 +92,7 @@ describe("executorGenerator", () => {
     // Kiểm tra rằng hàm updateJson đã được gọi với hàm callback đúng
     const updateJsonCallback = (require("@nx/devkit").updateJson as jest.Mock)
       .mock.calls[0][2];
-    const json: ExecutorJson = { executors: {} };
+    const json: IExecutorJson = { executors: {} };
     updateJsonCallback(json);
 
     expect(json.executors[options.name]).toEqual({

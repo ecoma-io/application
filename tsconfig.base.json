@@ -7,6 +7,7 @@
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "esModuleInterop": true,
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
@@ -15,7 +16,88 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@ecoma/nx-internal": ["tools/nx-internal/src/index.ts"]
+      "@ecoma/alm-application": [
+        "libs/domains/alm/alm-application/src/index.ts"
+      ],
+      "@ecoma/alm-domain": ["libs/domains/alm/alm-domain/src/index.ts"],
+      "@ecoma/alm-infrastructure": [
+        "libs/domains/alm/alm-infrastructure/src/index.ts"
+      ],
+      "@ecoma/bum-application": [
+        "libs/domains/bum/bum-application/src/index.ts"
+      ],
+      "@ecoma/bum-domain": ["libs/domains/bum/bum-domain/src/index.ts"],
+      "@ecoma/bum-infrastructure": [
+        "libs/domains/bum/bum-infrastructure/src/index.ts"
+      ],
+      "@ecoma/bum-infrastucture": [
+        "libs/domains/bum/bum-infrastucture/src/index.ts"
+      ],
+      "@ecoma/common-application": [
+        "libs/common/common-application/src/index.ts"
+      ],
+      "@ecoma/common-domain": ["libs/common/common-domain/src/index.ts"],
+      "@ecoma/common-infrastructure": [
+        "libs/common/common-infrastructure/src/index.ts"
+      ],
+      "@ecoma/common-testing": ["libs/common/common-testing/src/index.ts"],
+      "@ecoma/common-types": ["libs/common/common-types/src/index.ts"],
+      "@ecoma/common-utils": ["libs/common/common-utils/src/index.ts"],
+      "@ecoma/dam-application": [
+        "libs/domains/dam/dam-application/src/index.ts"
+      ],
+      "@ecoma/dam-domain": ["libs/domains/dam/dam-domain/src/index.ts"],
+      "@ecoma/dam-infrastucture": [
+        "libs/domains/dam/dam-infrastucture/src/index.ts"
+      ],
+      "@ecoma/iam-application": [
+        "libs/domains/iam/iam-application/src/index.ts"
+      ],
+      "@ecoma/iam-domain": ["libs/domains/iam/iam-domain/src/index.ts"],
+      "@ecoma/iam-infrastructure": [
+        "libs/domains/iam/iam-infrastructure/src/index.ts"
+      ],
+      "@ecoma/lzm-application": [
+        "libs/domains/lzm/lzm-application/src/index.ts"
+      ],
+      "@ecoma/lzm-domain": ["libs/domains/lzm/lzm-domain/src/index.ts"],
+      "@ecoma/lzm-infrastructure": [
+        "libs/domains/lzm/lzm-infrastructure/src/index.ts"
+      ],
+      "@ecoma/ndm-application": [
+        "libs/domains/ndm/ndm-application/src/index.ts"
+      ],
+      "@ecoma/ndm-domain": ["libs/domains/ndm/ndm-domain/src/index.ts"],
+      "@ecoma/ndm-infrastructure": [
+        "libs/domains/ndm/ndm-infrastructure/src/index.ts"
+      ],
+      "@ecoma/nestjs-health": ["libs/nestjs/nestjs-health/src/index.ts"],
+      "@ecoma/nestjs-logging": ["libs/nestjs/nestjs-logging/src/index.ts"],
+      "@ecoma/nestjs-observability": [
+        "libs/nestjs/nestjs-observability/src/index.ts"
+      ],
+      "@ecoma/nge-cookie": ["libs/angular/nge-cookie/src/index.ts"],
+      "@ecoma/nge-logging": ["libs/angular/nge-logging/src/index.ts"],
+      "@ecoma/nge-logging/testing": [
+        "libs/angular/nge-logging/src/testing/index.ts"
+      ],
+      "@ecoma/nge-ui": ["libs/angular/nge-ui/src/index.ts"],
+      "@ecoma/nge-ui/testing": ["libs/angular/nge-ui/src/testing/index.ts"],
+      "@ecoma/nx-internal": ["tools/nx-internal/src/index.ts"],
+      "@ecoma/ppm-application": [
+        "libs/domains/ppm/ppm-application/src/index.ts"
+      ],
+      "@ecoma/ppm-domain": ["libs/domains/ppm/ppm-domain/src/index.ts"],
+      "@ecoma/ppm-infrastructure": [
+        "libs/domains/ppm/ppm-infrastructure/src/index.ts"
+      ],
+      "@ecoma/rdm-application": [
+        "libs/domains/rdm/rdm-application/src/index.ts"
+      ],
+      "@ecoma/rdm-domain": ["libs/domains/rdm/rdm-domain/src/index.ts"],
+      "@ecoma/rdm-infrastructure": [
+        "libs/domains/rdm/rdm-infrastructure/src/index.ts"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]

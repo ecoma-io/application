@@ -1,0 +1,20 @@
+{
+  "name": "@ecoma/alm-infrastructure",
+  "version": "0.0.1",
+  "private": true,
+  "type": "commonjs",
+  "main": "./index.cjs",
+  "types": "./index.d.ts",
+  "dependencies": {
+    "@nestjs/common": "^11.0.13",
+    "@nestjs/mongoose": "^11.0.3",
+    "@golevelup/nestjs-rabbitmq": "^5.7.0",
+    "@nestjs/cqrs": "^11.0.3",
+    "@ecoma/alm-application": "0.0.1",
+    "@ecoma/common-domain": "0.0.1",
+    "@nestjs/microservices": "^11.0.13",
+    "@ecoma/alm-domain": "0.0.1",
+    "mongoose": "^8.13.2",
+    "@nestjs/config": "^4.0.2"
+  }
+}

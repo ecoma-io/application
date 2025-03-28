@@ -1,9 +1,0 @@
-dsn: postgres://user:password@postgres:5432/keto?sslmode=disable
-
-namespaces:
-  - id: 0
-    name: insider_roles
-  - id: 1
-    name: tenant_roles
-  - id: 2
-    name: permissions

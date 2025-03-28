@@ -1,0 +1,13 @@
+{
+  "name": "@ecoma/bum-application",
+  "version": "0.0.1",
+  "private": true,
+  "type": "commonjs",
+  "main": "./index.cjs",
+  "types": "./index.d.ts",
+  "dependencies": {
+    "@ecoma/common-domain": "0.0.1",
+    "@nestjs/common": "^11.0.13",
+    "@ecoma/common-application": "0.0.1"
+  }
+}

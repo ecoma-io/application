@@ -15,10 +15,20 @@ done
 echo "Sanned $scan_count gitHub actions and found no errors!"
 echo ""
 
-
 echo "Running lint targets with affected projects..."
 npx nx affected --base=origin/main -t lint --fix --output-style static
 echo ""
+
+
+echo "Running build targets with affected projects..."
+npx nx affected --base=origin/main -t build --output-style static
+echo ""
+
+echo "Generating documentation..."
+npx nx affected --base=origin/main -t gen-docs --output-style static
+git add docs/libraries
+echo ""
+
 
 
 echo "Formating all change files...\n"

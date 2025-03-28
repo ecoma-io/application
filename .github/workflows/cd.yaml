@@ -28,7 +28,6 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GH_BOT_TOKEN }}
 
-
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GH_BOT_TOKEN }}

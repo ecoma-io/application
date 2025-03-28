@@ -1,0 +1,24 @@
+{
+  "name": "common-application",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/common/common-application/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "gen-docs": {
+      "executor": "@ecoma/nx-internal:typedoc"
+    },
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/common/common-application",
+        "main": "libs/common/common-application/src/index.ts",
+        "tsConfig": "libs/common/common-application/tsconfig.lib.json",
+        "assets": ["libs/common/common-application/*.md"],
+        "format": ["cjs"],
+        "sourceMap": true
+      }
+    }
+  }
+}

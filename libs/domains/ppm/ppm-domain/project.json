@@ -1,0 +1,21 @@
+{
+  "name": "ppm-domain",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/domains/ppm/ppm-domain/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/domains/ppm/ppm-domain",
+        "main": "libs/domains/ppm/ppm-domain/src/index.ts",
+        "tsConfig": "libs/domains/ppm/ppm-domain/tsconfig.lib.json",
+        "assets": ["libs/domains/ppm/ppm-domain/*.md"],
+        "format": ["cjs"],
+        "generatePackageJson": true
+      }
+    }
+  }
+}

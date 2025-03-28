@@ -1,0 +1,21 @@
+{
+  "name": "ndm-application",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/domains/ndm/ndm-application/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/domains/ndm/ndm-application",
+        "main": "libs/domains/ndm/ndm-application/src/index.ts",
+        "tsConfig": "libs/domains/ndm/ndm-application/tsconfig.lib.json",
+        "assets": ["libs/domains/ndm/ndm-application/*.md"],
+        "format": ["cjs"],
+        "generatePackageJson": true
+      }
+    }
+  }
+}

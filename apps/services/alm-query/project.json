@@ -1,0 +1,56 @@
+{
+  "name": "alm-query",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/services/alm-query/src",
+  "projectType": "application",
+  "tags": ["type:app", "scope:alm"],
+  "implicitDependencies": ["alm-domain", "alm-application", "alm-infrastructure", "nestjs-health"],
+  "targets": {
+    "compile": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "apps/services/alm-query",
+        "command": "webpack-cli build",
+        "args": ["node-env=production"]
+      },
+      "configurations": {
+        "development": {
+          "args": ["node-env=development"]
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "dependsOn": ["compile"],
+      "options": {
+        "buildTarget": "alm-query:compile",
+        "runBuildTargetDependencies": false
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "alm-query:compile:development"
+        },
+        "production": {
+          "buildTarget": "alm-query:compile:production"
+        }
+      }
+    },
+    "build": {
+      "dependsOn": ["compile"],
+      "executor": "@nx-tools/nx-container:build",
+      "options": {
+        "load": true,
+        "quiet": true,
+        "target": "debug",
+        "tags": ["ghcr.io/ecoma-io/alm-query:latest"]
+      }
+    },
+    "publish": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "INPUT_TARGET=distroless INPUT_TAGS=ghcr.io/ecoma-io/alm-query:$VERSION npx nx build alm-query --push"
+      }
+    }
+  }
+}

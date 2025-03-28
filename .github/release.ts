@@ -19,5 +19,5 @@ export default {
       preset: "angular",
       infile: "CHANGELOG.md",
     },
-  }
+  },
 } satisfies Config;

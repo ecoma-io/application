@@ -1,0 +1,16 @@
+{
+  "name": "@ecoma/nestjs-health",
+  "version": "0.0.1",
+  "private": true,
+  "type": "commonjs",
+  "main": "./index.cjs",
+  "types": "./index.d.ts",
+  "dependencies": {
+    "@nestjs/terminus": "^11.0.0",
+    "@nestjs/common": "^11.0.0",
+    "@nestjs/config": "^4.0.0",
+    "@nestjs/microservices": "^11.0.0",
+    "@ecoma/nestjs-logging": "^0.0.1",
+    "tslib": "^2.6.2"
+  }
+}

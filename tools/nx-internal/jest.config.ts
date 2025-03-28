@@ -21,5 +21,5 @@ export default {
     "^.+\\.[tj]s$": ["@swc/jest", swcJestConfig],
   },
   moduleFileExtensions: ["ts", "js", "html"],
-  coverageDirectory: "../../.coverage/tools/nx-internal",
+  coverageDirectory: "../../coverage/tools/nx-internal",
 };

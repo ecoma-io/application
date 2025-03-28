@@ -1,0 +1,21 @@
+{
+  "name": "rdm-application",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/domains/rdm/rdm-application/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/domains/rdm/rdm-application",
+        "main": "libs/domains/rdm/rdm-application/src/index.ts",
+        "tsConfig": "libs/domains/rdm/rdm-application/tsconfig.lib.json",
+        "assets": ["libs/domains/rdm/rdm-application/*.md"],
+        "format": ["cjs"],
+        "generatePackageJson": true
+      }
+    }
+  }
+}

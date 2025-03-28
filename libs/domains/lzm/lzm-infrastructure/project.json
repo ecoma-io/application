@@ -1,0 +1,21 @@
+{
+  "name": "lzm-infrastructure",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/domains/lzm/lzm-infrastructure/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/domains/lzm/lzm-infrastructure",
+        "main": "libs/domains/lzm/lzm-infrastructure/src/index.ts",
+        "tsConfig": "libs/domains/lzm/lzm-infrastructure/tsconfig.lib.json",
+        "assets": ["libs/domains/lzm/lzm-infrastructure/*.md"],
+        "format": ["cjs"],
+        "generatePackageJson": true
+      }
+    }
+  }
+}

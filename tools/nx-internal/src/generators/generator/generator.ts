@@ -8,7 +8,7 @@ import {
 import { existsSync } from "fs";
 import * as path from "path";
 
-import { GeneratorGeneratorSchema } from "./schema";
+import { IGeneratorGeneratorSchema } from "./schema";
 
 function isValidName(name: string): boolean {
   const nameRegex = /^[a-z]+$/;
@@ -19,7 +19,7 @@ function generatorExists(generatorRoot: string): boolean {
   return existsSync(generatorRoot);
 }
 
-function addGeneratorToJson(tree: Tree, options: GeneratorGeneratorSchema) {
+function addGeneratorToJson(tree: Tree, options: IGeneratorGeneratorSchema) {
   updateJson(
     tree,
     path.join(__dirname, "../../../generators.json").replace(tree.root, ""),
@@ -36,7 +36,7 @@ function addGeneratorToJson(tree: Tree, options: GeneratorGeneratorSchema) {
 
 export async function generatorGenerator(
   tree: Tree,
-  options: GeneratorGeneratorSchema
+  options: IGeneratorGeneratorSchema
 ) {
   const generatorRoot = path.join(__dirname, "..", options.name);
 

@@ -1,0 +1,10 @@
+{
+  "name": "alm-ingestion-e2e",
+  "version": "1.0.0",
+  "dependencies": {
+    "amqplib": "^0.10.3",
+    "axios": "^1.6.0",
+    "mongoose": "^7.5.0",
+    "testcontainers": "^10.2.0"
+  }
+}

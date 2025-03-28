@@ -20,6 +20,9 @@
       "dependsOn": ["^build"],
       "inputs": ["production", "^production"]
     },
+    "@angular-devkit/build-angular:server": {
+      "cache": true
+    },
     "@nx/eslint:lint": {
       "cache": true,
       "inputs": [
@@ -34,19 +37,16 @@
       "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"],
       "options": {
         "passWithNoTests": true
-      },
-      "configurations": {
-        "ci": {
-          "ci": true,
-          "codeCoverage": true
-        }
       }
     },
-    "e2e-ci--**/*": {
-      "dependsOn": ["^build"]
+    "@nx/esbuild:esbuild": {
+      "cache": true,
+      "dependsOn": ["^build"],
+      "inputs": ["production", "^production"]
     },
-    "server": {
-      "cache": true
+    "e2e": {
+      "cache": true,
+      "dependsOn": ["^build"]
     }
   },
   "plugins": [
@@ -60,6 +60,30 @@
       "plugin": "@nx/eslint/plugin",
       "options": {
         "targetName": "lint"
+      }
+    },
+    {
+      "plugin": "@nx/jest/plugin",
+      "exclude": ["tests/**/*"],
+      "options": {
+        "targetName": "test"
+      }
+    },
+    {
+      "plugin": "@nx/jest/plugin",
+      "include": ["tests/**/*"],
+      "options": {
+        "targetName": "automate-test"
+      }
+    },
+    {
+      "plugin": "@nx/webpack/plugin",
+      "options": {
+        "buildTargetName": "build",
+        "serveTargetName": "serve",
+        "previewTargetName": "preview",
+        "buildDepsTargetName": "build-deps",
+        "watchDepsTargetName": "watch-deps"
       }
     }
   ],
@@ -80,7 +104,7 @@
       "prefix": ""
     },
     "@nx/angular:component": {
-      "style": "css"
+      "style": "scss"
     }
   }
 }

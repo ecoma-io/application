@@ -1,0 +1,57 @@
+{
+  "name": "alm-ingestion",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/services/alm-ingestion/src",
+  "projectType": "application",
+  "tags": ["type:app", "scope:alm"],
+  "implicitDependencies": ["alm-domain", "alm-application", "alm-infrastructure", "nestjs-health"],
+  "targets": {
+    "compile": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "apps/services/alm-ingestion",
+        "command": "webpack-cli build",
+        "args": ["node-env=production"]
+      },
+      "configurations": {
+        "development": {
+          "args": ["node-env=development"]
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "dependsOn": ["compile"],
+      "options": {
+        "inspect": false,
+        "buildTarget": "alm-ingestion:compile",
+        "runBuildTargetDependencies": false
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "alm-ingestion:compile:development"
+        },
+        "production": {
+          "buildTarget": "alm-ingestion:compile:production"
+        }
+      }
+    },
+    "build": {
+      "dependsOn": ["compile"],
+      "executor": "@nx-tools/nx-container:build",
+      "options": {
+        "load": true,
+        "quiet": true,
+        "target": "debug",
+        "tags": ["ghcr.io/ecoma-io/alm-ingestion:latest"]
+      }
+    },
+    "publish": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "INPUT_TARGET=distroless INPUT_TAGS=ghcr.io/ecoma-io/alm-ingestion:$VERSION npx nx build alm-ingestion --push"
+      }
+    }
+  }
+}

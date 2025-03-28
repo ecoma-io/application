@@ -9,6 +9,8 @@
     "jest.config.ts",
     "src/**/*.test.ts",
     "src/**/*.spec.ts",
-    "src/**/*.d.ts"
+    "src/**/*.d.ts",
+    "src/generators/microservice/files/src/app/app.spec.ts.template",
+    "src/generators/worker/files/test/src/specs/main.spec.ts.template"
   ]
 }
