@@ -22,13 +22,9 @@ export class Cookies {
    * @returns property RegExp
    */
   static getCookieRegExp(name: string): RegExp {
-    // eslint-disable-next-line no-useless-escape
-    const escapedName: string = name.replace(
-      /([\[\]\{\}\(\)\|\=\;\+\?\,\.\*\^\$])/gi,
-      "\\$1"
-    );
+    const escapedName: string = name.replace(/([.*+?^${}()|[\]\\])/g, "\\$1");
     return new RegExp(
-      "(?:^" + escapedName + "|;\\s*" + escapedName + ")=(.*?)(?:;|$)",
+      `(?:^${escapedName}|;\\s*${escapedName})=(.*?)(?:;|$)`,
       "g"
     );
   }
