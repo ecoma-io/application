@@ -17,6 +17,7 @@
     "paths": {
       "@ecoma/common-types": ["libs/common/common-types/src/index.ts"],
       "@ecoma/nge-cookie": ["libs/angular/nge-cookie/src/index.ts"],
+      "@ecoma/nge-logging": ["libs/angular/nge-logging/src/index.ts"],
       "@ecoma/nx-internal": ["tools/nx-internal/src/index.ts"]
     }
   },
