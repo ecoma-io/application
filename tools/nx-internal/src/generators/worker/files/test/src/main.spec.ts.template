@@ -1,0 +1,113 @@
+import {
+  RabbitMQContainer,
+  StartedRabbitMQContainer,  
+  <%=className%>Container,
+  Started<%=className%>Container,
+} from "@ecoma/testing-containers";
+import { TestLogger } from "@ecoma/testing-utils";
+import * as amqp from "amqplib";
+
+describe("<%= humanReadableName %> E2E", () => {
+  let rabbitMQContainer: StartedRabbitMQContainer;
+  let <%=className.charAt(0).toLowerCase()+className.slice(1)%>Container: Started<%=className%>Container;
+  let connection: amqp.ChannelModel;
+  let channel: amqp.Channel;
+
+  beforeAll(async () => {
+    TestLogger.divider("SETUP");
+
+    try {
+      TestLogger.log("Starting RabbitMQ containers...");
+      rabbitMQContainer = await new RabbitMQContainer().start();
+      TestLogger.log("RabbitMQ containers started.");
+    } catch (err) {
+      TestLogger.error("Failed during RabbitMQ setup", err);
+      throw err;
+    }
+
+    try {
+      TestLogger.log("Starting <%= humanReadableName %> container...");
+      <%=className.charAt(0).toLowerCase()+className.slice(1)%>Container = await new <%=className%>Container()
+        .withRabbitMQUri(rabbitMQContainer.getAmqpUrl())
+        .start();
+      TestLogger.log("<%= humanReadableName %> container started.");
+    } catch (err) {
+      TestLogger.error("Failed to start <%= humanReadableName %> container", err);
+      throw err;
+    }
+
+    try {
+      TestLogger.log("Connecting Broker...");
+      connection = await amqp.connect(rabbitMQContainer.getAmqpUrl());
+      channel = await connection.createChannel();
+      TestLogger.log("Broker connected.");
+    } catch (err) {
+      TestLogger.error("Failed to connect broker", err);
+      throw err;
+    }
+  }, 120_000);
+
+  afterAll(async () => {
+    TestLogger.divider("TEARDOWN");
+    TestLogger.log("Cleaning up...");
+    try {
+      if (channel) {
+        TestLogger.log("Closing channel...");
+        await channel.close();
+      }
+
+      if (connection) {
+        TestLogger.log("Closing connection...");
+        await connection.close();
+      }
+
+      if (<%=className.charAt(0).toLowerCase()+className.slice(1)%>Container) {
+        TestLogger.log("Stopping <%=className%>Container...");
+        await <%=className.charAt(0).toLowerCase()+className.slice(1)%>Container.stop();
+      }
+
+      if (rabbitMQContainer) {
+        TestLogger.log("Stopping rabbitMQContainer...");
+        await rabbitMQContainer.stop();
+      }
+    } catch (err) {
+      TestLogger.error("Error during teardown", err);
+    }
+    TestLogger.log("Cleanup completed.");
+  });
+
+  it("should received payload data", async () => {
+    TestLogger.divider("CASE: should received payload data");
+    const expectedLog = "Received greeting event";
+    const payload = { name: "John Rabbit" };
+    const published = channel.publish('', "email-notification-queue", Buffer.from(JSON.stringify(payload)));
+    expect(published).toBe(true);
+
+
+    await new Promise(r => setTimeout(r, 2000));
+    const logStream = await <%=className.charAt(0).toLowerCase()+className.slice(1)%>Container.logs();
+
+    await new Promise<void>((resolve, reject) => {
+      const timeout = setTimeout(() => reject(new Error("Log not found in time")), 15_000);
+      logStream.on("data", (line) => {
+        const logLine = line.toString();
+        TestLogger.log("Container log: " + logLine);
+        const logObj = JSON.parse(logLine);
+        if (logObj.msg == expectedLog) {
+          expect(logObj.payload).toStrictEqual(payload);
+          TestLogger.log("Passed!!!");
+          clearTimeout(timeout);
+          logStream.destroy();
+          resolve();
+        }
+      });
+
+      logStream.on("error", (err) => {
+        clearTimeout(timeout);
+        reject(err);
+      });
+    });
+  });
+
+
+});

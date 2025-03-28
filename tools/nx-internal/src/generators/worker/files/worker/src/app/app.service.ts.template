@@ -1,0 +1,15 @@
+import { NestjsLogger } from "@ecoma/nestjs-logging";
+import { RabbitSubscribe } from "@golevelup/nestjs-rabbitmq";
+import { Injectable } from "@nestjs/common";
+
+@Injectable()
+export class AppService {
+  private readonly logger = new NestjsLogger(AppService.name);
+
+  @RabbitSubscribe({
+    queue: '<%=name.replace('worker','queue')%>',
+  })
+  greeting(payload: { name: string }) {
+    this.logger.log({ msg: 'Received greeting event', payload });
+  }
+}

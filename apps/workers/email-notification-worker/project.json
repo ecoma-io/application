@@ -1,0 +1,65 @@
+{
+  "name": "email-notification-worker",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/workers/email-notification-worker/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "compile": {
+      "executor": "nx:run-commands",
+      "defaultConfiguration": "production",
+      "options": {
+        "cwd": "apps/workers/email-notification-worker"
+      },
+      "configurations": {
+        "production": {
+          "command": "webpack-cli build --mode production"
+        },
+        "development": {
+          "command": "webpack-cli build --mode development"
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "dependsOn": ["compile"],
+      "options": {
+        "buildTarget": "email-notification-worker:compile",
+        "runBuildTargetDependencies": false,
+        "inspect": false
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "email-notification-worker:compile:development"
+        },
+        "production": {
+          "buildTarget": "email-notification-worker:compile:production"
+        }
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "options": {
+        "jestConfig": "apps/workers/email-notification-worker/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "build": {
+      "dependsOn": ["compile"],
+      "executor": "@nx-tools/nx-container:build",
+      "options": {
+        "load": true,
+        "quiet": true,
+        "target": "distroless-wget",
+        "tags": ["ghcr.io/ecoma-io/email-notification-worker:latest"]
+      }
+    },
+    "publish": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "INPUT_TAGS=ghcr.io/ecoma-io/email-notification-worker:$VERSION INPUT_TARGET=distroless npx nx build email-notification-worker --push"
+      }
+    }
+  }
+}

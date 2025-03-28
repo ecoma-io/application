@@ -9,6 +9,44 @@
 
 Choose the project and branch and wait for devcontainer setup development enviroment
 
+## Installing Self-Signed SSL Certificate
+
+## Step 1: Get the Certificate
+
+copy the file from `.docker/nginx/certs/wildcard.crt`.
+
+## Step 2: Install the Certificate
+
+### Windows
+
+1. Double-click the `wildcard.crt` file.
+2. Click **Install Certificate**.
+3. Select **Local Machine** and click **Next**.
+4. Choose **Place all certificates in the following store**, then click **Browse**.
+5. Select **Trusted Root Certification Authorities** and click **OK**.
+6. Click **Next**, then **Finish**.
+7. Restart your browser.
+
+### macOS
+
+1. Open **Keychain Access**.
+2. Drag and drop `wildcard.crt` into **System** keychain.
+3. Double-click the certificate, expand **Trust**, and set **When using this certificate** to **Always Trust**.
+4. Close the window and enter your password if prompted.
+5. Restart your browser.
+
+### Linux (Ubuntu/Debian)
+
+1. Move the certificate to the system certificates folder:
+   ```sh
+   sudo cp wildcard.crt /usr/local/share/ca-certificates/wildcard.crt
+   ```
+2. Update the certificate store:
+   ```sh
+   sudo update-ca-certificates
+   ```
+3. Restart your browser.
+
 ## Run all project
 
 ```

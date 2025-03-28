@@ -17,6 +17,10 @@ echo "🛠️  Starting postCreateCommand debug..." | tee -a "$LOG_FILE"
     yarn install
     echo "✅ yarn install done."
 
+    echo "📌 Running playwright install..."
+    npx playwright install --with-deps
+    echo "✅ yarn install done."
+
     echo "📌 Running nx run-many -t build..."
     nx run-many -t build
     echo "✅ nx build done."

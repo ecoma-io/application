@@ -1,0 +1,17 @@
+import { Controller } from '@nestjs/common';
+import { MessagePattern } from '@nestjs/microservices';
+import { FilterQuery } from 'mongoose';
+import { NestjsLogger } from '@ecoma/nestjs-logging';
+
+@Controller()
+export class <%= className %>Controller {
+
+  private readonly logger = new NestjsLogger(<%= className %>Controller.name);
+
+  @MessagePattern('<%= name %>.hello')
+  getTranslations(payload: {name: string}) {
+    return `Hello ${payload.name}!`;
+  }
+
+
+}

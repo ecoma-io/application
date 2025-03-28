@@ -1,0 +1,19 @@
+import { Module } from "@nestjs/common";
+import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
+import { TerminusModule } from "@nestjs/terminus";
+import { AppController } from "./app.controller";
+import { AppService } from "./app.service";
+
+
+@Module({
+  imports: [
+    TerminusModule,
+    RabbitMQModule.forRoot({
+      uri: process.env.RABBITMQ_SERVERS.split(','),
+      connectionInitOptions: { wait: true }
+    }),
+  ],
+  controllers: [AppController],
+  providers: [AppService],
+})
+export class AppModule { }

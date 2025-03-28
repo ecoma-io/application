@@ -1,0 +1,84 @@
+<div
+  class="flex w-screen justify-center h-screen bg-base-100 md:pt-8 md:bg-base-200 md:p-8"
+>
+  <div
+    class="px-6 py-12 w-full md:bg-base-100 md:rounded-2xl md:my-auto md:max-w-screen-lg"
+  >
+    <div class="md:flex md:gap-8">
+      <div class="md:w-1/2">
+        <img class="w-auto h-4" src="/images/logo.svg" alt="Ecoma logo" />
+        <h1
+          class="mt-4 text-3xl font-medium text-gray-800 capitalize lg:text-4xl dark:text-white"
+        >
+          Sign In
+        </h1>
+        <p class="text-sm mt-4">
+          Don't have an account?
+          <a class="link" [routerLink]="['/sign-up']">Sign Up</a>
+        </p>
+      </div>
+      <div class="md:w-1/2">
+        <form class="flex flex-col w-full" [formGroup]="signInForm">
+          <label class="form-control w-full mt-4">
+            <div class="relative">
+              <input
+                formControlName="email"
+                type="email"
+                autocomplete="email"
+                class="input input-bordered w-full pl-10"
+                placeholder="Enter your email"
+              />
+              <nge-icon
+                class="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 opacity-70"
+                path="duotone/envelope.svg"
+              />
+            </div>
+            <nge-form-control-error [control]="signInForm.get('email')" />
+          </label>
+          <label class="form-control w-full mt-4">
+            <div class="relative">
+              <input
+                formControlName="password"
+                type="password"
+                autocomplete="password"
+                class="input input-bordered w-full pl-10"
+                placeholder="Enter your password"
+              />
+              <nge-icon
+                class="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 opacity-70"
+                path="duotone/key.svg"
+              />
+            </div>
+            <nge-form-control-error [control]="signInForm.get('password')" />
+          </label>
+          <button
+            class="btn btn-primary mt-4"
+            [disabled]="isSubmitting"
+            (click)="submitSignInByEmailForm()"
+          >
+            Sign In
+          </button>
+        </form>
+        <div class="divider my-8">OR</div>
+        <div class="flex flex-col lg:flex-row gap-3">
+          <button class="btn btn-outline flex-1">
+            <img
+              class="w-4 h-4"
+              src="images/google-logo.svg"
+              alt="google logo"
+            />
+            Sign In with Google
+          </button>
+          <button class="btn btn-outline flex-1">
+            <img
+              class="w-4 h-4"
+              src="images/github-logo.svg"
+              alt="github logo"
+            />
+            Sign In with Github
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,10 @@
+import { Module } from '@nestjs/common';
+import { MongooseModule } from '@nestjs/mongoose';
+import { <%= className %>Controller } from './<%= name %>.controller';
+
+@Module({
+  imports: [],
+  controllers: [<%= className %>Controller],
+  providers: [],
+})
+export class <%= className %>Module {}

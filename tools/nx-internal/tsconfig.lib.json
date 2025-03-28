@@ -4,6 +4,21 @@
     "outDir": "../../dist/out-tsc",
     "types": ["node"]
   },
-  "include": ["src/**/*.ts"],
+  "include": [
+    "src/**/*.ts",
+    "src/generators/microservice/files/jest.config.ts.template",
+    "src/generators/microservice/files/src/main.ts.template",
+    "src/generators/microservice/files/src/app/app.spec.ts.template",
+    "src/generators/microservice/files/src/app/app.module.ts.template",
+    "src/generators/microservice/files/src/app/health/health.module.ts.template",
+    "src/generators/microservice/files/src/app/__name__/__name__.controller.ts.template",
+    "src/generators/microservice/files/src/app/__name__/__name_.module.ts.template",
+    "src/generators/worker/files/test/jest.config.ts.template",
+    "src/generators/worker/files/test/src/support/global-setup.ts.template",
+    "src/generators/worker/files/test/src/support/global-teardown.ts.template",
+    "src/generators/worker/files/test/src/support/test-setup.ts.template",
+    "src/generators/worker/files/test/src/specs/main.spec.ts.template",
+    "src/generators/worker/files/testcontainer/__name__-container.ts.template"
+, "src/generators/worker/files/worker/src/app/app.controller.ts.template", "src/generators/worker/files/worker/src/app/app.module.ts.template", "src/generators/worker/files/worker/src/app/app.service.ts.template"  ],
   "exclude": ["jest.config.ts", "src/**/*.spec.ts", "src/**/*.test.ts"]
 }

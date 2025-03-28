@@ -1,0 +1,17 @@
+{
+  "name": "<%=name%>-e2e",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "implicitDependencies": ["<%=name%>"],
+  "targets": {
+    "e2e": {
+      "dependsOn": ["translation-service:build"],
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{e2eProjectRoot}"],
+      "options": {
+        "jestConfig": "e2e/workers/<%=name%>-e2e/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  }
+}

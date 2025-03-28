@@ -1,0 +1,44 @@
+<div
+  class="flex w-screen justify-center h-screen bg-base-100 md:pt-8 md:bg-base-200 md:p-8"
+>
+  <div
+    class="px-6 py-12 w-full md:bg-base-100 md:rounded-2xl md:my-auto md:max-w-screen-lg"
+  >
+    <div class="md:flex md:gap-8">
+      <div class="md:w-2/5">
+        <img class="w-auto h-4" src="/images/logo.svg" alt="Ecoma logo" />
+        <h1
+          class="mt-4 text-3xl font-medium text-gray-800 capitalize lg:text-4xl dark:text-white"
+        >
+          Verify Account
+        </h1>
+      </div>
+      <div class="md:w-3/5">
+        <p class="w-full text-sm text-center mb-6">
+          Enter the 6-digit code sent to your email
+        </p>
+        <form class="flex flex-col w-full" [formGroup]="codeForm">
+          <label class="form-control w-full mt-4">
+            <div class="relative">
+              <input
+                formControlName="code"
+                type="number"
+                class="input input-bordered w-full pl-10"
+                placeholder="OTP Code"
+              />
+              <nge-icon
+                class="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 opacity-70"
+                path="duotone/unlock-keyhole.svg"
+              />
+            </div>
+            <nge-form-control-error [control]="codeForm.get('code')" />
+          </label>
+          <button class="btn btn-primary mt-4">Verify Me</button>
+        </form>
+        <div class="w-full text-sm text-center mb-6">
+          Didn't receive code? <a class="link">Resend OTP</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

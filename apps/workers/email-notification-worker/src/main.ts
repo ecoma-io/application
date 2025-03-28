@@ -1,0 +1,25 @@
+import { NestjsLogger } from "@ecoma/nestjs-logging";
+import { NestFactory } from "@nestjs/core";
+import { RmqOptions, Transport } from "@nestjs/microservices";
+import { AppModule } from "./app/app.module";
+
+async function bootstrap() {
+  const logger = new NestjsLogger();
+  const app = await NestFactory.create(AppModule, { logger });
+
+  app.connectMicroservice<RmqOptions>({
+    transport: Transport.RMQ,
+    options: {
+      urls: process.env.RABBITMQ_SERVERS.split(","),
+      queue: "email-notification-worker",
+      queueOptions: { durable: true },
+    },
+  });
+
+  await app.startAllMicroservices();
+  const port = process.env.PORT || 3000;
+  await app.listen(port, "0.0.0.0");
+  logger.log(`Http listening on ${port}`, "Bootstrap");
+}
+
+bootstrap();

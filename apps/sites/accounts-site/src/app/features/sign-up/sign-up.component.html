@@ -1,0 +1,127 @@
+<div
+  class="flex w-screen justify-center h-screen bg-base-100 md:pt-8 md:bg-base-200 md:p-8"
+>
+  <div
+    class="px-6 py-12 w-full md:bg-base-100 md:rounded-2xl md:my-auto md:max-w-screen-lg"
+  >
+    <div class="md:flex md:gap-8">
+      <div class="md:w-2/5">
+        <img class="w-auto h-4" src="/images/logo.svg" alt="Ecoma logo" />
+        <h1
+          class="mt-4 text-3xl font-medium text-gray-800 capitalize lg:text-4xl dark:text-white"
+        >
+          Create your account
+        </h1>
+        <p class="text-sm mt-4">
+          Already have account?
+          <a class="link" [routerLink]="['/sign-in']">Sign In</a>
+        </p>
+      </div>
+      <div class="md:w-3/5">
+        <form class="flex flex-col w-full" [formGroup]="signUpForm">
+          <div class="flex space-x-2">
+            <label class="form-control w-full mt-4">
+              <div class="relative">
+                <input
+                  formControlName="first_name"
+                  type="text"
+                  autocomplete="given-name"
+                  class="input input-bordered w-full pl-10"
+                  placeholder="First name"
+                />
+                <nge-icon
+                  class="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 opacity-70"
+                  path="duotone/user-tie.svg"
+                />
+              </div>
+              <nge-form-control-error
+                [control]="signUpForm.get('first_name')"
+              />
+            </label>
+            <label class="form-control w-full mt-4">
+              <div class="relative">
+                <input
+                  formControlName="last_name"
+                  type="text"
+                  autocomplete="family-name"
+                  class="input input-bordered w-full pl-10"
+                  placeholder="Last name"
+                />
+                <nge-icon
+                  class="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 opacity-70"
+                  path="duotone/signature.svg"
+                />
+              </div>
+              <nge-form-control-error [control]="signUpForm.get('last_name')" />
+            </label>
+          </div>
+          <label class="form-control w-full mt-4">
+            <div class="relative">
+              <input
+                formControlName="email"
+                type="email"
+                autocomplete="email"
+                class="input input-bordered w-full pl-10"
+                placeholder="Email"
+              />
+              <nge-icon
+                class="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 opacity-70"
+                path="duotone/envelope.svg"
+              />
+            </div>
+            <nge-form-control-error [control]="signUpForm.get('email')" />
+          </label>
+          <label class="form-control w-full mt-4">
+            <div class="relative">
+              <input
+                formControlName="password"
+                type="password"
+                autocomplete="new-password"
+                class="input input-bordered w-full pl-10"
+                placeholder="Password"
+              />
+              <nge-icon
+                class="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 opacity-70"
+                path="duotone/key.svg"
+              />
+            </div>
+            <nge-form-control-error [control]="signUpForm.get('password')" />
+          </label>
+          <button
+            class="btn btn-primary mt-4"
+            (click)="submitSignUpByEmailForm()"
+            [disabled]="isSubmitting"
+          >
+            Sign Up
+          </button>
+        </form>
+
+        <div class="divider my-8">OR</div>
+        <div class="flex flex-col lg:flex-row gap-3">
+          <button class="btn btn-outline flex-1">
+            <img
+              class="w-4 h-4"
+              src="images/google-logo.svg"
+              alt="google logo"
+            />
+            Sign Up with Google
+          </button>
+          <button class="btn btn-outline flex-1">
+            <img
+              class="w-4 h-4"
+              src="images/github-logo.svg"
+              alt="github logo"
+            />
+            Sign Up with Github
+          </button>
+        </div>
+
+        <p class="w-full text-center text-xs mt-8">
+          By signing up you agree to the
+          <a class="link">Terms of Service</a> and
+          <a class="link">Privacy Policy</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

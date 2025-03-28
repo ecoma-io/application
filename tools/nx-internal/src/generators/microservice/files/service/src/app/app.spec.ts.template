@@ -1,0 +1,66 @@
+import { Test, TestingModule } from '@nestjs/testing';
+import { INestApplication, INestMicroservice } from "@nestjs/common";
+import { Transport, ClientProxyFactory, ClientProxy, ClientOptions } from '@nestjs/microservices';
+import { MongoMemoryServer } from 'mongodb-memory-server';
+import mongoose, { Model } from 'mongoose';
+import { AppModule } from './app.module';
+import { getModelToken, MongooseModule } from '@nestjs/mongoose';
+import { firstValueFrom } from 'rxjs';
+import request from "supertest";
+
+describe('<%= className %> Microservice Intergration', () => {
+
+  let app: INestApplication;
+  let microservice: INestMicroservice;
+  let client: ClientProxy;
+
+  beforeAll(async () => {
+    const moduleFixture: TestingModule = await Test.createTestingModule({
+      imports: [AppModule],
+    }).compile();
+
+    app = moduleFixture.createNestApplication();
+
+
+    microservice = moduleFixture.createNestMicroservice({
+      transport: Transport.NATS,
+      options: {
+        servers: ["nats://localhost:4222"],
+      },
+    });
+
+    await app.init();
+    await microservice.listen();
+
+    const clientOptions: ClientOptions = {
+      transport: Transport.NATS,
+      options: {
+        servers: ["nats://localhost:4222"],
+      },
+    };
+
+    client = ClientProxyFactory.create(clientOptions);
+    await client.connect();
+  });
+
+  afterAll(async () => {
+    await client.close();
+    await microservice.close();
+    await app.close();
+  });
+
+  it('/health (GET) should return status ok', async () => {
+    const response = await request(app.getHttpServer()).get('/health');
+
+    expect(response.status).toBe(200);
+    expect(response.body.status).toBe('ok');
+    // Optionally check more fields like response.body.details.mongodb, etc.
+  });
+
+  it('should return hello response', async () => {
+    const request = client.send<string>('<%= name %>.hello', { name: 'John' });
+    const response = await firstValueFrom(request);
+    expect(response).toBe('Hello John!');
+  });
+
+});

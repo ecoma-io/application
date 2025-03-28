@@ -44,4 +44,4 @@ jobs:
         run: docker compose up -d --wait || true
 
       - name: E2E test
-        run: npx nx e2e e2e-test
+        run: npx nx run-many -t e2e
