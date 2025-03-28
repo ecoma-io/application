@@ -7,6 +7,7 @@
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "esModuleInterop": true,
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
@@ -15,7 +16,35 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@ecoma/nx-internal": ["tools/nx-internal/src/index.ts"]
+      "@ecoma/base-constract": ["libs/constracts/base-constract/src/index.ts"],
+      "@ecoma/common-types": ["libs/common/common-types/src/index.ts"],
+      "@ecoma/common-utils": ["libs/common/common-utils/src/index.ts"],
+      "@ecoma/feature-access-constract": [
+        "libs/constracts/feature-access-constract/src/index.ts"
+      ],
+      "@ecoma/nestjs-logging": ["libs/nestjs/nestjs-logging/src/index.ts"],
+      "@ecoma/nestjs-mailer": ["libs/nestjs/nestjs-mailer/src/index.ts"],
+      "@ecoma/nestjs-observability": [
+        "libs/nestjs/nestjs-observability/src/index.ts"
+      ],
+      "@ecoma/nge-cookie": ["libs/angular/nge-cookie/src/index.ts"],
+      "@ecoma/nge-logging": ["libs/angular/nge-logging/src/index.ts"],
+      "@ecoma/nge-logging/testing": [
+        "libs/angular/nge-logging/src/testing/index.ts"
+      ],
+      "@ecoma/nge-ui": ["libs/angular/nge-ui/src/index.ts"],
+      "@ecoma/nge-ui/testing": ["libs/angular/nge-ui/src/testing/index.ts"],
+      "@ecoma/notification-constract": [
+        "libs/constracts/notification-constract/src/index.ts"
+      ],
+      "@ecoma/nx-internal": ["tools/nx-internal/src/index.ts"],
+      "@ecoma/supported-languages": [
+        "libs/common/supported-languages/src/index.ts"
+      ],
+      "@ecoma/testing-containers": [
+        "libs/common/testing-containers/src/index.ts"
+      ],
+      "@ecoma/testing-utils": ["libs/common/testing-utils/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

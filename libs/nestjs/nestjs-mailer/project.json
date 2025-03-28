@@ -1,0 +1,28 @@
+{
+  "name": "nestjs-mailer",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/nestjs/nestjs-mailer/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/nestjs/nestjs-mailer",
+        "main": "libs/nestjs/nestjs-mailer/src/index.ts",
+        "tsConfig": "libs/nestjs/nestjs-mailer/tsconfig.lib.json",
+        "assets": ["libs/nestjs/nestjs-mailer/*.md"],
+        "format": ["cjs"],
+        "generatePackageJson": true
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/nestjs/nestjs-mailer/jest.config.ts"
+      }
+    }
+  }
+}

@@ -28,13 +28,9 @@ module.exports = {
     ...projectScopes,
     "": "empty/none scope useful for `test`, `refactor` or `docs` changes that are done across all packages (e.g. `test: add missing unit tests`) and for docs changes that are not related to a specific package (e.g. `docs: fix typo in tutorial`)",
   },
-  CODE_COVERAGE: {
-    branches: 50,
-    functions: 50,
-    statements: 50,
-  },
 };
 
 if (require.main === module) {
+  // eslint-disable-next-line no-console
   console.log(module.exports);
 }

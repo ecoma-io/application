@@ -1,0 +1,13 @@
+{
+  "name": "@ecoma/nestjs-mailer",
+  "version": "0.0.1",
+  "private": true,
+  "type": "commonjs",
+  "main": "./index.cjs",
+  "types": "./index.d.ts",
+  "dependencies": {
+    "@nestjs/common": "^11.0.13",
+    "nodemailer": "^6.10.0",
+    "@ecoma/nestjs-logging": "0.0.1"
+  }
+}

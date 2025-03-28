@@ -9,6 +9,11 @@
       "factory": "./src/generators/generator/generator",
       "schema": "./src/generators/generator/schema.json",
       "description": "generator generator"
+    },
+    "microservice": {
+      "factory": "./src/generators/microservice/generator",
+      "schema": "./src/generators/microservice/schema.json",
+      "description": "microservice generator"
     }
   }
 }

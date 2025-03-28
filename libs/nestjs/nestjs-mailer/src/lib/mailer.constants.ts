@@ -1,0 +1,1 @@
+export const MAILER_CONFIG = "MAILER_CONFIG";

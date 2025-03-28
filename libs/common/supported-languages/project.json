@@ -1,0 +1,28 @@
+{
+  "name": "supported-languages",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/common/supported-languages/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/common/supported-languages",
+        "main": "libs/common/supported-languages/src/index.ts",
+        "tsConfig": "libs/common/supported-languages/tsconfig.lib.json",
+        "assets": ["libs/common/supported-languages/*.md"],
+        "format": ["cjs"],
+        "generatePackageJson": true
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/common/supported-languages/jest.config.ts"
+      }
+    }
+  }
+}

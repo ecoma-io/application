@@ -1,0 +1,31 @@
+services:
+  notification-service:
+    container_name: notification-service
+    image: node:18-alpine
+    volumes:
+      - ./apps:/app/apps:ro
+      - ./libs:/app/libs:ro
+      - ./node_modules:/app/node_modules:ro
+      - ./nx.json:/app/nx.json:ro
+      - ./package.json:/app/package.json:ro
+      - ./yarn.lock:/app/yarn.lock:ro
+      - ./tsconfig.base.json:/app/tsconfig.base.json:ro
+      - ./tailwind.base.js:/app/tailwind.base.js:ro
+      - ./eslint.config.mjs:/app/eslint.config.mjs:ro
+    working_dir: /app
+    command: npx nx serve notification-service
+    environment:
+      - NX_DAEMON=false
+      - RABBITMQ_SERVERS=amqp://rabbitmq
+      - NATS_SERVERS=nats://nats
+      - SMTP_SERVER=smtp://maildev:1025?secure=false
+    networks:
+      ecomma:
+        ipv4_address: 10.10.20.1
+    healthcheck:
+      test:
+        ["CMD", "wget", "--spider", "--quiet", "http://127.0.0.1:3000/health"]
+      interval: 5s
+      timeout: 8s
+      retries: 10
+      start_period: 30s

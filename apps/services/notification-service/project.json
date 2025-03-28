@@ -1,0 +1,56 @@
+{
+  "name": "notification-service",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/services/notification-service/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "compile": {
+      "executor": "nx:run-commands",
+      "defaultConfiguration": "production",
+      "options": {
+        "cwd": "apps/services/notification-service"
+      },
+      "configurations": {
+        "production": {
+          "command": "webpack-cli build --mode production"
+        },
+        "development": {
+          "command": "webpack-cli build --mode development"
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "dependsOn": ["compile"],
+      "options": {
+        "buildTarget": "notification-service:compile:development",
+        "runBuildTargetDependencies": false,
+        "inspect": false
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "options": {
+        "jestConfig": "apps/services/notification-service/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "build": {
+      "dependsOn": ["compile"],
+      "executor": "@nx-tools/nx-container:build",
+      "options": {
+        "load": true,
+        "quiet": true,
+        "target": "distroless-wget",
+        "tags": ["ghcr.io/ecoma-io/notification-service:latest"]
+      }
+    },
+    "publish": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "INPUT_TAGS=ghcr.io/ecoma-io/notification-service:$VERSION INPUT_TARGET=distroless npx nx build notification-service --push"
+      }
+    }
+  }
+}

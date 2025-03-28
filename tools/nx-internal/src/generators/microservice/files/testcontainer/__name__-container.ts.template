@@ -1,0 +1,51 @@
+import {
+  AbstractStartedContainer,
+  StartedTestContainer,
+  GenericContainer,
+  Wait,
+} from "testcontainers";
+
+const SERVICE_PORT = 3000;
+
+export class <%=className%>Container extends GenericContainer {
+  private env: Record<string, string> = {
+    PORT: SERVICE_PORT.toString(),
+  };
+
+  constructor(image = "ghcr.io/ecoma-io/<%=name%>") {
+    super(image);
+    this.withExposedPorts(SERVICE_PORT)
+      .withWaitStrategy(
+        Wait.forHttp("/health", SERVICE_PORT, { abortOnContainerExit: true })
+          .forStatusCode(200)
+      )
+      .withStartupTimeout(120_000);
+  }
+
+  public withEnv(name:string, value: string): this {
+    this.env[name] = value;
+    return this;
+  }
+
+  public override async start(): Promise<Started<%=className%>Container> {
+    this.withEnvironment(this.env);
+    return new Started<%=className%>Container(await super.start());
+  }
+}
+
+export class Started<%=className%>Container extends AbstractStartedContainer {
+  private readonly apiPort: number;
+
+  constructor(startedTestContainer: StartedTestContainer) {
+    super(startedTestContainer);
+    this.apiPort = startedTestContainer.getMappedPort(SERVICE_PORT);
+  }
+
+  public getApiPort(): number {
+    return this.apiPort;
+  }
+
+  public getBaseUrl(): string {
+    return `http://${this.getHost()}:${this.apiPort}`;
+  }
+}

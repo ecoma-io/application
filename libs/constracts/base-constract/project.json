@@ -1,0 +1,28 @@
+{
+  "name": "base-constract",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/constracts/base-constract/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/constracts/base-constract",
+        "main": "libs/constracts/base-constract/src/index.ts",
+        "tsConfig": "libs/constracts/base-constract/tsconfig.lib.json",
+        "assets": ["libs/constracts/base-constract/*.md"],
+        "format": ["cjs"],
+        "generatePackageJson": true
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/constracts/base-constract/jest.config.ts"
+      }
+    }
+  }
+}

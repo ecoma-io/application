@@ -1,0 +1,14 @@
+export enum ErrorCodes {
+  // Auth
+  AUTH_UNAUTHORIZED = "AUTH_UNAUTHORIZED",
+  AUTH_FORBIDDEN = "AUTH_FORBIDDEN",
+
+  // Validation
+  VALIDATION_ERROR = "VALIDATION_ERROR",
+
+  // Timeout
+  TIMEOUT = "TIMEOUT",
+
+  // System
+  SYSTEM_ERROR = "SYSTEM_ERROR",
+}

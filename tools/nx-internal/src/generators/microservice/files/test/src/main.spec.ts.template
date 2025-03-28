@@ -1,0 +1,94 @@
+import {
+  NatsContainer,
+  StartedNatsContainer,
+  <%=className%>Container,
+  Started<%=className%>Container,
+} from "@ecoma/testing-containers";
+import { TestLogger } from "@ecoma/testing-utils";
+import { ClientProxy, ClientProxyFactory, Transport } from "@nestjs/microservices";
+import { firstValueFrom } from "rxjs";
+import { <%=leanClassName%>ConstractV1 } from "@ecoma/<%=leanName%>-constract";
+
+describe("<%= humanReadableName %> E2E", () => {
+  let natsContainer: StartedNatsContainer;
+  let <%=className.charAt(0).toLowerCase()+className.slice(1)%>Container: Started<%=className%>Container;
+  let client: ClientProxy;
+
+
+  beforeAll(async () => {
+    TestLogger.divider("SETUP");
+
+    try {
+      TestLogger.log("Starting Nats containers...");
+      natsContainer = await new NatsContainer().start();
+      TestLogger.log("Nats containers started.");
+    } catch (err) {
+      TestLogger.error("Failed during Nats setup", err);
+      throw err;
+    }
+
+    try {
+      TestLogger.log("Starting <%= humanReadableName %> container...");
+      <%=className.charAt(0).toLowerCase()+className.slice(1)%>Container = await new <%=className%>Container()
+        .withEnv('NATS_SERVERS', natsContainer.getConnectionServer())
+        .withLogConsumer((stream) => {
+          stream.on("data", (line) =>
+            TestLogger.log("Container log: " + line.toString())
+          );
+        })
+        .start();
+      TestLogger.log("<%= humanReadableName %> container started.");
+    } catch (err) {
+      TestLogger.error("Failed to start <%= humanReadableName %> container", err);
+      throw err;
+    }
+
+    try {
+      TestLogger.log("Connecting Broker...");
+      client = ClientProxyFactory.create({
+        transport: Transport.NATS,
+        options: {
+          servers: [natsContainer.getConnectionServer()],
+        },
+      });
+      await client.connect();
+      TestLogger.log("Broker connected.");
+    } catch (err) {
+      TestLogger.error("Failed to connect broker", err);
+      throw err;
+    }
+  }, 120_000);
+
+  afterAll(async () => {
+    TestLogger.divider("TEARDOWN");
+    TestLogger.log("Cleaning up...");
+    try {
+      if (client) {
+        TestLogger.log("Closing client...");
+        await client.close();
+      }
+
+      if (<%=className.charAt(0).toLowerCase()+className.slice(1)%>Container) {
+        TestLogger.log("Stopping <%=className%>Container...");
+        await <%=className.charAt(0).toLowerCase()+className.slice(1)%>Container.stop();
+      }
+
+      if (natsContainer) {
+        TestLogger.log("Stopping natsContainer...");
+        await natsContainer.stop();
+      }
+    } catch (err) {
+      TestLogger.error("Error during teardown", err);
+    }
+    TestLogger.log("Cleanup completed.");
+  });
+
+   it("should return greeting message", async () => {
+    TestLogger.divider("CASE: should return greeting message");
+    const payload = { name: "John Rabbit" };
+    const response = await firstValueFrom(client.send(<%=leanClassName%>ConstractV1.MessageParterns.GREATING, payload));
+    expect(response).toBe(`Hello ${payload.name}!`);
+  });
+
+
+});

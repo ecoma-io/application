@@ -1,0 +1,18 @@
+import { Controller } from '@nestjs/common';
+import { MessagePattern } from '@nestjs/microservices';
+import { FilterQuery } from 'mongoose';
+import { NestjsLogger } from '@ecoma/nestjs-logging';
+import { <%=leanClassName%>ConstractV1 } from "@ecoma/<%=leanName%>-constract";
+
+@Controller()
+export class <%= leanClassName %>Controller {
+
+  private readonly logger = new NestjsLogger(<%= leanClassName %>Controller.name);
+
+  @MessagePattern(<%=leanClassName%>ConstractV1.MessageParterns.GREATING)
+  greating(payload: {name: string}) {
+    return `Hello ${payload.name}!`;
+  }
+
+
+}

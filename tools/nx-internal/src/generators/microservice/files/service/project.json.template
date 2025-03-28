@@ -1,0 +1,65 @@
+{
+  "name": "<%=name%>",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/services/<%=name%>/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "compile": {
+      "executor": "nx:run-commands",
+      "defaultConfiguration": "production",
+      "options": {
+        "cwd": "apps/services/<%=name%>"
+      },
+      "configurations": {
+        "production": {
+          "command": "webpack-cli build --mode production"
+        },
+        "development": {
+          "command": "webpack-cli build --mode development"
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "dependsOn": ["compile"],
+      "options": {
+        "buildTarget": "<%=name%>:compile",
+        "runBuildTargetDependencies": false,
+        "inspect": false
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "<%=name%>:compile:development"
+        },
+        "production": {
+          "buildTarget": "<%=name%>:compile:production"
+        }
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "options": {
+        "jestConfig": "apps/services/<%=name%>/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "build": {
+      "dependsOn": ["compile"],
+      "executor": "@nx-tools/nx-container:build",
+      "options": {
+        "load": true,
+        "quiet": true,
+        "target": "distroless-wget",
+        "tags": ["ghcr.io/ecoma-io/<%=name%>:latest"]
+      }
+    },
+    "publish": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "INPUT_TAGS=ghcr.io/ecoma-io/<%=name%>:$VERSION INPUT_TARGET=distroless npx nx build <%=name%> --push"
+      }
+    }
+  }
+}
