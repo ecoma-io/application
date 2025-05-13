@@ -7,6 +7,6 @@
   "types": "./index.d.ts",
   "dependencies": {
     "@ecoma/common-types": "0.0.1",
-    "@nestjs/common": "11.0.15"
+    "@nestjs/common": "11.0.16"
   }
 }
