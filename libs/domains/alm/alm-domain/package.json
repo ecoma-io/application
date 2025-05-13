@@ -2,6 +2,10 @@
   "name": "alm-domain",
   "version": "1.0.0",
   "description": "Domain layer for ALM (Audit Log Management)",
-  "dependencies": {},
+  "dependencies": {
+    "@ecoma/common-domain": "*",
+    "@ecoma/common-types": "*",
+    "uuid": "^11.1.0"
+  },
   "peerDependencies": {}
 }
