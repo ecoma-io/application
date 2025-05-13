@@ -238,3 +238,14 @@ export function isIpAddress(value: unknown): boolean {
   const ipv6 = /^([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$/.test(value);
   return ipv6;
 }
+
+
+/**
+ * Kiểm tra xem một giá trị có phải là kebab-case không
+ */
+export function isKebabCase(value: unknown): boolean {
+  if (typeof value !== "string") {
+    return false;
+  }
+  return /^[a-z]+(-[a-z]+)*$/.test(value);
+}

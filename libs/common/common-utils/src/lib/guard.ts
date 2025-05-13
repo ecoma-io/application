@@ -2,6 +2,7 @@
  * Guard chứa các phương thức tiện ích để kiểm tra đối số.
  */
 export class Guard {
+
   /**
    * Kiểm tra xem giá trị có null hoặc undefined không.
    * @param value - Giá trị cần kiểm tra
@@ -10,7 +11,19 @@ export class Guard {
    */
   public static againstNullOrUndefined(value: unknown, argumentName: string): void {
     if (value === null || value === undefined) {
-      throw new Error(`${argumentName} không được phép là null hoặc undefined`);
+      throw new Error(`${argumentName} cannot be null or undefined`);
+    }
+  }
+
+  /**
+     * Kiểm tra xem giá trị có null hoặc rỗng không.
+     * @param value - Giá trị cần kiểm tra
+     * @param argumentName - Tên của đối số (để hiển thị trong thông báo lỗi)
+     * @throws Error nếu giá trị là null hoặc rỗng
+     */
+  static againstNullOrEmpty(email: string, argumentName: string) {
+    if (email === null || email === '') {
+      throw new Error(`${argumentName} cannot be null or empty`);
     }
   }
 

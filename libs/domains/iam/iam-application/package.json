@@ -5,5 +5,9 @@
   "type": "commonjs",
   "main": "./index.cjs",
   "types": "./index.d.ts",
-  "dependencies": {}
+  "dependencies": {
+    "@ecoma/iam-domain": "0.0.1",
+    "@ecoma/common-domain": "0.0.1",
+    "@ecoma/common-application": "0.0.1"
+  }
 }

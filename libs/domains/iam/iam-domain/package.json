@@ -5,5 +5,9 @@
   "type": "commonjs",
   "main": "./index.cjs",
   "types": "./index.d.ts",
-  "dependencies": {}
+  "dependencies": {
+    "@ecoma/common-domain": "0.0.1",
+    "@ecoma/common-utils": "0.0.1",
+    "uuid": "^11.1.0"
+  }
 }
