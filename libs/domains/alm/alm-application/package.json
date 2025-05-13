@@ -5,5 +5,12 @@
   "type": "commonjs",
   "main": "./index.cjs",
   "types": "./index.d.ts",
-  "dependencies": {}
+  "dependencies": {
+    "@ecoma/common-types": "0.0.1",
+    "alm-domain": "1.0.0",
+    "class-validator": "^0.14.1",
+    "class-transformer": "^0.5.1",
+    "@ecoma/common-application": "0.0.1",
+    "@ecoma/common-domain": "0.0.1"
+  }
 }
