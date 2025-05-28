@@ -2,6 +2,7 @@
   "always-update": true,
   "separate-pull-requests": false,
   "group-pull-request-title-pattern": "chore: release ${branch}",
+  "tag-separator": "@",
   "packages": {
     "apps/accounts-site": {
       "package-name": "accounts-site",

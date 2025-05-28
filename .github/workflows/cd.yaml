@@ -19,10 +19,10 @@ jobs:
           TAG_NAME="${TAG#refs/tags/}"
 
           # Extract component name
-          COMPONENT_NAME=$(echo "$TAG_NAME" | cut -d'-' -f1)
+          COMPONENT_NAME=$(echo "$TAG_NAME" | cut -d'@' -f1)
 
           # Extract version
-          VERSION=$(echo "$TAG_NAME" | cut -d'-' -f2 | sed 's/^v//')
+          VERSION=$(echo "$TAG_NAME" | cut -d'@' -f2 | sed 's/^v//')
 
           echo "Component Name: $COMPONENT_NAME"
           echo "Version: $VERSION"
