@@ -1,0 +1,42 @@
+name: Deployment
+
+on:
+  push:
+    tags:
+      - '*@v*.*.*'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Extract component name and version
+        id: extract_tag
+        run: |
+          TAG="${{ github.ref }}"
+          TAG_NAME="${TAG#refs/tags/}"
+
+          # Extract component name
+          COMPONENT_NAME=$(echo "$TAG_NAME" | cut -d'@' -f1)
+
+          # Extract version
+          VERSION=$(echo "$TAG_NAME" | cut -d'@' -f2 | sed 's/^v//')
+
+          echo "Component Name: $COMPONENT_NAME"
+          echo "Version: $VERSION"
+
+          echo "component_name=$COMPONENT_NAME" >> "$GITHUB_OUTPUT"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          filter: tree:0
+
+      - name: Setup project
+        uses: ./.github/actions/setup
+
+      - name: Publish
+        run: |
+          nx run publish ${{ steps.extract_tag.outputs.component_name }}
