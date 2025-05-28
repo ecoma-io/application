@@ -1,0 +1,9 @@
+start_time=$(date +%s)
+echo "Running pre-push hook..."
+
+npx nx affected --base=origin/main -t test
+npx nx affected --base=origin/main -t build
+
+end_time=$(date +%s)
+elapsed_time=$((end_time - start_time))
+echo "Pre-push hook completed in ${elapsed_time}s"

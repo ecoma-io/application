@@ -1,0 +1,45 @@
+{
+  "always-update": true,
+  "bump-minor-pre-major": false,
+  "bump-patch-for-minor-pre-major": true,
+  "separate-pull-requests": false,
+  "group-pull-request-title-pattern": "chore: release ${branch}",
+  "packages": {
+    "apps/accounts-site": {
+      "release-type": "simple"
+    },
+    "apps/admin-site": {
+      "release-type": "simple"
+    },
+    "apps/app-site": {
+      "release-type": "simple"
+    },
+    "apps/home-site": {
+      "release-type": "simple"
+    },
+    "apps/icons": {
+      "release-type": "simple"
+    },
+    "libs/nge-cookie": {
+      "release-type": "node"
+    },
+    "libs/nge-logging": {
+      "release-type": "node"
+    },
+    "libs/nge-svg-injector": {
+      "release-type": "node"
+    },
+    "libs/nx-typedoc": {
+      "release-type": "node"
+    },
+    "libs/testing": {
+      "release-type": "node"
+    },
+    "libs/types": {
+      "release-type": "node"
+    },
+    "libs/utils": {
+      "release-type": "node"
+    }
+  }
+}

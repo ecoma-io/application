@@ -1,0 +1,14 @@
+{
+  "apps/accounts-site": "0.0.0",
+  "apps/admin-site": "0.0.0",
+  "apps/app-site": "0.0.0",
+  "apps/home-site": "0.0.0",
+  "apps/icons": "0.0.0",
+  "libs/nge-cookie": "0.0.0",
+  "libs/nge-logging": "0.0.0",
+  "libs/nge-svg-injector": "0.0.0",
+  "libs/nx-typedoc": "0.0.0",
+  "libs/testing": "0.0.0",
+  "libs/types": "0.0.0",
+  "libs/utils": "0.0.0"
+}

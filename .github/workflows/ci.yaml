@@ -1,0 +1,108 @@
+name: Intergration
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+
+  pull_request:
+    branches:
+      - main
+      - dev
+
+  pull_request_target:
+    branches:
+      - main
+      - dev
+
+  merge_group:
+    branches:
+      - main
+      - dev
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+
+  validation:
+    name: Validation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          filter: tree:0
+
+      - name: Setup project
+        uses: ./.github/actions/setup
+
+      - name: Derive appropriate SHAs for base and head for `nx affected` commands
+        uses: nrwl/nx-set-shas@v4
+
+      - name: Lint
+        run: npx nx affected --target=lint
+
+      - name: Unit test
+        run: npx nx run-many --target=test
+
+      - name: Build
+        run: npx nx run-many --target=build,containerize
+
+  intergration:
+    name: Intergration Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          filter: tree:0
+
+      - name: Setup project
+        uses: ./.github/actions/setup
+
+      - name: Derive appropriate SHAs for base and head for `nx affected` commands
+        uses: nrwl/nx-set-shas@v4
+
+      - name: Automate integration test
+        run: npx nx affected --target=automate-integration-test
+
+  e2e:
+    name: E2E Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          filter: tree:0
+
+      - name: Setup project
+        uses: ./.github/actions/setup
+        with:
+          run-playwright-install: true
+
+      - name: Derive appropriate SHAs for base and head for `nx affected` commands
+        uses: nrwl/nx-set-shas@v4
+
+      - name: Automate integration test
+        run: npx nx affected --target=automate-e2e-test
+
+  release:
+    name: Release
+    needs: [validation,intergration,e2e]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+
+      - uses: googleapis/release-please-action@v4
+        id: release-please
+        with:
+          token: ${{ secrets.GH_BOT_TOKEN }}
+          config-file: release.config.json
+          manifest-file: release.manifest.json

@@ -1,0 +1,54 @@
+name: Setup project
+description: Setup project dependencies
+inputs:
+  run-yarn-install:
+    description: 'Set to true to run yarn install, false to skip.'
+    required: false
+    default: 'true'
+  run-playwright-install:
+    description: 'Set to true to run yarn playwright install, false to skip.'
+    required: false
+    default: 'false'
+runs:
+  using: composite
+  steps:
+    - name: Setup CI Enviroment Variable
+      shell: bash
+      run: export CI=true
+
+    - name: Setup Node
+      uses: actions/setup-node@v4
+      with:
+        node-version-file: .nvmrc
+
+    - name: Get yarn cache directory path
+      id: yarn-cache-dir-path
+      shell: bash
+      run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+
+    - name: Get yarn cache
+      uses: actions/cache@v4
+      id: yarn-cache
+      with:
+        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: ${{ runner.os }}-yarn-
+
+    - name: Install project dependencies
+      if: ${{ inputs.run-yarn-install == 'true' }}
+      shell: bash
+      run: yarn install --frozen-lockfile
+
+    - uses: actions/cache@v4
+      if: ${{ inputs.run-playwright-install == 'true' }}
+      with:
+        path: |
+          ~/.cache/ms-playwright
+        key: ${{ runner.os }}-playwright-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-playwright-
+
+    - name: Install playwright deps
+      if: ${{ inputs.run-playwright-install == 'true' }}
+      shell: bash
+      run: ./node_modules/.bin/playwright install --with-deps
