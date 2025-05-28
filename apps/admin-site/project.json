@@ -1,0 +1,142 @@
+{
+  "name": "admin-site",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "prefix": "app",
+  "sourceRoot": "apps/admin-site/src",
+  "tags": [
+    "type:site"
+  ],
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ],
+      "options": {
+        "jestConfig": "libs/nge-cookie/jest.config.ts"
+      }
+    },
+    "build": {
+      "executor": "@angular-devkit/build-angular:browser",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "outputPath": "dist/apps/admin-site/browser",
+        "index": "apps/admin-site/src/index.html",
+        "main": "apps/admin-site/src/main.ts",
+        "polyfills": [
+          "zone.js"
+        ],
+        "tsConfig": "apps/admin-site/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "assets": [
+          {
+            "glob": "**/*",
+            "input": "apps/admin-site/public"
+          }
+        ],
+        "styles": [
+          "apps/admin-site/src/styles.scss"
+        ],
+        "scripts": []
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "4kb",
+              "maximumError": "8kb"
+            }
+          ],
+          "outputHashing": "all"
+        },
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@angular-devkit/build-angular:dev-server",
+      "options": {
+        "host": "admin.fbi.com",
+        "port": 4202,
+        "buildTarget": "admin-site:build:development"
+      }
+    },
+    "server": {
+      "dependsOn": [
+        "build"
+      ],
+      "executor": "@angular-devkit/build-angular:server",
+      "options": {
+        "outputPath": "dist/apps/admin-site/server",
+        "main": "apps/admin-site/src/server.ts",
+        "tsConfig": "apps/admin-site/tsconfig.server.json",
+        "inlineStyleLanguage": "scss"
+      },
+      "configurations": {
+        "production": {
+          "outputHashing": "media"
+        },
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "sourceMap": true,
+          "extractLicenses": false,
+          "vendorChunk": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "ssr": {
+      "executor": "@angular-devkit/build-angular:ssr-dev-server",
+      "options": {
+        "host": "admin.fbi.com",
+        "port": 4202,
+        "browserTarget": "admin-site:build:development",
+        "serverTarget": "admin-site:server:development"
+      }
+    },
+
+    "containerize": {
+      "dependsOn": [
+        "server"
+      ],
+      "executor": "@nx-tools/nx-container:build",
+      "configurations": {
+        "development": {
+          "target": "debug"
+        },
+        "production": {
+          "target": "debug",
+          "push": true
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "publish": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "{workspaceRoot}",
+        "command": "INPUT_TAGS=ghcr.io/ecoma/{projectName}:$(cat {projectRoot}/version.txt) npx nx containerize {projectName} -c production"
+      }
+    }
+  }
+}
