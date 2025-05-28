@@ -1,0 +1,12 @@
+{
+  "name": "@ecoma/nx-typedoc",
+  "version": "0.0.0",
+  "type": "commonjs",
+  "main": "./src/index.js",
+  "types": "./src/index.d.ts",
+  "executors": "./executors.json",
+  "dependencies": {
+    "tslib": "^2.3.0",
+    "@nx/devkit": "20.6.4"
+  }
+}
