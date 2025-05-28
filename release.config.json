@@ -4,18 +4,23 @@
   "group-pull-request-title-pattern": "chore: release ${branch}",
   "packages": {
     "apps/accounts-site": {
+      "package-name": "accounts-site",
       "release-type": "simple"
     },
     "apps/admin-site": {
+      "package-name": "admin-site",
       "release-type": "simple"
     },
     "apps/app-site": {
+      "package-name": "app-site",
       "release-type": "simple"
     },
     "apps/home-site": {
+      "package-name": "home-site",
       "release-type": "simple"
     },
     "apps/icons": {
+      "package-name": "icons",
       "release-type": "simple"
     },
     "libs/nge-cookie": {
