@@ -21,8 +21,9 @@ permissions:
   pull-requests: write
 
 jobs:
-  validation:
-    name: Validation
+    # Job mới: Linting
+  lint:
+    name: Code Linting
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -37,14 +38,42 @@ jobs:
       - name: Lint All Projects
         run: npx nx run-many --targets=lint --all
 
-      - name: Unit Test All Projects
+  # Job mới: Unit Test
+  unit-test:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          filter: tree:0
+
+      - name: Setup project
+        uses: ./.github/actions/setup
+
+      - name: Run Unit Tests
         run: npx nx run-many --target=test --all
+
+  # Job mới: Build & Containerize
+  build:
+    name: Build Projects
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          filter: tree:0
+
+      - name: Setup project
+        uses: ./.github/actions/setup
 
       - name: Build All Projects
         run: npx nx run-many --targets=build,containerize --all
 
-  intergration:
-    name: Intergration Check
+  intergration-test:
+    name: Intergration Tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -59,8 +88,8 @@ jobs:
       - name: Automate Integration Test All Projects
         run: npx nx run-many --target=automate-integration-test --all
 
-  e2e:
-    name: E2E Check
+  e2e-test:
+    name: E2E Tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -79,7 +108,7 @@ jobs:
 
   release:
     name: Release
-    needs: [validation, intergration, e2e]
+    needs: [lint, unit-test, build, intergration-test, e2e-test]
     if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     steps:
