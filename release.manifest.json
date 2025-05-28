@@ -4,6 +4,7 @@
   "apps/app-site": "0.0.0",
   "apps/home-site": "0.0.0",
   "apps/icons": "0.0.0",
+  "apps/playwright-runner":"0.0.0",
   "libs/nge-cookie": "0.0.0",
   "libs/nge-logging": "0.0.0",
   "libs/nge-svg-injector": "0.0.0",

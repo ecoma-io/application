@@ -23,6 +23,10 @@
       "package-name": "icons",
       "release-type": "simple"
     },
+    "apps/playwright-runner": {
+      "package-name": "playwright-runner",
+      "release-type": "simple"
+    },
     "libs/nge-cookie": {
       "release-type": "node"
     },
