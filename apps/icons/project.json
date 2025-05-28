@@ -6,9 +6,6 @@
   "prefix": "app",
   "targets": {
     "containerize": {
-      "dependsOn": [
-        "server"
-      ],
       "executor": "@nx-tools/nx-container:build",
       "configurations": {
         "development": {
