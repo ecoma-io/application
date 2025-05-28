@@ -1,7 +1,7 @@
 {
   "always-update": true,
   "bump-minor-pre-major": false,
-  "bump-patch-for-minor-pre-major": true,
+  "bump-patch-for-minor-pre-major": false,
   "separate-pull-requests": false,
   "group-pull-request-title-pattern": "chore: release ${branch}",
   "packages": {
