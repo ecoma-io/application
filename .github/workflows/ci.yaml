@@ -6,11 +6,6 @@ on:
       - main
       - dev
 
-  pull_request:
-    branches:
-      - main
-      - dev
-
   pull_request_target:
     branches:
       - main
@@ -40,27 +35,27 @@ jobs:
         uses: ./.github/actions/setup
 
       - name: Derive appropriate SHAs for base and head for `nx affected` commands
-        if: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target' }}
+        if: ${{ github.event_name == 'pull_request_target'   }}
         uses: nrwl/nx-set-shas@v4
 
-      - name: Lint Affected Projects (Pull Request / Target)
-        if: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target' }}
+      - name: Lint Affected Projects (Pull Request)
+        if: ${{ github.event_name == 'pull_request_target'   }}
         run: npx nx affected --target=lint
 
       - name: Lint All Projects (Push / Merge Group)
         if: ${{ github.event_name == 'push' || github.event_name == 'merge_group' }}
         run: npx nx run-many --target=lint --all # --all là tùy chọn, nhưng thường được dùng với run-many
 
-      - name: Unit Test Affected Projects (Pull Request / Target)
-        if: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target' }}
+      - name: Unit Test Affected Projects (Pull Request)
+        if: ${{ github.event_name == 'pull_request_target'   }}
         run: npx nx affected --target=test
 
       - name: Unit Test All Projects (Push / Merge Group)
         if: ${{ github.event_name == 'push' || github.event_name == 'merge_group' }}
         run: npx nx run-many --target=test --all
 
-      - name: Build Affected Projects (Pull Request / Target)
-        if: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target' }}
+      - name: Build Affected Projects (Pull Request)
+        if: ${{ github.event_name == 'pull_request_target'   }}
         run: npx nx affected --targets=build,containerize
 
       - name: Build All Projects (Push / Merge Group)
@@ -81,11 +76,11 @@ jobs:
         uses: ./.github/actions/setup
 
       - name: Derive appropriate SHAs for base and head for `nx affected` commands
-        if: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target' }}
+        if: ${{ github.event_name == 'pull_request_target'   }}
         uses: nrwl/nx-set-shas@v4
 
-      - name: Automate Integration Test Affected Projects (Pull Request / Target)
-        if: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target' }}
+      - name: Automate Integration Test Affected Projects (Pull Request)
+        if: ${{ github.event_name == 'pull_request_target'   }}
         run: npx nx affected --target=automate-integration-test
 
       - name: Automate Integration Test All Projects (Push / Merge Group)
@@ -108,11 +103,11 @@ jobs:
           run-playwright-install: true
 
       - name: Derive appropriate SHAs for base and head for `nx affected` commands
-        if: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target' }}
+        if: ${{ github.event_name == 'pull_request_target'   }}
         uses: nrwl/nx-set-shas@v4
 
-      - name: Automate E2E Test Affected Projects (Pull Request / Target)
-        if: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target' }}
+      - name: Automate E2E Test Affected Projects (Pull Request)
+        if: ${{ github.event_name == 'pull_request_target'   }}
         run: npx nx affected --target=automate-e2e-test
 
       - name: Automate E2E Test All Projects (Push / Merge Group)
