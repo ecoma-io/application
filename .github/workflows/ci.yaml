@@ -34,12 +34,11 @@ jobs:
       - name: Setup project
         uses: ./.github/actions/setup
 
-  
+      - name: Lint All Projects
+        run: npx nx run-many --targets=lint --all
+
       - name: Unit Test All Projects
         run: npx nx run-many --target=test --all
-
-      - name: Build Affected Projects
-        run: npx nx affected --targets=build,containerize
 
       - name: Build All Projects
         run: npx nx run-many --targets=build,containerize --all
