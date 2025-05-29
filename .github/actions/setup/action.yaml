@@ -1,8 +1,8 @@
 name: Setup project
 description: Setup project dependencies
 inputs:
-  run-yarn-install:
-    description: 'Set to true to run yarn install, false to skip.'
+  run_install:
+    description: 'Set to true to install dependencies, false to skip.'
     required: false
     default: 'true'
   run-playwright-install:
@@ -22,23 +22,22 @@ runs:
         node-version-file: .nvmrc
         registry-url: 'https://registry.npmjs.org'
 
-    - name: Get yarn cache directory path
-      id: yarn-cache-dir-path
-      shell: bash
-      run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
-
-    - name: Get yarn cache
+    - name: Cache data for pnpm and node_modules
       uses: actions/cache@v4
-      id: yarn-cache
       with:
-        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-        restore-keys: ${{ runner.os }}-yarn-
+        path: |
+          ~/.pnpm-store
+          **/node_modules
+        key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+        restore-keys: |
+          ${{ runner.os }}-
 
-    - name: Install project dependencies
-      if: ${{ inputs.run-yarn-install == 'true' }}
-      shell: bash
-      run: yarn install --frozen-lockfile
+    - uses: pnpm/action-setup@v4
+      with:
+        version: 10
+
+    - shell: bash
+      run: pnpm install --frozen-lockfile
 
     - uses: actions/cache@v4
       if: ${{ inputs.run-playwright-install == 'true' }}
