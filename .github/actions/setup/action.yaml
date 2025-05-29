@@ -2,9 +2,13 @@ name: Setup project
 description: Setup project dependencies
 inputs:
   run_install:
-    description: "Set to true to install dependencies, false to skip."
+    description: 'Set to true to install dependencies, false to skip.'
     required: false
-    default: "true"
+    default: 'true'
+  run-playwright-install:
+    description: 'Set to true to run yarn playwright install, false to skip.'
+    required: false
+    default: 'false'
 runs:
   using: composite
   steps:
@@ -16,7 +20,7 @@ runs:
       uses: actions/setup-node@v4
       with:
         node-version-file: .nvmrc
-        registry-url: "https://registry.npmjs.org"
+        registry-url: 'https://registry.npmjs.org'
 
     - name: Cache data for pnpm and node_modules
       uses: actions/cache@v4
@@ -34,3 +38,17 @@ runs:
 
     - shell: bash
       run: pnpm install --frozen-lockfile
+
+    - uses: actions/cache@v4
+      if: ${{ inputs.run-playwright-install == 'true' }}
+      with:
+        path: |
+          ~/.cache/ms-playwright
+        key: ${{ runner.os }}-playwright-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-playwright-
+
+    - name: Install playwright deps
+      if: ${{ inputs.run-playwright-install == 'true' }}
+      shell: bash
+      run: ./node_modules/.bin/playwright install --with-deps
