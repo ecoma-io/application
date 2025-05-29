@@ -20,7 +20,7 @@
       "executor": "nx:run-commands",
       "options": {
         "cwd": "{workspaceRoot}",
-        "command": "INPUT_TAGS=ghcr.io/ecoma/{projectName}:$(cat {projectRoot}/version.txt) npx nx containerize {projectName} -c production"
+        "command": "INPUT_GITHUB_TOKEN=$(echo $GITHUB_TOKEN) INPUT_TAGS=ghcr.io/ecoma/{projectName}:$(cat {projectRoot}/version.txt) npx nx containerize {projectName} -c production"
       }
     }
   }

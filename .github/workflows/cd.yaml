@@ -48,6 +48,7 @@ jobs:
 
 
       - name: Publish
-        run: INPUT_GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} npx nx publish ${{ steps.extract_tag.outputs.component_name }}
+        run: npx nx publish ${{ steps.extract_tag.outputs.component_name }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_BOT_TOKEN }}
