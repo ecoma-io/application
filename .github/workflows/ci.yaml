@@ -6,11 +6,6 @@ on:
       - main
       - dev
 
-  pull_request:
-    branches:
-      - main
-      - dev
-
   pull_request_target:
     branches:
       - main
@@ -24,11 +19,10 @@ on:
 permissions:
   contents: write
   pull-requests: write
-
 jobs:
-
-  validation:
-    name: Validation
+    # Job mới: Linting
+  lint:
+    name: Code Linting
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -40,20 +34,12 @@ jobs:
       - name: Setup project
         uses: ./.github/actions/setup
 
-      - name: Derive appropriate SHAs for base and head for `nx affected` commands
-        uses: nrwl/nx-set-shas@v4
+      - name: Lint All Projects
+        run: npx nx affected --targets=lint
 
-      - name: Lint
-        run: npx nx affected --target=lint
-
-      - name: Unit test
-        run: npx nx run-many --target=test
-
-      - name: Build
-        run: npx nx run-many --target=build,containerize
-
-  intergration:
-    name: Intergration Check
+  # Job mới: Unit Test
+  unit-test:
+    name: Unit Tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -65,14 +51,61 @@ jobs:
       - name: Setup project
         uses: ./.github/actions/setup
 
-      - name: Derive appropriate SHAs for base and head for `nx affected` commands
-        uses: nrwl/nx-set-shas@v4
+      - name: Run Unit Tests
+        run: npx nx affected --target=test
 
-      - name: Automate integration test
+  # Job mới: Build & Containerize
+  build:
+    name: Build Projects
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          filter: tree:0
+
+      - name: Setup project
+        uses: ./.github/actions/setup
+
+      - name: Build All Projects
+        run: npx nx affected --targets=build
+
+  containerize:
+    name: Containerize Projects
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          filter: tree:0
+
+      - name: Setup project
+        uses: ./.github/actions/setup
+
+      - name: Build All Projects
+        run: npx nx affected --targets=containerize --parallel 1
+
+
+  intergration-test:
+    name: Intergration Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          filter: tree:0
+
+      - name: Setup project
+        uses: ./.github/actions/setup
+
+      - name: Automate Integration Test All Projects
         run: npx nx affected --target=automate-integration-test
 
-  e2e:
-    name: E2E Check
+  e2e-test:
+    name: E2E Tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -86,15 +119,13 @@ jobs:
         with:
           run-playwright-install: true
 
-      - name: Derive appropriate SHAs for base and head for `nx affected` commands
-        uses: nrwl/nx-set-shas@v4
-
-      - name: Automate integration test
+      - name: Automate E2E Test All Projects
         run: npx nx affected --target=automate-e2e-test
 
   release:
     name: Release
-    needs: [validation,intergration,e2e]
+    needs: [lint, unit-test, build, intergration-test, e2e-test, containerize]
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
