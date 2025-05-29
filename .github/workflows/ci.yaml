@@ -36,7 +36,7 @@ jobs:
         uses: ./.github/actions/setup
 
       - name: Lint All Projects
-        run: npx nx run-many --targets=lint --all
+        run: npx nx affected --targets=lint
 
   # Job mới: Unit Test
   unit-test:
@@ -53,7 +53,7 @@ jobs:
         uses: ./.github/actions/setup
 
       - name: Run Unit Tests
-        run: npx nx run-many --target=test --all
+        run: npx nx affected --target=test
 
   # Job mới: Build & Containerize
   build:
@@ -70,7 +70,7 @@ jobs:
         uses: ./.github/actions/setup
 
       - name: Build All Projects
-        run: npx nx run-many --targets=build --all
+        run: npx nx affected --targets=build
 
   containerize:
     name: Containerize Projects
@@ -86,7 +86,7 @@ jobs:
         uses: ./.github/actions/setup
 
       - name: Build All Projects
-        run: npx nx run-many --targets=containerize --all --parallel 1
+        run: npx nx affected --targets=containerize --parallel 1
 
 
   intergration-test:
@@ -103,7 +103,7 @@ jobs:
         uses: ./.github/actions/setup
 
       - name: Automate Integration Test All Projects
-        run: npx nx run-many --target=automate-integration-test --all
+        run: npx nx affected --target=automate-integration-test
 
   e2e-test:
     name: E2E Tests
@@ -121,7 +121,7 @@ jobs:
           run-playwright-install: true
 
       - name: Automate E2E Test All Projects
-        run: npx nx run-many --target=automate-e2e-test --all
+        run: npx nx affected --target=automate-e2e-test
 
   release:
     name: Release
