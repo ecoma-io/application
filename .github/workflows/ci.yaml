@@ -20,7 +20,7 @@ permissions:
   contents: write
   pull-requests: write
 jobs:
-    # Job mới: Linting
+  # Job mới: Linting
   lint:
     name: Code Linting
     runs-on: ubuntu-latest
@@ -35,7 +35,7 @@ jobs:
         uses: ./.github/actions/setup
 
       - name: Lint All Projects
-        run: npx nx affected --targets=lint
+        run: npx nx affected --targets=lint --base=origin/main
 
   # Job mới: Unit Test
   unit-test:
@@ -52,7 +52,7 @@ jobs:
         uses: ./.github/actions/setup
 
       - name: Run Unit Tests
-        run: npx nx affected --target=test
+        run: npx nx affected --target=test --base=origin/main
 
   # Job mới: Build & Containerize
   build:
@@ -69,7 +69,7 @@ jobs:
         uses: ./.github/actions/setup
 
       - name: Build All Projects
-        run: npx nx affected --targets=build
+        run: npx nx affected --targets=build --base=origin/main
 
   containerize:
     name: Containerize Projects
@@ -85,8 +85,7 @@ jobs:
         uses: ./.github/actions/setup
 
       - name: Build All Projects
-        run: npx nx affected --targets=containerize --parallel 1
-
+        run: npx nx affected --targets=containerize --base=origin/main
 
   intergration-test:
     name: Intergration Tests
@@ -102,11 +101,14 @@ jobs:
         uses: ./.github/actions/setup
 
       - name: Automate Integration Test All Projects
-        run: npx nx affected --target=automate-integration-test
+        run: npx nx affected --target=automate-integration-test --base=origin/main
 
   e2e-test:
     name: E2E Tests
     runs-on: ubuntu-latest
+    # container:
+    #   image: ghcr.io/ecoma-io/playwright-runner:1.1.0
+    #   options: --privileged
     steps:
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
@@ -120,7 +122,7 @@ jobs:
           run-playwright-install: true
 
       - name: Automate E2E Test All Projects
-        run: npx nx affected --target=automate-e2e-test
+        run: npx nx affected --target=automate-e2e-test --base=origin/main
 
   release:
     name: Release

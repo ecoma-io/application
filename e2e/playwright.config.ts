@@ -6,7 +6,7 @@ import { execSync } from "child_process";
 
 // Use the base URL set in global.setup.ts
 if (!process.env["BASE_DOMAIN"]) {
-  execSync("docker compose up -d --wait", { stdio: "inherit" });
+  execSync("docker compose up -d --wait --build", { stdio: "inherit" });
   process.env["BASE_DOMAIN"] = "fbi.com";
 }
 

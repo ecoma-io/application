@@ -15,6 +15,7 @@
       "executor": "@nx/eslint:lint"
     },
     "automate-e2e-test": {
+      "dependsOn": ["^build", "^server"],
       "executor": "@nx/playwright:playwright",
       "outputs": ["{workspaceRoot}/dist/.playwright/e2e"],
       "options": {
