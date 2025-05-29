@@ -1,23 +1,31 @@
 {
   "always-update": true,
-  "bump-minor-pre-major": false,
-  "bump-patch-for-minor-pre-major": true,
   "separate-pull-requests": false,
   "group-pull-request-title-pattern": "chore: release ${branch}",
+  "tag-separator": "@",
   "packages": {
     "apps/accounts-site": {
+      "package-name": "accounts-site",
       "release-type": "simple"
     },
     "apps/admin-site": {
+      "package-name": "admin-site",
       "release-type": "simple"
     },
     "apps/app-site": {
+      "package-name": "app-site",
       "release-type": "simple"
     },
     "apps/home-site": {
+      "package-name": "home-site",
       "release-type": "simple"
     },
     "apps/icons": {
+      "package-name": "icons",
+      "release-type": "simple"
+    },
+    "apps/playwright-runner": {
+      "package-name": "playwright-runner",
       "release-type": "simple"
     },
     "libs/nge-cookie": {

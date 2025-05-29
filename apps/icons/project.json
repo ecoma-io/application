@@ -2,13 +2,9 @@
   "name": "icons",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
-  "sourceRoot": "apps/infras/icons/src",
-  "prefix": "app",
+  "sourceRoot": "apps/icons/src",
   "targets": {
     "containerize": {
-      "dependsOn": [
-        "server"
-      ],
       "executor": "@nx-tools/nx-container:build",
       "configurations": {
         "development": {
@@ -23,7 +19,7 @@
       "executor": "nx:run-commands",
       "options": {
         "cwd": "{workspaceRoot}",
-        "command": "INPUT_TAGS=ghcr.io/ecoma/{projectName}:$(cat {projectRoot}/version.txt) npx nx containerize {projectName} -c production"
+        "command": "INPUT_TAGS=ghcr.io/ecoma-io/{projectName}:$(cat {projectRoot}/version.txt) npx nx containerize {projectName} -c production"
       }
     }
   }
