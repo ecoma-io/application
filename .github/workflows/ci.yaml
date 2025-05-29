@@ -106,20 +106,22 @@ jobs:
   e2e-test:
     name: E2E Tests
     runs-on: ubuntu-latest
-    # container:
-    #   image: ghcr.io/ecoma-io/playwright-runner:1.1.0
-    #   options: --privileged
+    container:
+      image: ghcr.io/ecoma-io/playwright-runner:1.2.0
+      options: --privileged
     steps:
       - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          filter: tree:0
 
       - name: Setup project
         uses: ./.github/actions/setup
-        with:
-          run-playwright-install: true
+
+      - name: Fetch origin/main
+        run: |
+          git config --global --add safe.directory .
+          git fetch origin main:origin/main --no-tags --force
 
       - name: Automate E2E Test All Projects
         run: npx nx affected --target=automate-e2e-test --base=origin/main
