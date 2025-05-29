@@ -120,7 +120,7 @@ jobs:
 
       - name: Fetch origin/main
         run: |
-          git config --global --add safe.directory ${{ github.workspace }}
+          git config --global --add safe.directory /__w/application/application
           git fetch origin main:origin/main --no-tags --force
 
       - name: Automate E2E Test All Projects
