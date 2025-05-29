@@ -86,7 +86,7 @@ jobs:
         uses: ./.github/actions/setup
 
       - name: Build All Projects
-        run: npx nx run-many --targets=containerize --all
+        run: npx nx run-many --targets=containerize --all --parallel 1
 
 
   intergration-test:
