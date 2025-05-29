@@ -1,7 +1,10 @@
 services:
   home-site:
     container_name: home-site
-    image: ghcr.io/ecoma-io/home-site:latest
+    build:
+      context: ..
+      dockerfile: apps/home-site/Dockerfile
+      target: debug
     networks:
       ecomma:
         ipv4_address: 10.10.30.1
@@ -14,7 +17,10 @@ services:
 
   accounts-site:
     container_name: accounts-site
-    image: ghcr.io/ecoma-io/accounts-site:latest
+    build:
+      context: ..
+      dockerfile: apps/accounts-site/Dockerfile
+      target: debug
     networks:
       ecomma:
         ipv4_address: 10.10.30.2
@@ -27,7 +33,10 @@ services:
 
   admin-site:
     container_name: admin-site
-    image: ghcr.io/ecoma-io/admin-site:latest
+    build:
+      context: ..
+      dockerfile: apps/admin-site/Dockerfile
+      target: debug
     networks:
       ecomma:
         ipv4_address: 10.10.30.3
@@ -40,7 +49,10 @@ services:
 
   app-site:
     container_name: app-site
-    image: ghcr.io/ecoma-io/app-site:latest
+    build:
+      context: ..
+      dockerfile: apps/app-site/Dockerfile
+      target: debug
     networks:
       ecomma:
         ipv4_address: 10.10.30.4
