@@ -55,6 +55,16 @@
           }
         ]
       }
+    },
+    "publish": {
+      "dependsOn": [
+        "build"
+      ],
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "{workspaceRoot}/dist/{projectRoot}",
+        "command": "npm publish"
+      }
     }
   }
 }

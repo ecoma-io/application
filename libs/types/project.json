@@ -37,6 +37,16 @@
     },
     "gen-docs": {
       "executor": "@ecoma/nx-typedoc:executor"
+    },
+    "publish": {
+      "dependsOn": [
+        "build"
+      ],
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "{workspaceRoot}/dist/{projectRoot}",
+        "command": "npm publish"
+      }
     }
   }
 }
