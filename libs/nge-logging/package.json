@@ -1,6 +1,6 @@
 {
   "name": "@ecoma/nge-logging",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "peerDependencies": {
     "@angular/core": "^19.2.0",
     "pino": "^9.6.0"
