@@ -3,7 +3,7 @@ name: Deployment
 on:
   push:
     tags:
-      - '*@v*.*.*'
+      - "*@v*.*.*"
 
 jobs:
   publish:
@@ -44,9 +44,8 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GH_BOT_TOKEN }}
 
-
       - name: Publish
-        run:  npx nx publish icons
+        run: npx nx publish ${{ steps.extract_tag.outputs.component_name }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           INPUT_GITHUB_TOKEN: ${{ secrets.GH_BOT_TOKEN }}
