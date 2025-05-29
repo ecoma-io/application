@@ -4,34 +4,26 @@
   "projectType": "application",
   "prefix": "app",
   "sourceRoot": "apps/accounts-site/src",
-  "tags": [
-    "type:site"
-  ],
+  "tags": ["type:site"],
   "targets": {
     "lint": {
       "executor": "@nx/eslint:lint"
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": [
-        "{workspaceRoot}/coverage/{projectRoot}"
-      ],
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
         "jestConfig": "libs/nge-cookie/jest.config.ts"
       }
     },
-    "build": {
+    "browser": {
       "executor": "@angular-devkit/build-angular:browser",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/apps/accounts-site/browser",
         "index": "apps/accounts-site/src/index.html",
         "main": "apps/accounts-site/src/main.ts",
-        "polyfills": [
-          "zone.js"
-        ],
+        "polyfills": ["zone.js"],
         "tsConfig": "apps/accounts-site/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
         "assets": [
@@ -40,9 +32,7 @@
             "input": "apps/accounts-site/public"
           }
         ],
-        "styles": [
-          "apps/accounts-site/src/styles.scss"
-        ],
+        "styles": ["apps/accounts-site/src/styles.scss"],
         "scripts": []
       },
       "configurations": {
@@ -77,13 +67,11 @@
       "options": {
         "host": "accounts.fbi.com",
         "port": 4201,
-        "buildTarget": "accounts-site:build:development"
+        "buildTarget": "accounts-site:browser:development"
       }
     },
-    "server": {
-      "dependsOn": [
-        "build"
-      ],
+    "build": {
+      "dependsOn": ["browser"],
       "executor": "@angular-devkit/build-angular:server",
       "options": {
         "outputPath": "dist/apps/accounts-site/server",
@@ -110,15 +98,13 @@
       "options": {
         "host": "accounts.fbi.com",
         "port": 4201,
-        "browserTarget": "accounts-site:build:development",
-        "serverTarget": "accounts-site:server:development"
+        "browserTarget": "accounts-site:browser:development",
+        "serverTarget": "accounts-site:build:development"
       }
     },
 
     "containerize": {
-      "dependsOn": [
-        "server"
-      ],
+      "dependsOn": ["build"],
       "executor": "@nx-tools/nx-container:build",
       "configurations": {
         "development": {
