@@ -21,7 +21,7 @@ echo ""
 
 echo "Generating documentation..."
 npx nx affected --base=origin/main -t gen-docs --output-style static
-git add docs/libraries
+git add docs/api
 echo ""
 
 
