@@ -1,7 +1,6 @@
 {
   "name": "@ecoma/testing",
   "version": "0.0.0",
-  "private": true,
   "type": "commonjs",
   "main": "./index.cjs",
   "types": "./index.d.ts",

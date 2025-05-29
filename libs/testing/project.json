@@ -45,7 +45,7 @@
       "executor": "nx:run-commands",
       "options": {
         "cwd": "{workspaceRoot}/dist/{projectRoot}",
-        "command": "npm publish"
+        "command": "npm publish --access public"
       }
     }
   }

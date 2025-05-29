@@ -1,5 +1,5 @@
 {
-  "name": "@ecoma/nge-coookie",
+  "name": "@ecoma/nge-cookie",
   "version": "0.0.0",
   "peerDependencies": {
     "@angular/common": "^19.2.0",
