@@ -1,5 +1,5 @@
 # Sử dụng image Playwright làm base
-FROM mcr.microsoft.com/playwright:v1.52.0-noble
+FROM mcr.microsoft.com/playwright:v1.52.0-noble@sha256:a021500a801bab0611049217ffad6b9697d827205c15babb86a53bc1a61c02d5
 
 # Cập nhật danh sách gói và cài đặt các gói cần thiết để cài đặt Docker
 RUN apt-get update && apt-get install -y \
