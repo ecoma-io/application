@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.1](https://github.com/ecoma-io/application/compare/icons@v1.2.0...icons@v1.2.1) (2025-05-30)
+
+
+### Bug Fixes
+
+* **icons:** fix publish target ([027c5b1](https://github.com/ecoma-io/application/commit/027c5b161d037e4065322bac2f0b07eb813106b5))
+
 ## [1.2.0](https://github.com/ecoma-io/application/compare/icons@v1.1.0...icons@v1.2.0) (2025-05-30)
 
 
