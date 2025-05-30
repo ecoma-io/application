@@ -34,7 +34,7 @@ jobs:
         uses: ./.github/actions/setup
 
       - name: Run lint projects
-        run: npx nx affected --targets=lint --base=origin/main
+        run: npx nx affected --targets=lint --base=origin/main --parallel 12
 
       - name: Run unit tests
         run: npx nx affected --targets=test --base=origin/main
@@ -58,13 +58,13 @@ jobs:
           run-playwright-install: true
 
       - name: Run containerize docker images
-        run: npx nx affected --targets=containerize --base=origin/main
+        run: npx nx affected --targets=containerize --base=origin/main --parallel 1
 
       - name: Automate Integration
-        run: npx nx affected --target=automate-integration-test --base=origin/main
+        run: npx nx affected --target=automate-integration-test --base=origin/main --parallel 1
 
       - name: Automate E2E Test
-        run: npx nx affected --target=automate-e2e-test --base=origin/main
+        run: npx nx affected --target=automate-e2e-test --base=origin/main --parallel 1
 
   release:
     name: Release
