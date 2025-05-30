@@ -20,7 +20,13 @@
 
 ##### request
 
-`Request`
+###### headers
+
+\{ `cookie?`: `string`; \}
+
+###### headers.cookie?
+
+`string`
 
 #### Returns
 
@@ -50,7 +56,7 @@ Tên cookie cần kiểm tra
 
 true nếu cookie tồn tại, false nếu không
 
-***
+---
 
 <a id="delete"></a>
 
@@ -96,7 +102,7 @@ Cờ SameSite cookie - https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers
 
 `void`
 
-***
+---
 
 <a id="deleteall"></a>
 
@@ -136,7 +142,7 @@ Cờ SameSite cookie
 
 `void`
 
-***
+---
 
 <a id="get"></a>
 
@@ -160,7 +166,7 @@ Tên cookie cần lấy
 
 Giá trị của cookie. Trả về chuỗi rỗng nếu không tìm thấy
 
-***
+---
 
 <a id="getall"></a>
 
@@ -176,7 +182,7 @@ Lấy tất cả cookie dưới dạng đối tượng JSON
 
 Đối tượng chứa tất cả cookie với key là tên cookie và value là giá trị cookie
 
-***
+---
 
 <a id="set"></a>
 
@@ -187,6 +193,7 @@ Lấy tất cả cookie dưới dạng đối tượng JSON
 Thiết lập cookie với các tham số được cung cấp
 
 Các tham số cookie:
+
 <pre>
 expires  Số ngày cho đến khi cookie hết hạn hoặc một đối tượng Date
 path     Đường dẫn cookie
@@ -242,7 +249,7 @@ Giá trị cookie
 
 `void`
 
-***
+---
 
 <a id="getcookieregexp"></a>
 
@@ -266,7 +273,7 @@ Tên cookie cần tìm
 
 Biểu thức chính quy để tìm cookie
 
-***
+---
 
 <a id="safedecodeuricomponent"></a>
 
