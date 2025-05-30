@@ -5,7 +5,7 @@
   "main": "./index.cjs",
   "types": "./index.d.ts",
   "dependencies": {
-    "testcontainers": "^10.24.0",
+    "testcontainers": "^11.0.0",
     "toxiproxy-node-client": "^4.0.0",
     "axios": "^1.9.0",
     "is-ci": "^4.1.0"
