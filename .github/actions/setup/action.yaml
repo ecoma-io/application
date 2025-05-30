@@ -17,13 +17,13 @@ runs:
       run: export CI=true
 
     - name: Setup Node
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
       with:
         node-version-file: .nvmrc
         registry-url: 'https://registry.npmjs.org'
 
     - name: Cache data for pnpm and node_modules
-      uses: actions/cache@v4
+      uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4
       with:
         path: |
           ~/.pnpm-store
@@ -32,14 +32,14 @@ runs:
         restore-keys: |
           ${{ runner.os }}-
 
-    - uses: pnpm/action-setup@v4
+    - uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4
       with:
         version: 10
 
     - shell: bash
       run: pnpm install --frozen-lockfile
 
-    - uses: actions/cache@v4
+    - uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4
       if: ${{ inputs.run-playwright-install == 'true' }}
       with:
         path: |

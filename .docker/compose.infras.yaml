@@ -37,7 +37,7 @@ services:
       start_period: 10s
 
   maildev:
-    image: maildev/maildev
+    image: maildev/maildev@sha256:180ef51f65eefebb0e7122d8308813c1fd7bff164bc440ce5a3c2feee167a810
     container_name: maildev
     restart: always
     ports:
@@ -53,7 +53,7 @@ services:
       start_period: 10s
 
   minio:
-    image: minio/minio
+    image: minio/minio@sha256:a616cd8f37758b0296db62cc9e6af05a074e844cc7b5c0a0e62176d73828d440
     container_name: minio
     restart: always
     ports:
@@ -73,7 +73,7 @@ services:
       start_period: 10s
 
   minio-mc:
-    image: minio/mc
+    image: minio/mc@sha256:09f93f534cde415d192bb6084dd0e0ddd1715fb602f8a922ad121fd2bf0f8b44
     container_name: minio-mc
     restart: always
     depends_on:
@@ -91,7 +91,7 @@ services:
       "
 
   nats:
-    image: nats:2.11-alpine
+    image: nats:2.11-alpine@sha256:0451ec62031943afa591cf4e5f9404bce65b55a8671ab93a7d581d8028fc12a9
     container_name: nats
     restart: always
     ports:
@@ -115,7 +115,7 @@ services:
       start_period: 10s
 
   mongodb:
-    image: mongo:4
+    image: mongo:4@sha256:52c42cbab240b3c5b1748582cc13ef46d521ddacae002bbbda645cebed270ec0
     container_name: mongodb
     restart: always
     ports:
@@ -135,7 +135,7 @@ services:
       start_period: 10s
 
   mongo-express:
-    image: mongo-express:1.0.2
+    image: mongo-express:1.0.2@sha256:1b23d7976f0210dbec74045c209e52fbb26d29b2e873d6c6fa3d3f0ae32c2a64
     container_name: mongo-express
     restart: always
     environment:
@@ -153,7 +153,7 @@ services:
 
   dozzle:
     container_name: dozzle
-    image: amir20/dozzle:v8.12.7
+    image: amir20/dozzle:v8.12.7@sha256:44f4c7e0b43f3004f6c8749814622beec23d90c7ae4369a0fec06457cf62485a
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
@@ -161,7 +161,7 @@ services:
         ipv4_address: 10.10.10.7
 
   rabbitmq:
-    image: rabbitmq:3-management-alpine
+    image: rabbitmq:3-management-alpine@sha256:874ef09f18e6d9f0ba70370d593a492c90f43e569c1fc11365de3a9c732f7e94
     container_name: rabbitmq
     restart: always
     ports:
@@ -181,7 +181,7 @@ services:
       start_period: 10s
 
   redis:
-    image: redis:7-alpine
+    image: redis:7-alpine@sha256:ee9e8748ace004102a267f7b8265dab2c618317df22507b89d16a8add7154273
     container_name: redis
     restart: always
     ports:
@@ -197,7 +197,7 @@ services:
       start_period: 10s
 
   redis-commander:
-    image: rediscommander/redis-commander:latest
+    image: rediscommander/redis-commander:latest@sha256:19cd0c49f418779fa2822a0496c5e6516d0c792effc39ed20089e6268477e40a
     container_name: redis-commander
     restart: always
     environment:
