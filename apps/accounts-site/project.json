@@ -116,11 +116,30 @@
       },
       "defaultConfiguration": "development"
     },
+    "helm": {
+      "executor": "@nx-extensions/helm:package",
+      "outputs": ["{options.outputFolder}"],
+      "options": {
+        "chartFolder": "{projectRoot}/chart",
+        "outputFolder": "{workspaceRoot}/dist/charts/{projectName}",
+        "push": false,
+        "remote": "oci://ghcr.io/ecoma-io/charts",
+        "dependencies": {
+          "update": true,
+          "build": true,
+          "repositories": []
+        }
+      }
+    },
     "publish": {
       "executor": "nx:run-commands",
       "options": {
         "cwd": "{workspaceRoot}",
-        "command": "INPUT_TAGS=ghcr.io/ecoma/{projectName}:$(cat {projectRoot}/version.txt) npx nx containerize {projectName} -c production"
+        "parallel": false,
+        "commands": [
+          "INPUT_TAGS=ghcr.io/ecoma-io/{projectName}:$(cat {projectRoot}/version.txt) npx nx containerize {projectName} -c production",
+          "npx nx helm {projectName} --push"
+        ]
       }
     }
   }
