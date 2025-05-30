@@ -22,7 +22,14 @@
     },
     "apps/icons": {
       "package-name": "icons",
-      "release-type": "simple"
+      "release-type": "simple",
+      "extra-files": [
+        {
+          "type": "xml",
+          "path": "apps/icons/chart/Chart.yaml",
+          "xpath": "//version"
+        }
+      ]
     },
     "apps/playwright-runner": {
       "package-name": "playwright-runner",
