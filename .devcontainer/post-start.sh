@@ -1,19 +1,34 @@
-#!/bin/sh
+#!/bin/zsh
 
-set -e
-set -x
+echo "📌 Install pnpm..."
+curl -fsSL https://get.pnpm.io/install.sh | sh -
+echo "✅ Install pnpm done."
 
-LOG_FILE="/tmp/postStartDebug.log"
+echo "📌 Install depedencies..."
+pnpm install
+echo "✅ Install depedencies done."
 
-echo "🛠️  Starting postStartCommand debug..." | tee -a "$LOG_FILE"
+echo "📌 Install paths..."
+echo "export PATH=\"\$PATH:$(pwd)/scripts\"" >> ~/.zshrc
+echo "export PATH=\"\$PATH:$(pwd)/node_modules/.bin\"" >> ~/.zshrc
+echo "🔧 Added ./scripts and /node_modules/.bin  to PATH."
 
-{
-    export PATH="$PATH:$(pwd)/scripts"
-    echo "🔧 Added ./scripts to PATH." | tee -a "$LOG_FILE"
+echo "📌 Build local image..."
+NX_TUI=false npx nx run-many -t build
+echo "✅ Build local image done."
 
-    echo "📌 Deploy local..."
-    docker compose up -d --wait --progress=plain
-    echo "✅ Docker Compose started successfully."
-} 2>&1 | tee -a "$LOG_FILE"
+echo "📌 Deploy local..."
+docker compose up -d --wait --progress=plain
+echo "✅ Docker Compose started successfully."
 
-echo "🎉 postStartCommand completed successfully!" | tee -a "$LOG_FILE"
+echo "📌 Running playwright install..."
+npx playwright install --with-deps
+echo "✅ playwright install done."
+
+
+echo "📌 Install helm..."
+curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+echo "✅ Install helm done."
+
+
+echo "🎉 postStartCommand completed successfully!"

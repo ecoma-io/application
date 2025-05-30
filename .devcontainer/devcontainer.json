@@ -9,7 +9,6 @@
   },
   "containerUser": "vscode",
   "remoteUser": "vscode",
-  "postCreateCommand": "sh .devcontainer/post-create.sh",
   "postStartCommand": "sh .devcontainer/post-start.sh",
   "appPort": [80, 443],
   "customizations": {
