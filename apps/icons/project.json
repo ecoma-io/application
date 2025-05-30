@@ -33,7 +33,8 @@
       "executor": "nx:run-commands",
       "options": {
         "cwd": "{workspaceRoot}",
-        "command": [
+        "parallel": false,
+        "commands": [
           "INPUT_TAGS=ghcr.io/ecoma-io/{projectName}:$(cat {projectRoot}/version.txt) npx nx containerize {projectName} -c production",
           "npx nx helm {projectName} --push"
         ]
