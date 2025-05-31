@@ -1,4 +1,21 @@
 services:
+
+  icons:
+    container_name: icons
+    build:
+      context: ..
+      dockerfile: apps/icons/Dockerfile
+    networks:
+      ecomma:
+        ipv4_address: 10.10.28.1
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "--quiet", "http://127.0.0.1:80"]
+      interval: 5s
+      timeout: 8s
+      retries: 10
+      start_period: 10s
+
+
   home-site:
     container_name: home-site
     build:
