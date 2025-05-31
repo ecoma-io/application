@@ -18,6 +18,7 @@
     "paths": {
       "@ecoma/nge-cookie": ["libs/nge-cookie/src/index.ts"],
       "@ecoma/nge-logging": ["libs/nge-logging/src/index.ts"],
+      "@ecoma/nge-redirect": ["libs/nge-redirect/src/index.ts"],
       "@ecoma/nge-svg-injector": ["libs/nge-svg-injector/src/index.ts"],
       "@ecoma/nx-internal": ["tools/nx-internal/src/index.ts"],
       "@ecoma/nx-typedoc": ["libs/nx-typedoc/src/index.ts"],
