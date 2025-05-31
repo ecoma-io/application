@@ -47,6 +47,9 @@
     "libs/nge-redirect": {
       "release-type": "node"
     },
+    "libs/nge-domain": {
+      "release-type": "node"
+    },
     "libs/nx-typedoc": {
       "release-type": "node"
     },

@@ -9,6 +9,7 @@
   "libs/nge-logging": "1.1.0",
   "libs/nge-svg-injector": "1.1.0",
   "libs/nge-redirect": "0.0.0",
+  "libs/nge-domain": "0.0.0",
   "libs/nx-typedoc": "1.1.0",
   "libs/testing": "1.1.1",
   "libs/types": "1.1.0",
