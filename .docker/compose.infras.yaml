@@ -22,15 +22,7 @@ services:
       ecomma:
         ipv4_address: 10.10.10.1
     healthcheck:
-      test:
-        [
-          "CMD",
-          "wget",
-          "-q",
-          "--spider",
-          "--no-check-certificate",
-          "https://127.0.0.1",
-        ]
+      test: ['CMD', 'wget', '-q', '--spider', '--no-check-certificate', 'https://127.0.0.1']
       interval: 5s
       timeout: 8s
       retries: 10
@@ -41,12 +33,12 @@ services:
     container_name: maildev
     restart: always
     ports:
-      - "1025:1025" # SMTP Server
+      - '1025:1025' # SMTP Server
     networks:
       ecomma:
         ipv4_address: 10.10.10.2
     healthcheck:
-      test: ["CMD", "wget", "-q", "--spider", "http://localhost:1080"]
+      test: ['CMD', 'wget', '-q', '--spider', 'http://localhost:1080']
       interval: 5s
       timeout: 8s
       retries: 10
@@ -57,16 +49,18 @@ services:
     container_name: minio
     restart: always
     ports:
-      - "9000:9000" # API S3
+      - '9000:9000' # API S3
     environment:
       MINIO_ROOT_USER: minioadmin
       MINIO_ROOT_PASSWORD: minioadmin
+      MINIO_SERVER_URL: https://s3.fbi.com
+      MINIO_BROWSER_REDIRECT_URL: https://minio.fbi.com
     command: server /data --console-address ":9091"
     networks:
       ecomma:
         ipv4_address: 10.10.10.3
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      test: ['CMD', 'curl', '-f', 'http://localhost:9000/minio/health/live']
       interval: 5s
       timeout: 8s
       retries: 10
@@ -95,20 +89,12 @@ services:
     container_name: nats
     restart: always
     ports:
-      - "4222:4222"
+      - '4222:4222'
     networks:
       ecomma:
         ipv4_address: 10.10.10.4
     healthcheck:
-      test:
-        [
-          "CMD",
-          "wget",
-          "-q",
-          "--spider",
-          "--no-check-certificate",
-          "http://127.0.0.1:8222/healthz",
-        ]
+      test: ['CMD', 'wget', '-q', '--spider', '--no-check-certificate', 'http://127.0.0.1:8222/healthz']
       interval: 5s
       timeout: 8s
       retries: 10
@@ -119,7 +105,7 @@ services:
     container_name: mongodb
     restart: always
     ports:
-      - "27017:27017"
+      - '27017:27017'
     environment:
       MONGO_INITDB_ROOT_USERNAME: user
       MONGO_INITDB_ROOT_PASSWORD: password
@@ -128,7 +114,7 @@ services:
       ecomma:
         ipv4_address: 10.10.10.5
     healthcheck:
-      test: ["CMD", "mongo", "--eval", "db.runCommand('ping').ok"]
+      test: ['CMD', 'mongo', '--eval', "db.runCommand('ping').ok"]
       interval: 5s
       timeout: 8s
       retries: 10
@@ -165,8 +151,8 @@ services:
     container_name: rabbitmq
     restart: always
     ports:
-      - "5672:5672"
-      - "15672:15672"
+      - '5672:5672'
+      - '15672:15672'
     environment:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
@@ -185,12 +171,12 @@ services:
     container_name: redis
     restart: always
     ports:
-      - "6379:6379"
+      - '6379:6379'
     networks:
       ecomma:
         ipv4_address: 10.10.10.9
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: ['CMD', 'redis-cli', 'ping']
       interval: 5s
       timeout: 5s
       retries: 5
@@ -209,7 +195,7 @@ services:
       ecomma:
         ipv4_address: 10.10.10.10
     healthcheck:
-      test: ["CMD", "wget", "--spider", "--quiet", "http://127.0.0.1:8081"]
+      test: ['CMD', 'wget', '--spider', '--quiet', 'http://127.0.0.1:8081']
       interval: 5s
       timeout: 8s
       retries: 10

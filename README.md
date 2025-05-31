@@ -64,6 +64,8 @@ Các domain sử dụng trong cả production/development
 | Home Site     | https://fbi.com          | home web app của ecoma                               |
 | Accounts Site | https://accounts.fbi.com | Trang đăng ký/đăng nhập và quản lý thông tin profile |
 | App Site      | https://app.fbi.com      | Web app SaaS                                         |
+| Admin Site    | https://admin.fbi.com    | Administrator Web App                                |
+| Icons         | https://icons.fbi.com    | Icons assets                                         |
 | S3            | https://s3.fbi.com       | Minio S3 API                                         |
 
 Domain chỉ sử dụng trong development
