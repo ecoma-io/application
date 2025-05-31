@@ -1,16 +1,14 @@
-import { EnvironmentProviders, Inject, Injectable, InjectionToken, makeEnvironmentProviders, Optional, PLATFORM_ID } from '@angular/core';
+import { Inject, Injectable, InjectionToken, Optional, PLATFORM_ID, ValueProvider } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { Response } from 'express'; // Import Response từ express (chỉ cho type checking)
 
-export const RESPONSE_TOKEN = new InjectionToken<Request>('RESPONSE_TOKEN');
+export const RESPONSE_TOKEN = new InjectionToken<Response>('RESPONSE_TOKEN');
 
-export const provideSsrRedirector = (response: Response): EnvironmentProviders => {
-  return makeEnvironmentProviders([
-    {
-      provide: RESPONSE_TOKEN,
-      useValue: response,
-    },
-  ]);
+export const provideSsrRedirector = (response: Response): ValueProvider => {
+  return {
+    provide: RESPONSE_TOKEN,
+    useValue: response,
+  };
 };
 
 @Injectable({ providedIn: 'root' })
@@ -18,7 +16,7 @@ export class Redirector {
   constructor(
     @Inject(PLATFORM_ID) private platformId: object,
     @Optional() @Inject(RESPONSE_TOKEN) private response: Response // Tiêm RESPONSE
-  ) {}
+  ) { }
 
   redirect(url: string): void {
     if (isPlatformBrowser(this.platformId)) {
