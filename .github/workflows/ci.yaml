@@ -35,14 +35,40 @@ jobs:
       - name: Setup project
         uses: ./.github/actions/setup
 
+
+
+      - name: Determine Nx Affected Base and Head
+        id: nx-affected-vars
+        run: |
+          # Default to origin/main and current commit for push events
+          BASE="origin/main"
+          HEAD="${{ github.sha }}"
+
+          # For pull_request_target, use the base branch of the PR
+          if [ "${{ github.event_name }}" == "pull_request_target" ]; then
+            BASE="origin/${{ github.base_ref }}"
+            HEAD="origin/${{ github.head_ref }}" # Hoặc ${{ github.sha }} nếu bạn muốn commit cuối cùng của nhánh nguồn PR
+            echo "Running on pull_request_target. Base: $BASE, Head: $HEAD"
+          fi
+
+          # For merge_group, the base is the merge group ref and head is the current commit
+          if [ "${{ github.event_name }}" == "merge_group" ]; then
+            BASE="${{ github.base_ref }}" # Thường là nhánh đích (main hoặc dev) trước khi merge
+            HEAD="${{ github.sha }}" # Commit của merge group
+            echo "Running on merge_group. Base: $BASE, Head: $HEAD"
+          fi
+
+          echo "NX_AFFECTED_BASE=$BASE" >> $GITHUB_ENV
+          echo "NX_AFFECTED_HEAD=$HEAD" >> $GITHUB_ENV
+
       - name: Run lint projects
-        run: npx nx affected --targets=lint --base=origin/main --parallel 12
+        run: npx nx affected --targets=lint --base=$NX_AFFECTED_BASE --head=$NX_AFFECTED_HEAD --parallel 12
 
       - name: Run unit tests
-        run: npx nx affected --targets=test --base=origin/main
+        run: npx nx affected --targets=test --base=$NX_AFFECTED_BASE --head=$NX_AFFECTED_HEAD --parallel 8
 
       - name: Run build
-        run: npx nx affected --targets=build --base=origin/main
+        run: npx nx affected --targets=build --base=$NX_AFFECTED_BASE --head=$NX_AFFECTED_HEAD --parallel 8
 
   automation-test:
     name: Automation Tests
@@ -60,13 +86,13 @@ jobs:
           run-playwright-install: true
 
       - name: Run containerize docker images
-        run: npx nx affected --targets=containerize --base=origin/main --parallel 1
+        run: npx nx affected --targets=containerize --base=origin/main --head=${{ github.sha }} --parallel 1
 
       - name: Automate Integration
-        run: npx nx affected --target=automate-integration-test --base=origin/main --parallel 1
+        run: npx nx affected --target=automate-integration-test --base=origin/main --head=${{ github.sha }} --parallel 1
 
       - name: Automate E2E Test
-        run: npx nx affected --target=automate-e2e-test --base=origin/main --parallel 1
+        run: npx nx affected --target=automate-e2e-test --base=origin/main --head=${{ github.sha }} --parallel 1
 
   release:
     name: Release
