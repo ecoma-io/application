@@ -1,4 +1,4 @@
-import { Injectable, Inject, PLATFORM_ID, EnvironmentProviders, InjectionToken, makeEnvironmentProviders, Optional } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID, InjectionToken, Optional, ValueProvider } from '@angular/core';
 import { isPlatformServer, DOCUMENT } from '@angular/common';
 import { Request } from 'express';
 
@@ -12,13 +12,11 @@ export const REQUEST_TOKEN: InjectionToken<Request> = new InjectionToken<Request
  * @param request - The Express Request object to be used in server-side environment
  * @returns Environment providers configuration
  */
-export const provideSsrDomain = (request: Request): EnvironmentProviders => {
-  return makeEnvironmentProviders([
-    {
-      provide: REQUEST_TOKEN,
-      useValue: request,
-    },
-  ]);
+export const provideSsrDomain = (request: Request): ValueProvider => {
+  return {
+    provide: REQUEST_TOKEN,
+    useValue: request,
+  };
 };
 
 /**
@@ -46,8 +44,18 @@ export class Domains {
   ) {
     if (isPlatformServer(this.platformId)) {
       if (this.request) {
-        this.protocol = this.request.protocol;
-        this.rootDomain = this.extractRootDomain(this.request.hostname);
+        if (this.request.headers['x-forwarded-proto']) {
+          const protocol = typeof this.request.headers['x-forwarded-proto'] === 'string' ? this.request.headers['x-forwarded-proto'] : this.request.headers['x-forwarded-proto'][0];
+          this.protocol = protocol.split(',')[0] + ':';
+        } else {
+          this.protocol = this.request.protocol;
+        }
+        if (this.request.headers['x-forwarded-host']) {
+          const hostname: string = typeof this.request.headers['x-forwarded-host'] === 'string' ? this.request.headers['x-forwarded-host'] : this.request.headers['x-forwarded-host'][0];
+          this.rootDomain = this.extractRootDomain(hostname);
+        } else {
+          this.rootDomain = this.extractRootDomain(this.request.hostname);
+        }
       } else {
         throw new Error('Domains service requires a REQUEST_TOKEN to be provided in server-side environment. using provideSsrDomain');
       }
