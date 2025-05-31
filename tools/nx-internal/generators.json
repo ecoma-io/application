@@ -4,6 +4,11 @@
       "factory": "./src/generators/generator/generator",
       "schema": "./src/generators/generator/schema.json",
       "description": "generator generator"
+    },
+    "angularlib": {
+      "factory": "./src/generators/angularlib/generator",
+      "schema": "./src/generators/angularlib/schema.json",
+      "description": "angularlib generator"
     }
   }
 }
