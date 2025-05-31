@@ -2,7 +2,7 @@ import { EnvironmentProviders, Inject, Injectable, InjectionToken, makeEnvironme
 import { isPlatformBrowser } from '@angular/common';
 import { Response } from 'express'; // Import Response từ express (chỉ cho type checking)
 
-export const RESPONSE_TOKEN = new InjectionToken<Request>('REQUEST_TOKEN');
+export const RESPONSE_TOKEN = new InjectionToken<Request>('RESPONSE_TOKEN');
 
 export const provideSsrRedirector = (response: Response): EnvironmentProviders => {
   return makeEnvironmentProviders([
