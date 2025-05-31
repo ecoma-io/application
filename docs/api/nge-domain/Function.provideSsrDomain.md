@@ -1,6 +1,6 @@
-# Function: provideDomain()
+# Function: provideSsrDomain()
 
-> **provideDomain**(`request`): `EnvironmentProviders`
+> **provideSsrDomain**(`request`): `EnvironmentProviders`
 
 Provides environment configuration for the Domains service
 

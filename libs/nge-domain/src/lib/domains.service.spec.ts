@@ -150,7 +150,7 @@ describe('DomainsService', () => {
         ],
       });
       expect(() => TestBed.inject(Domains)).toThrowError(
-        'Domains service requires a REQUEST_TOKEN to be provided in server-side environment. using provideDomain'
+        'Domains service requires a REQUEST_TOKEN to be provided in server-side environment. using provideSsrDomain'
       );
     });
   });

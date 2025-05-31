@@ -12,7 +12,7 @@ export const REQUEST_TOKEN: InjectionToken<Request> = new InjectionToken<Request
  * @param request - The Express Request object to be used in server-side environment
  * @returns Environment providers configuration
  */
-export const provideDomain = (request: Request): EnvironmentProviders => {
+export const provideSsrDomain = (request: Request): EnvironmentProviders => {
   return makeEnvironmentProviders([
     {
       provide: REQUEST_TOKEN,
@@ -49,7 +49,7 @@ export class Domains {
         this.protocol = this.request.protocol;
         this.rootDomain = this.extractRootDomain(this.request.hostname);
       } else {
-        throw new Error('Domains service requires a REQUEST_TOKEN to be provided in server-side environment. using provideDomain');
+        throw new Error('Domains service requires a REQUEST_TOKEN to be provided in server-side environment. using provideSsrDomain');
       }
     } else {
       this.protocol = this.document.location.protocol;

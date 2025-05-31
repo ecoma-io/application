@@ -14,4 +14,4 @@ It includes methods to get the current protocol, root domain, and base URLs for 
 
 ## Functions
 
-- [provideDomain](/api/nge-domain/Function.provideDomain.md)
+- [provideSsrDomain](/api/nge-domain/Function.provideSsrDomain.md)
