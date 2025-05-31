@@ -20,6 +20,10 @@ describe('DomainsService', () => {
     request = {
       protocol: 'http:',
       hostname: 'server.example.com',
+      headers: {
+        'x-forwarded-proto': 'https',
+        'x-forwarded-host': 'www.example.com',
+      },
     };
 
     TestBed.configureTestingModule({
@@ -89,7 +93,7 @@ describe('DomainsService', () => {
         ],
       });
       service = TestBed.inject(Domains);
-      expect(service.getProtocol()).toBe('http:');
+      expect(service.getProtocol()).toBe('https:');
     });
 
     it('should get the root domain from request object when provided', () => {
@@ -102,7 +106,7 @@ describe('DomainsService', () => {
         ],
       });
       service = TestBed.inject(Domains);
-      expect(service.getRootDomain()).toBe('example.com'); // extractRootDomain logic is the same
+      expect(service.getRootDomain()).toBe('example.com');
     });
 
     it('should get the home site base URL', () => {
@@ -115,7 +119,7 @@ describe('DomainsService', () => {
         ],
       });
       service = TestBed.inject(Domains);
-      expect(service.getHomeSiteBaseUrl()).toBe('http://example.com');
+      expect(service.getHomeSiteBaseUrl()).toBe('https://example.com');
     });
 
     it('should get the accounts site base URL', () => {
@@ -128,7 +132,7 @@ describe('DomainsService', () => {
         ],
       });
       service = TestBed.inject(Domains);
-      expect(service.getAccountsSiteBaseUrl()).toBe('http://accounts.example.com');
+      expect(service.getAccountsSiteBaseUrl()).toBe('https://accounts.example.com');
     });
 
     it('should get the admin site base URL', () => {
@@ -141,7 +145,7 @@ describe('DomainsService', () => {
         ],
       });
       service = TestBed.inject(Domains);
-      expect(service.getAdminSiteBaseUrl()).toBe('http://admin.example.com');
+      expect(service.getAdminSiteBaseUrl()).toBe('https://admin.example.com');
     });
 
     it('should get the icons base URL', () => {
@@ -154,7 +158,7 @@ describe('DomainsService', () => {
         ],
       });
       service = TestBed.inject(Domains);
-      expect(service.getIconsBaseUrl()).toBe('http://icons.example.com');
+      expect(service.getIconsBaseUrl()).toBe('https://icons.example.com');
     });
 
     it('should throw an error if REQUEST_TOKEN is not provided', () => {
