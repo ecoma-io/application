@@ -60,15 +60,3 @@ export class MyComponent {
 ```
 
 This will handle the redirect appropriately based on whether the application is running in the browser or on the server.
-
-## Classes
-
-- [Redirector](/api/nge-redirect/Class.Redirector.md)
-
-## Variables
-
-- [RESPONSE_TOKEN](/api/nge-redirect/Variable.RESPONSE_TOKEN.md)
-
-## Functions
-
-- [provideSsrRedirector](/api/nge-redirect/Function.provideSsrRedirector.md)

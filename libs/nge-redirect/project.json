@@ -1,0 +1,47 @@
+{
+  "name": "nge-redirect",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/nge-redirect/src",
+  "prefix": "nge",
+  "projectType": "library",
+  "tags": ["type:angular-library"],
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/nge-redirect/jest.config.ts"
+      }
+    },
+    "build": {
+      "executor": "@nx/angular:package",
+      "outputs": ["{workspaceRoot}/dist/{projectRoot}"],
+      "options": {
+        "project": "libs/nge-redirect/ng-package.json"
+      },
+      "configurations": {
+        "production": {
+          "tsConfig": "libs/nge-redirect/tsconfig.lib.prod.json"
+        },
+        "development": {
+          "tsConfig": "libs/nge-redirect/tsconfig.lib.json"
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "gen-docs": {
+      "executor": "@ecoma/nx-typedoc:executor"
+    },
+    "publish": {
+      "dependsOn": ["build"],
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "{workspaceRoot}/dist/{projectRoot}",
+        "command": "npm publish --access public"
+      }
+    }
+  }
+}
