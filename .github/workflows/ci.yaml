@@ -17,7 +17,9 @@ on:
       - dev
 env:
   NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
-
+  GITHUB_SHA: ${{ github.sha }}
+  GITHUB_HEAD_REF: ${{ github.head_ref }}
+  GITHUB_BASE_REF: ${{ github.base_ref }}
 permissions:
   contents: write
   pull-requests: write
@@ -42,19 +44,19 @@ jobs:
         run: |
           # Default to origin/main and current commit for push events
           BASE="origin/main"
-          HEAD="${{ github.sha }}"
+          HEAD="$GITHUB_SHA"
 
           # For pull_request_target, use the base branch of the PR
           if [ "${{ github.event_name }}" == "pull_request_target" ]; then
-            BASE="origin/${{ github.base_ref }}"
-            HEAD="origin/${{ github.head_ref }}" # Hoặc ${{ github.sha }} nếu bạn muốn commit cuối cùng của nhánh nguồn PR
+            BASE="origin/$GITHUB_BASE_REF"
+            HEAD="origin/$GITHUB_HEAD_REF" # Or $GITHUB_SHA if you want the last commit of the source branch PR
             echo "Running on pull_request_target. Base: $BASE, Head: $HEAD"
           fi
 
           # For merge_group, the base is the merge group ref and head is the current commit
           if [ "${{ github.event_name }}" == "merge_group" ]; then
-            BASE="${{ github.base_ref }}" # Thường là nhánh đích (main hoặc dev) trước khi merge
-            HEAD="${{ github.sha }}" # Commit của merge group
+            BASE="$GITHUB_BASE_REF" # Usually the target branch (main or dev) before merging
+            HEAD="$GITHUB_SHA" # Commit of the merge group
             echo "Running on merge_group. Base: $BASE, Head: $HEAD"
           fi
 
@@ -86,13 +88,13 @@ jobs:
           run-playwright-install: true
 
       - name: Run containerize docker images
-        run: npx nx affected --targets=containerize --base=origin/main --head=${{ github.sha }} --parallel 1
+        run: npx nx affected --targets=containerize --base=origin/main --head=$GITHUB_SHA --parallel 1
 
       - name: Automate Integration
-        run: npx nx affected --target=automate-integration-test --base=origin/main --head=${{ github.sha }} --parallel 1
+        run: npx nx affected --target=automate-integration-test --base=origin/main --head=$GITHUB_SHA --parallel 1
 
       - name: Automate E2E Test
-        run: npx nx affected --target=automate-e2e-test --base=origin/main --head=${{ github.sha }} --parallel 1
+        run: npx nx affected --target=automate-e2e-test --base=origin/main --head=$GITHUB_SHA --parallel 1
 
   release:
     name: Release
