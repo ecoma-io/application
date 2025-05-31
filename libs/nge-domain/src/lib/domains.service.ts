@@ -99,7 +99,15 @@ export class Domains {
    * @returns The complete admin site URL (e.g., 'https://admin.example.com')
    */
   getAdminSiteBaseUrl(): string {
-    return `${this.protocol}//${this.getRootDomain()}`;
+    return `${this.protocol}//admin.${this.getRootDomain()}`;
+  }
+
+  /**
+   * Gets the base URL for the icons
+   * @returns The complete admin site URL (e.g., 'https://icons.example.com')
+   */
+  getIconsBaseUrl(): string {
+    return `${this.protocol}//icons.${this.getRootDomain()}`;
   }
 
   /**

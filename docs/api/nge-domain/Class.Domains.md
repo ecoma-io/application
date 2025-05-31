@@ -91,6 +91,22 @@ The complete home site URL (e.g., 'https://example.com')
 
 ---
 
+<a id="geticonsbaseurl"></a>
+
+### getIconsBaseUrl()
+
+> **getIconsBaseUrl**(): `string`
+
+Gets the base URL for the icons
+
+#### Returns
+
+`string`
+
+The complete admin site URL (e.g., 'https://icons.example.com')
+
+---
+
 <a id="getprotocol"></a>
 
 ### getProtocol()

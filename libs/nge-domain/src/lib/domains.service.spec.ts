@@ -66,7 +66,11 @@ describe('DomainsService', () => {
     });
 
     it('should get the admin site base URL', () => {
-      expect(service.getAdminSiteBaseUrl()).toBe('https://example.com');
+      expect(service.getAdminSiteBaseUrl()).toBe('https://admin.example.com');
+    });
+
+    it('should get the icons base URL', () => {
+      expect(service.getIconsBaseUrl()).toBe('https://icons.example.com');
     });
   });
 
@@ -137,7 +141,20 @@ describe('DomainsService', () => {
         ],
       });
       service = TestBed.inject(Domains);
-      expect(service.getAdminSiteBaseUrl()).toBe('http://example.com');
+      expect(service.getAdminSiteBaseUrl()).toBe('http://admin.example.com');
+    });
+
+    it('should get the icons base URL', () => {
+      TestBed.configureTestingModule({
+        providers: [
+          Domains,
+          { provide: PLATFORM_ID, useValue: 'server' },
+          { provide: DOCUMENT, useValue: document },
+          { provide: REQUEST_TOKEN, useValue: request },
+        ],
+      });
+      service = TestBed.inject(Domains);
+      expect(service.getIconsBaseUrl()).toBe('http://icons.example.com');
     });
 
     it('should throw an error if REQUEST_TOKEN is not provided', () => {
