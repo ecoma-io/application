@@ -20,13 +20,7 @@
 
 ##### request
 
-###### headers
-
-\{ `cookie?`: `string`; \}
-
-###### headers.cookie?
-
-`string`
+`Request`
 
 #### Returns
 

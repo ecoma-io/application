@@ -10,7 +10,7 @@
 
 ### Constructor
 
-> **new SvgInjector**(`iconService`, `el`): `SvgInjector`
+> **new SvgInjector**(`iconService`, `el`, `baseHref`): `SvgInjector`
 
 #### Parameters
 
@@ -21,6 +21,10 @@
 ##### el
 
 `ElementRef`
+
+##### baseHref
+
+`string`
 
 #### Returns
 
@@ -34,7 +38,7 @@
 
 > **inserted**: `EventEmitter`\<`void`\>
 
-***
+---
 
 <a id="path"></a>
 
@@ -54,7 +58,7 @@
 
 `void`
 
-***
+---
 
 <a id="ngonchanges"></a>
 

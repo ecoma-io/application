@@ -10,3 +10,7 @@ Run `nx test nge-svg-injector` to execute the unit tests.
 
 - [SvgInjector](/api/nge-svg-injector/Class.SvgInjector.md)
 - [SvgInjectorService](/api/nge-svg-injector/Class.SvgInjectorService.md)
+
+## Functions
+
+- [provideSsrSvgInjector](/api/nge-svg-injector/Function.provideSsrSvgInjector.md)

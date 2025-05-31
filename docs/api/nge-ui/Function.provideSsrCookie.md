@@ -1,6 +1,6 @@
-# Function: provideSsrDomain()
+# Function: provideSsrCookie()
 
-> **provideSsrDomain**(`request`): `ValueProvider`
+> **provideSsrCookie**(`request`): `ValueProvider`
 
 Provides environment configuration for the Domains service
 

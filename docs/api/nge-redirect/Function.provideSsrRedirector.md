@@ -1,6 +1,6 @@
 # Function: provideSsrRedirector()
 
-> **provideSsrRedirector**(`response`): `EnvironmentProviders`
+> **provideSsrRedirector**(`response`): `ValueProvider`
 
 ## Parameters
 
@@ -10,4 +10,4 @@
 
 ## Returns
 
-`EnvironmentProviders`
+`ValueProvider`
