@@ -1,5 +1,24 @@
 import { DOCUMENT, isPlatformBrowser } from "@angular/common";
-import { Inject, Injectable, Optional, PLATFORM_ID } from "@angular/core";
+import { Inject, Injectable, InjectionToken, Optional, PLATFORM_ID, ValueProvider } from "@angular/core";
+import { Request } from 'express';
+
+/**
+ * Injection token for providing the Express Request object in server-side environment
+ */
+export const REQUEST_TOKEN: InjectionToken<Request> = new InjectionToken<Request>('REQUEST_TOKEN');
+
+/**
+ * Provides environment configuration for the Domains service
+ * @param request - The Express Request object to be used in server-side environment
+ * @returns Environment providers configuration
+ */
+export const provideSsrCookie = (request: Request): ValueProvider => {
+  return {
+    provide: REQUEST_TOKEN,
+    useValue: request,
+  };
+};
+
 
 @Injectable({ providedIn: "root" })
 export class Cookies {
@@ -8,7 +27,7 @@ export class Cookies {
   constructor(
     @Inject(DOCUMENT) private document: Document,
     @Inject(PLATFORM_ID) private platformId: object,
-    @Optional() @Inject("REQUEST") private request: { headers: { cookie?: string } }
+    @Optional() @Inject(REQUEST_TOKEN) private request: Request
   ) {
     this.documentIsAccessible = isPlatformBrowser(this.platformId);
   }
