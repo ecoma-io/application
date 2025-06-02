@@ -45,13 +45,19 @@ export class Domains {
     if (isPlatformServer(this.platformId)) {
       if (this.request) {
         if (this.request.headers['x-forwarded-proto']) {
-          const protocol = typeof this.request.headers['x-forwarded-proto'] === 'string' ? this.request.headers['x-forwarded-proto'] : this.request.headers['x-forwarded-proto'][0];
+          const protocol =
+            typeof this.request.headers['x-forwarded-proto'] === 'string'
+              ? this.request.headers['x-forwarded-proto']
+              : this.request.headers['x-forwarded-proto'][0];
           this.protocol = protocol.split(',')[0] + ':';
         } else {
           this.protocol = this.request.protocol;
         }
         if (this.request.headers['x-forwarded-host']) {
-          const hostname: string = typeof this.request.headers['x-forwarded-host'] === 'string' ? this.request.headers['x-forwarded-host'] : this.request.headers['x-forwarded-host'][0];
+          const hostname: string =
+            typeof this.request.headers['x-forwarded-host'] === 'string'
+              ? this.request.headers['x-forwarded-host']
+              : this.request.headers['x-forwarded-host'][0];
           this.rootDomain = this.extractRootDomain(hostname);
         } else {
           this.rootDomain = this.extractRootDomain(this.request.hostname);

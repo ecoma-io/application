@@ -1,19 +1,7 @@
-import { APP_BASE_HREF, CommonModule } from "@angular/common";
-import {
-  Component,
-  ElementRef,
-  EventEmitter,
-  Inject,
-  Input,
-  OnChanges,
-  Optional,
-  Output,
-  InjectionToken, ValueProvider
-} from "@angular/core";
+import { CommonModule } from '@angular/common';
+import { Component, ElementRef, EventEmitter, Inject, Input, OnChanges, Optional, Output, InjectionToken, ValueProvider } from '@angular/core';
 
-import { SvgInjectorService } from "./svg-injector.service";
-
-
+import { SvgInjectorService } from './svg-injector.service';
 
 /**
  * Injection token for providing the Express Request object in server-side environment
@@ -32,25 +20,20 @@ export const provideSsrSvgInjector = (baseUrl: string): ValueProvider => {
   };
 };
 
-
 @Component({
-  selector: "nge-svg-injector",
+  selector: 'nge-svg-injector',
   standalone: true,
   imports: [CommonModule],
   template: ``,
   host: {
-    class: "[&>*]:w-full [&>*]:h-full",
+    class: '[&>*]:w-full [&>*]:h-full',
   },
 })
 export class SvgInjector implements OnChanges {
   @Input() public path!: string;
   @Output() public inserted: EventEmitter<void> = new EventEmitter();
 
-  constructor(
-    private iconService: SvgInjectorService,
-    private el: ElementRef,
-    @Optional() @Inject(BASE_URL) private baseHref: string
-  ) { }
+  constructor(private iconService: SvgInjectorService, private el: ElementRef, @Optional() @Inject(BASE_URL) private baseHref: string) {}
 
   ngOnChanges() {
     this.initSource();
