@@ -3,8 +3,8 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../../../core/services/auth.service';
 import { Domains } from '@ecoma/nge-domain';
+import { LoginService } from '../../../core/services/login.service';
 
 @Component({
   selector: 'app-login',
@@ -110,7 +110,7 @@ export class LoginComponent {
   errorMessage = '';
   iconsBaseUrl: string;
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router, private domain: Domains) {
+  constructor(private fb: FormBuilder, private loginService: LoginService, private router: Router, private domain: Domains) {
     this.iconsBaseUrl = this.domain.getIconsBaseUrl();
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -127,7 +127,7 @@ export class LoginComponent {
       this.errorMessage = '';
 
       const { email } = this.loginForm.value;
-      this.authService.requestOTP(email).subscribe({
+      this.loginService.requestOTP(email).subscribe({
         next: () => {
           sessionStorage.setItem('auth_email', email);
           this.router.navigate(['/auth/verify']);

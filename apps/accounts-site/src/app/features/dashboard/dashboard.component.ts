@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterOutlet, RouterLinkActive } from '@angular/router';
-import { AuthService } from '../../core/services/auth.service';
 import { SvgInjector } from '@ecoma/nge-svg-injector';
+import { AuthService } from '@ecoma/nge-auth';
 
 @Component({
   selector: 'app-dashboard',
@@ -119,25 +119,17 @@ export class DashboardComponent {
   }
 
   getUserName(): string {
-    const userData = localStorage.getItem('user_data');
-    if (userData) {
-      const user = JSON.parse(userData);
-      return user.name || 'User';
-    }
     return 'User';
   }
 
   getUserEmail(): string {
-    const userData = localStorage.getItem('user_data');
-    if (userData) {
-      const user = JSON.parse(userData);
-      return user.email || 'user@example.com';
-    }
     return 'user@example.com';
   }
 
   logout() {
     this.authService.logout();
-    window.location.href = '/auth/login';
+    setTimeout(() => {
+      window.location.href = '/auth/login';
+    }, 1000);
   }
 }

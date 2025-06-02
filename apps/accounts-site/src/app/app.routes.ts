@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router';
-import { authGuard } from './core/guards/auth.guard';
-import { unAuthGuard } from './core/guards/unauth.guard';
+import { authGuard, unAuthGuard } from '@ecoma/nge-auth';
 
 export const appRoutes: Routes = [
   { path: '', redirectTo: '/auth/login', pathMatch: 'full' },

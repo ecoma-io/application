@@ -2,9 +2,9 @@ import { Component, OnInit, ViewChildren, QueryList, ElementRef, OnDestroy } fro
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../../../core/services/auth.service';
 import { SvgInjector } from '@ecoma/nge-svg-injector';
 import { Domains } from '@ecoma/nge-domain';
+import { LoginService } from '../../../core/services/login.service';
 
 @Component({
   selector: 'app-otp-verification',
@@ -92,7 +92,7 @@ export class OtpVerificationComponent implements OnInit, OnDestroy {
   email = '';
   private timerInterval: any;
 
-  constructor(private fb: FormBuilder, private router: Router, private authService: AuthService, private domain: Domains) {
+  constructor(private fb: FormBuilder, private router: Router, private loginService: LoginService, private domain: Domains) {
     this.iconsBaseUrl = this.domain.getIconsBaseUrl();
     this.otpForm = this.fb.group({
       digit0: ['', [Validators.required, Validators.pattern(/^[0-9]$/)]],
@@ -201,7 +201,7 @@ export class OtpVerificationComponent implements OnInit, OnDestroy {
       this.attemptsLeft--;
       this.startResendTimer();
 
-      this.authService.requestOTP(this.email).subscribe({
+      this.loginService.requestOTP(this.email).subscribe({
         next: () => {
           this.isResending = false;
           this.otpForm.reset();
@@ -224,7 +224,7 @@ export class OtpVerificationComponent implements OnInit, OnDestroy {
       this.errorMessage = '';
 
       const otp = Object.values(this.otpForm.value).join('');
-      this.authService.verifyOTP(this.email, otp).subscribe({
+      this.loginService.verifyOTP(this.email, otp).subscribe({
         next: () => {
           sessionStorage.removeItem('auth_email');
           this.router.navigate(['/dashboard']);
