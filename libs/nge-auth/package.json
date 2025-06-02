@@ -1,0 +1,12 @@
+{
+  "name": "@ecoma/nge-auth",
+  "version": "0.0.0",
+  "peerDependencies": {
+    "@angular/core": "19.2.0",
+    "@ecoma/nge-redirect": "0.0.0",
+    "@angular/router": "19.2.0",
+    "@ecoma/nge-domain": "0.0.0",
+    "@ecoma/nge-cookie": "1.1.0"
+  },
+  "sideEffects": false
+}
