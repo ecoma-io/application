@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterLink, RouterOutlet, RouterLinkActive } from '@angular/router';
 import { SvgInjector } from '@ecoma/nge-svg-injector';
 import { AuthService } from '@ecoma/nge-auth';
+import { Domains } from '@ecoma/nge-domain';
 
 @Component({
   selector: 'app-dashboard',
@@ -77,19 +78,19 @@ import { AuthService } from '@ecoma/nge-auth';
           <ul class="menu menu-lg gap-2">
             <li>
               <a routerLink="profile" routerLinkActive="active" class="flex items-center gap-4 min-h-12 rounded-xl">
-                <nge-svg-injector path="heroUser" class="w-5 h-5"></nge-svg-injector>
+                <nge-svg-injector [path]="iconUrl('/duotone/phone.svg')" class="w-5 h-5"></nge-svg-injector>
                 Profile
               </a>
             </li>
             <li>
               <a routerLink="sessions" routerLinkActive="active" class="flex items-center gap-4 min-h-12 rounded-xl">
-                <nge-svg-injector path="heroComputerDesktop" class="w-5 h-5"></nge-svg-injector>
+                <nge-svg-injector [path]="iconUrl('/duotone/phone.svg')" class="w-5 h-5"></nge-svg-injector>
                 Sessions
               </a>
             </li>
             <li>
               <a routerLink="settings" routerLinkActive="active" class="flex items-center gap-4 min-h-12 rounded-xl">
-                <nge-svg-injector path="heroCog6Tooth" class="w-5 h-5"></nge-svg-injector>
+                <nge-svg-injector [path]="iconUrl('/duotone/phone.svg')" class="w-5 h-5"></nge-svg-injector>
                 Settings
               </a>
             </li>
@@ -107,7 +108,17 @@ import { AuthService } from '@ecoma/nge-auth';
   `,
 })
 export class DashboardComponent {
-  constructor(private authService: AuthService) {}
+
+  iconsBaseUrl: string;
+
+
+  constructor(private authService: AuthService, private domain: Domains) {
+    this.iconsBaseUrl = this.domain.getIconsBaseUrl();
+  }
+
+  iconUrl(path: string): string {
+    return this.iconsBaseUrl + path;
+  }
 
   getUserInitials(): string {
     const name = this.getUserName();

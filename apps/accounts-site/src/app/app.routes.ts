@@ -1,11 +1,9 @@
 import { Routes } from '@angular/router';
-import { authGuard, unAuthGuard } from '@ecoma/nge-auth';
 
 export const appRoutes: Routes = [
   { path: '', redirectTo: '/auth/login', pathMatch: 'full' },
   {
     path: 'auth',
-    canActivate: [unAuthGuard],
     children: [
       {
         path: 'login',
@@ -20,7 +18,6 @@ export const appRoutes: Routes = [
   },
   {
     path: 'dashboard',
-    canActivate: [authGuard],
     children: [
       {
         path: '',

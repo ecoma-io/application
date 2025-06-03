@@ -1,6 +1,5 @@
 import 'zone.js/node';
 
-import { provideSsrRedirector } from '@ecoma/nge-redirect';
 import { APP_BASE_HREF } from '@angular/common';
 import { CommonEngine } from '@angular/ssr/node';
 import express from 'express';
@@ -17,7 +16,7 @@ import { provideSsrSvgInjector } from '@ecoma/nge-svg-injector';
  */
 export function app(): express.Express {
   const server = express();
-  server.set('trust proxy','uniquelocal');
+  server.set('trust proxy', 'uniquelocal');
 
   const distFolder = join(__dirname, '../browser');
   const indexHtml = join(distFolder, 'index.html');
@@ -50,7 +49,6 @@ export function app(): express.Express {
           { provide: 'REQUEST', useValue: req },
           { provide: 'RESPONSE', useValue: res },
           provideSsrSvgInjector(`${protocol}://${headers.host}${baseUrl}`),
-          provideSsrRedirector(res),
           provideSsrDomain(req),
           provideSsrCookie(req),
         ],
