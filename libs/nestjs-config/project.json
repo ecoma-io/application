@@ -25,6 +25,9 @@
         "assets": ["libs/nestjs-config/*.md"]
       }
     },
+    "gen-docs": {
+      "executor": "@ecoma/nx-typedoc:executor"
+    },
     "publish": {
       "dependsOn": ["build"],
       "executor": "nx:run-commands",
