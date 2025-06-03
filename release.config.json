@@ -35,6 +35,19 @@
       "package-name": "playwright-runner",
       "release-type": "simple"
     },
+    "apps/iam-service": {
+      "package-name": "iam-service",
+      "release-type": "simple"
+    },
+    "libs/nestj-config": {
+      "release-type": "node"
+    },
+    "libs/nestj-logger": {
+      "release-type": "node"
+    },
+    "libs/nge-auth": {
+      "release-type": "node"
+    },
     "libs/nge-cookie": {
       "release-type": "node"
     },
