@@ -85,23 +85,6 @@ services:
       echo 'Bucket created!';
       sleep infinity;
       "
-
-  nats:
-    image: nats:2.11-alpine@sha256:0451ec62031943afa591cf4e5f9404bce65b55a8671ab93a7d581d8028fc12a9
-    container_name: nats
-    restart: always
-    ports:
-      - '4222:4222'
-    networks:
-      ecomma:
-        ipv4_address: 10.10.10.4
-    healthcheck:
-      test: ['CMD', 'wget', '-q', '--spider', '--no-check-certificate', 'http://127.0.0.1:8222/healthz']
-      interval: 5s
-      timeout: 8s
-      retries: 10
-      start_period: 10s
-
   mongodb:
     image: mongo:4@sha256:52c42cbab240b3c5b1748582cc13ef46d521ddacae002bbbda645cebed270ec0
     container_name: mongodb
@@ -138,15 +121,6 @@ services:
     networks:
       ecomma:
         ipv4_address: 10.10.10.6
-
-  dozzle:
-    container_name: dozzle
-    image: amir20/dozzle:v8.12.7@sha256:44f4c7e0b43f3004f6c8749814622beec23d90c7ae4369a0fec06457cf62485a
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    networks:
-      ecomma:
-        ipv4_address: 10.10.10.7
 
   rabbitmq:
     image: rabbitmq:3-management-alpine@sha256:874ef09f18e6d9f0ba70370d593a492c90f43e569c1fc11365de3a9c732f7e94
