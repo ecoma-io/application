@@ -17,5 +17,6 @@
   "libs/nx-typedoc": "1.1.0",
   "libs/testing": "1.1.1",
   "libs/types": "1.1.0",
-  "libs/utils": "1.1.0"
+  "libs/utils": "1.1.0",
+  "libs/dtos": "0.0.0"
 }

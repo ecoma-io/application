@@ -74,6 +74,9 @@
     },
     "libs/utils": {
       "release-type": "node"
+    },
+    "libs/dtos": {
+      "release-type": "node"
     }
   }
 }
