@@ -38,7 +38,7 @@
 
 `GenericContainer.archivesToCopy`
 
-***
+---
 
 <a id="autoremove"></a>
 
@@ -50,7 +50,7 @@
 
 `GenericContainer.autoRemove`
 
-***
+---
 
 <a id="contentstocopy"></a>
 
@@ -62,7 +62,7 @@
 
 `GenericContainer.contentsToCopy`
 
-***
+---
 
 <a id="createopts"></a>
 
@@ -74,7 +74,7 @@
 
 `GenericContainer.createOpts`
 
-***
+---
 
 <a id="directoriestocopy"></a>
 
@@ -86,7 +86,7 @@
 
 `GenericContainer.directoriesToCopy`
 
-***
+---
 
 <a id="environment"></a>
 
@@ -98,7 +98,7 @@
 
 `GenericContainer.environment`
 
-***
+---
 
 <a id="exposedports"></a>
 
@@ -110,7 +110,7 @@
 
 `GenericContainer.exposedPorts`
 
-***
+---
 
 <a id="filestocopy"></a>
 
@@ -122,7 +122,7 @@
 
 `GenericContainer.filesToCopy`
 
-***
+---
 
 <a id="healthcheck"></a>
 
@@ -134,7 +134,7 @@
 
 `GenericContainer.healthCheck`
 
-***
+---
 
 <a id="hostconfig"></a>
 
@@ -146,7 +146,7 @@
 
 `GenericContainer.hostConfig`
 
-***
+---
 
 <a id="imagename"></a>
 
@@ -158,7 +158,7 @@
 
 `GenericContainer.imageName`
 
-***
+---
 
 <a id="logconsumer"></a>
 
@@ -180,7 +180,7 @@
 
 `GenericContainer.logConsumer`
 
-***
+---
 
 <a id="networkaliases"></a>
 
@@ -192,7 +192,7 @@
 
 `GenericContainer.networkAliases`
 
-***
+---
 
 <a id="networkmode"></a>
 
@@ -204,7 +204,7 @@
 
 `GenericContainer.networkMode`
 
-***
+---
 
 <a id="pullpolicy"></a>
 
@@ -216,7 +216,7 @@
 
 `GenericContainer.pullPolicy`
 
-***
+---
 
 <a id="reuse"></a>
 
@@ -228,19 +228,19 @@
 
 `GenericContainer.reuse`
 
-***
+---
 
-<a id="startuptimeout"></a>
+<a id="startuptimeoutms"></a>
 
-### startupTimeout?
+### startupTimeoutMs?
 
-> `protected` `optional` **startupTimeout**: `number`
+> `protected` `optional` **startupTimeoutMs**: `number`
 
 #### Inherited from
 
-`GenericContainer.startupTimeout`
+`GenericContainer.startupTimeoutMs`
 
-***
+---
 
 <a id="waitstrategy"></a>
 
@@ -268,7 +268,7 @@
 
 `GenericContainer.beforeContainerCreated`
 
-***
+---
 
 <a id="containercreated"></a>
 
@@ -290,7 +290,7 @@
 
 `GenericContainer.containerCreated`
 
-***
+---
 
 <a id="containerstarted"></a>
 
@@ -320,7 +320,7 @@
 
 `GenericContainer.containerStarted`
 
-***
+---
 
 <a id="containerstarting"></a>
 
@@ -346,7 +346,7 @@
 
 `GenericContainer.containerStarting`
 
-***
+---
 
 <a id="start"></a>
 
@@ -362,7 +362,7 @@
 
 `GenericContainer.start`
 
-***
+---
 
 <a id="withaddedcapabilities"></a>
 
@@ -384,7 +384,7 @@
 
 `GenericContainer.withAddedCapabilities`
 
-***
+---
 
 <a id="withautoremove"></a>
 
@@ -406,7 +406,7 @@
 
 `GenericContainer.withAutoRemove`
 
-***
+---
 
 <a id="withbindmounts"></a>
 
@@ -428,7 +428,7 @@
 
 `GenericContainer.withBindMounts`
 
-***
+---
 
 <a id="withcommand"></a>
 
@@ -450,7 +450,7 @@
 
 `GenericContainer.withCommand`
 
-***
+---
 
 <a id="withcopyarchivestocontainer"></a>
 
@@ -472,7 +472,7 @@
 
 `GenericContainer.withCopyArchivesToContainer`
 
-***
+---
 
 <a id="withcopycontenttocontainer"></a>
 
@@ -494,7 +494,7 @@
 
 `GenericContainer.withCopyContentToContainer`
 
-***
+---
 
 <a id="withcopydirectoriestocontainer"></a>
 
@@ -516,7 +516,7 @@
 
 `GenericContainer.withCopyDirectoriesToContainer`
 
-***
+---
 
 <a id="withcopyfilestocontainer"></a>
 
@@ -538,7 +538,7 @@
 
 `GenericContainer.withCopyFilesToContainer`
 
-***
+---
 
 <a id="withdefaultlogdriver"></a>
 
@@ -554,7 +554,7 @@
 
 `GenericContainer.withDefaultLogDriver`
 
-***
+---
 
 <a id="withdroppedcapabilities"></a>
 
@@ -576,7 +576,7 @@
 
 `GenericContainer.withDroppedCapabilities`
 
-***
+---
 
 <a id="withentrypoint"></a>
 
@@ -598,7 +598,7 @@
 
 `GenericContainer.withEntrypoint`
 
-***
+---
 
 <a id="withenvironment"></a>
 
@@ -620,7 +620,7 @@
 
 `GenericContainer.withEnvironment`
 
-***
+---
 
 <a id="withexposedports"></a>
 
@@ -642,7 +642,7 @@
 
 `GenericContainer.withExposedPorts`
 
-***
+---
 
 <a id="withextrahosts"></a>
 
@@ -664,7 +664,7 @@
 
 `GenericContainer.withExtraHosts`
 
-***
+---
 
 <a id="withhealthcheck"></a>
 
@@ -686,7 +686,7 @@
 
 `GenericContainer.withHealthCheck`
 
-***
+---
 
 <a id="withhostname"></a>
 
@@ -708,7 +708,7 @@
 
 `GenericContainer.withHostname`
 
-***
+---
 
 <a id="withipcmode"></a>
 
@@ -730,7 +730,7 @@
 
 `GenericContainer.withIpcMode`
 
-***
+---
 
 <a id="withlabels"></a>
 
@@ -752,7 +752,7 @@
 
 `GenericContainer.withLabels`
 
-***
+---
 
 <a id="withlogconsumer"></a>
 
@@ -774,7 +774,7 @@
 
 `GenericContainer.withLogConsumer`
 
-***
+---
 
 <a id="withname"></a>
 
@@ -796,7 +796,7 @@
 
 `GenericContainer.withName`
 
-***
+---
 
 <a id="withnetwork"></a>
 
@@ -818,7 +818,7 @@
 
 `GenericContainer.withNetwork`
 
-***
+---
 
 <a id="withnetworkaliases"></a>
 
@@ -840,7 +840,7 @@
 
 `GenericContainer.withNetworkAliases`
 
-***
+---
 
 <a id="withnetworkmode"></a>
 
@@ -862,7 +862,7 @@
 
 `GenericContainer.withNetworkMode`
 
-***
+---
 
 <a id="withplatform"></a>
 
@@ -884,7 +884,7 @@
 
 `GenericContainer.withPlatform`
 
-***
+---
 
 <a id="withprivilegedmode"></a>
 
@@ -900,7 +900,7 @@
 
 `GenericContainer.withPrivilegedMode`
 
-***
+---
 
 <a id="withpullpolicy"></a>
 
@@ -922,7 +922,7 @@
 
 `GenericContainer.withPullPolicy`
 
-***
+---
 
 <a id="withresourcesquota"></a>
 
@@ -944,7 +944,7 @@
 
 `GenericContainer.withResourcesQuota`
 
-***
+---
 
 <a id="withreuse"></a>
 
@@ -960,7 +960,7 @@
 
 `GenericContainer.withReuse`
 
-***
+---
 
 <a id="withsharedmemorysize"></a>
 
@@ -982,7 +982,7 @@
 
 `GenericContainer.withSharedMemorySize`
 
-***
+---
 
 <a id="withstartuptimeout"></a>
 
@@ -1004,7 +1004,7 @@
 
 `GenericContainer.withStartupTimeout`
 
-***
+---
 
 <a id="withtmpfs"></a>
 
@@ -1026,7 +1026,7 @@
 
 `GenericContainer.withTmpFs`
 
-***
+---
 
 <a id="withulimits"></a>
 
@@ -1048,7 +1048,7 @@
 
 `GenericContainer.withUlimits`
 
-***
+---
 
 <a id="withuser"></a>
 
@@ -1070,7 +1070,7 @@
 
 `GenericContainer.withUser`
 
-***
+---
 
 <a id="withwaitstrategy"></a>
 
@@ -1092,7 +1092,7 @@
 
 `GenericContainer.withWaitStrategy`
 
-***
+---
 
 <a id="withworkingdir"></a>
 
@@ -1114,7 +1114,7 @@
 
 `GenericContainer.withWorkingDir`
 
-***
+---
 
 <a id="fromdockerfile"></a>
 

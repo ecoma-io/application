@@ -56,7 +56,7 @@ Container PostgreSQL dùng cho integration test.
 
 `GenericContainer.archivesToCopy`
 
-***
+---
 
 <a id="autoremove"></a>
 
@@ -68,7 +68,7 @@ Container PostgreSQL dùng cho integration test.
 
 `GenericContainer.autoRemove`
 
-***
+---
 
 <a id="contentstocopy"></a>
 
@@ -80,7 +80,7 @@ Container PostgreSQL dùng cho integration test.
 
 `GenericContainer.contentsToCopy`
 
-***
+---
 
 <a id="createopts"></a>
 
@@ -92,7 +92,7 @@ Container PostgreSQL dùng cho integration test.
 
 `GenericContainer.createOpts`
 
-***
+---
 
 <a id="directoriestocopy"></a>
 
@@ -104,7 +104,7 @@ Container PostgreSQL dùng cho integration test.
 
 `GenericContainer.directoriesToCopy`
 
-***
+---
 
 <a id="environment"></a>
 
@@ -116,7 +116,7 @@ Container PostgreSQL dùng cho integration test.
 
 `GenericContainer.environment`
 
-***
+---
 
 <a id="exposedports"></a>
 
@@ -128,7 +128,7 @@ Container PostgreSQL dùng cho integration test.
 
 `GenericContainer.exposedPorts`
 
-***
+---
 
 <a id="filestocopy"></a>
 
@@ -140,7 +140,7 @@ Container PostgreSQL dùng cho integration test.
 
 `GenericContainer.filesToCopy`
 
-***
+---
 
 <a id="healthcheck"></a>
 
@@ -152,7 +152,7 @@ Container PostgreSQL dùng cho integration test.
 
 `GenericContainer.healthCheck`
 
-***
+---
 
 <a id="hostconfig"></a>
 
@@ -164,7 +164,7 @@ Container PostgreSQL dùng cho integration test.
 
 `GenericContainer.hostConfig`
 
-***
+---
 
 <a id="imagename"></a>
 
@@ -176,7 +176,7 @@ Container PostgreSQL dùng cho integration test.
 
 `GenericContainer.imageName`
 
-***
+---
 
 <a id="logconsumer"></a>
 
@@ -198,7 +198,7 @@ Container PostgreSQL dùng cho integration test.
 
 `GenericContainer.logConsumer`
 
-***
+---
 
 <a id="networkaliases"></a>
 
@@ -210,7 +210,7 @@ Container PostgreSQL dùng cho integration test.
 
 `GenericContainer.networkAliases`
 
-***
+---
 
 <a id="networkmode"></a>
 
@@ -222,7 +222,7 @@ Container PostgreSQL dùng cho integration test.
 
 `GenericContainer.networkMode`
 
-***
+---
 
 <a id="pullpolicy"></a>
 
@@ -234,7 +234,7 @@ Container PostgreSQL dùng cho integration test.
 
 `GenericContainer.pullPolicy`
 
-***
+---
 
 <a id="reuse"></a>
 
@@ -246,19 +246,19 @@ Container PostgreSQL dùng cho integration test.
 
 `GenericContainer.reuse`
 
-***
+---
 
-<a id="startuptimeout"></a>
+<a id="startuptimeoutms"></a>
 
-### startupTimeout?
+### startupTimeoutMs?
 
-> `protected` `optional` **startupTimeout**: `number`
+> `protected` `optional` **startupTimeoutMs**: `number`
 
 #### Inherited from
 
-`GenericContainer.startupTimeout`
+`GenericContainer.startupTimeoutMs`
 
-***
+---
 
 <a id="waitstrategy"></a>
 
@@ -286,7 +286,7 @@ Container PostgreSQL dùng cho integration test.
 
 `GenericContainer.beforeContainerCreated`
 
-***
+---
 
 <a id="containercreated"></a>
 
@@ -308,7 +308,7 @@ Container PostgreSQL dùng cho integration test.
 
 `GenericContainer.containerCreated`
 
-***
+---
 
 <a id="containerstarted"></a>
 
@@ -338,7 +338,7 @@ Container PostgreSQL dùng cho integration test.
 
 `GenericContainer.containerStarted`
 
-***
+---
 
 <a id="containerstarting"></a>
 
@@ -364,7 +364,7 @@ Container PostgreSQL dùng cho integration test.
 
 `GenericContainer.containerStarting`
 
-***
+---
 
 <a id="start"></a>
 
@@ -382,7 +382,7 @@ Khởi động container và trả về instance StartedPostgresContainer
 
 `GenericContainer.start`
 
-***
+---
 
 <a id="stop"></a>
 
@@ -396,7 +396,7 @@ Dừng container sau khi sử dụng
 
 `Promise`\<`void`\>
 
-***
+---
 
 <a id="withaddedcapabilities"></a>
 
@@ -418,7 +418,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withAddedCapabilities`
 
-***
+---
 
 <a id="withautoremove"></a>
 
@@ -440,7 +440,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withAutoRemove`
 
-***
+---
 
 <a id="withbindmounts"></a>
 
@@ -462,7 +462,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withBindMounts`
 
-***
+---
 
 <a id="withcommand"></a>
 
@@ -484,7 +484,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withCommand`
 
-***
+---
 
 <a id="withcopyarchivestocontainer"></a>
 
@@ -506,7 +506,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withCopyArchivesToContainer`
 
-***
+---
 
 <a id="withcopycontenttocontainer"></a>
 
@@ -528,7 +528,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withCopyContentToContainer`
 
-***
+---
 
 <a id="withcopydirectoriestocontainer"></a>
 
@@ -550,7 +550,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withCopyDirectoriesToContainer`
 
-***
+---
 
 <a id="withcopyfilestocontainer"></a>
 
@@ -572,7 +572,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withCopyFilesToContainer`
 
-***
+---
 
 <a id="withdefaultlogdriver"></a>
 
@@ -588,7 +588,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withDefaultLogDriver`
 
-***
+---
 
 <a id="withdroppedcapabilities"></a>
 
@@ -610,7 +610,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withDroppedCapabilities`
 
-***
+---
 
 <a id="withentrypoint"></a>
 
@@ -632,7 +632,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withEntrypoint`
 
-***
+---
 
 <a id="withenvironment"></a>
 
@@ -654,7 +654,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withEnvironment`
 
-***
+---
 
 <a id="withexposedports"></a>
 
@@ -676,7 +676,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withExposedPorts`
 
-***
+---
 
 <a id="withextrahosts"></a>
 
@@ -698,7 +698,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withExtraHosts`
 
-***
+---
 
 <a id="withhealthcheck"></a>
 
@@ -720,7 +720,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withHealthCheck`
 
-***
+---
 
 <a id="withhostname"></a>
 
@@ -742,7 +742,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withHostname`
 
-***
+---
 
 <a id="withipcmode"></a>
 
@@ -764,7 +764,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withIpcMode`
 
-***
+---
 
 <a id="withlabels"></a>
 
@@ -786,7 +786,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withLabels`
 
-***
+---
 
 <a id="withlogconsumer"></a>
 
@@ -808,7 +808,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withLogConsumer`
 
-***
+---
 
 <a id="withname"></a>
 
@@ -830,7 +830,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withName`
 
-***
+---
 
 <a id="withnetwork"></a>
 
@@ -852,7 +852,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withNetwork`
 
-***
+---
 
 <a id="withnetworkaliases"></a>
 
@@ -874,7 +874,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withNetworkAliases`
 
-***
+---
 
 <a id="withnetworkmode"></a>
 
@@ -896,7 +896,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withNetworkMode`
 
-***
+---
 
 <a id="withplatform"></a>
 
@@ -918,7 +918,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withPlatform`
 
-***
+---
 
 <a id="withprivilegedmode"></a>
 
@@ -934,7 +934,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withPrivilegedMode`
 
-***
+---
 
 <a id="withpullpolicy"></a>
 
@@ -956,7 +956,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withPullPolicy`
 
-***
+---
 
 <a id="withresourcesquota"></a>
 
@@ -978,7 +978,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withResourcesQuota`
 
-***
+---
 
 <a id="withreuse"></a>
 
@@ -994,7 +994,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withReuse`
 
-***
+---
 
 <a id="withsharedmemorysize"></a>
 
@@ -1016,7 +1016,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withSharedMemorySize`
 
-***
+---
 
 <a id="withstartuptimeout"></a>
 
@@ -1038,7 +1038,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withStartupTimeout`
 
-***
+---
 
 <a id="withtmpfs"></a>
 
@@ -1060,7 +1060,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withTmpFs`
 
-***
+---
 
 <a id="withulimits"></a>
 
@@ -1082,7 +1082,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withUlimits`
 
-***
+---
 
 <a id="withuser"></a>
 
@@ -1104,7 +1104,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withUser`
 
-***
+---
 
 <a id="withwaitstrategy"></a>
 
@@ -1126,7 +1126,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withWaitStrategy`
 
-***
+---
 
 <a id="withworkingdir"></a>
 
@@ -1148,7 +1148,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withWorkingDir`
 
-***
+---
 
 <a id="fromdockerfile"></a>
 

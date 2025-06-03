@@ -16,6 +16,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@ecoma/nestjs-config": ["libs/nestjs-config/src/index.ts"],
       "@ecoma/nge-auth": ["libs/nge-auth/src/index.ts"],
       "@ecoma/nge-cookie": ["libs/nge-cookie/src/index.ts"],
       "@ecoma/nge-domain": ["libs/nge-domain/src/index.ts"],

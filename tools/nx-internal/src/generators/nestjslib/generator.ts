@@ -1,8 +1,8 @@
 import { formatFiles, generateFiles, Tree, updateJson } from '@nx/devkit';
 import * as path from 'path';
-import { InestjslibGeneratorSchema } from './schema';
+import { INestjslibGeneratorSchema } from './schema';
 
-export async function nestjslibGenerator(tree: Tree, options: InestjslibGeneratorSchema) {
+export async function nestjslibGenerator(tree: Tree, options: INestjslibGeneratorSchema) {
   const projectRoot = `libs/${options.name}`;
   generateFiles(tree, path.join(__dirname, 'files'), projectRoot, options);
   updateJson(tree, 'tsconfig.base.json', (tsConfig) => {

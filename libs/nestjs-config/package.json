@@ -1,0 +1,13 @@
+{
+  "name": "@ecoma/nestjs-config",
+  "version": "0.0.0",
+  "type": "commonjs",
+  "main": "./src/index.js",
+  "types": "./src/index.d.ts",
+  "dependencies": {
+    "class-validator": "^0.14.2",
+    "class-transformer": "^0.5.1",
+    "@nestjs/config": "^4.0.2",
+    "tslib": "^2.8.1"
+  }
+}

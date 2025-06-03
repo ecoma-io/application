@@ -1,3 +1,3 @@
-export interface InestjslibGeneratorSchema {
+export interface INestjslibGeneratorSchema {
   name: string;
 }

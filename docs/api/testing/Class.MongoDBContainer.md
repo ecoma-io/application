@@ -38,7 +38,7 @@
 
 `GenericContainer.archivesToCopy`
 
-***
+---
 
 <a id="autoremove"></a>
 
@@ -50,7 +50,7 @@
 
 `GenericContainer.autoRemove`
 
-***
+---
 
 <a id="contentstocopy"></a>
 
@@ -62,7 +62,7 @@
 
 `GenericContainer.contentsToCopy`
 
-***
+---
 
 <a id="createopts"></a>
 
@@ -74,7 +74,7 @@
 
 `GenericContainer.createOpts`
 
-***
+---
 
 <a id="directoriestocopy"></a>
 
@@ -86,7 +86,7 @@
 
 `GenericContainer.directoriesToCopy`
 
-***
+---
 
 <a id="environment"></a>
 
@@ -98,7 +98,7 @@
 
 `GenericContainer.environment`
 
-***
+---
 
 <a id="exposedports"></a>
 
@@ -110,7 +110,7 @@
 
 `GenericContainer.exposedPorts`
 
-***
+---
 
 <a id="filestocopy"></a>
 
@@ -122,7 +122,7 @@
 
 `GenericContainer.filesToCopy`
 
-***
+---
 
 <a id="healthcheck"></a>
 
@@ -134,7 +134,7 @@
 
 `GenericContainer.healthCheck`
 
-***
+---
 
 <a id="hostconfig"></a>
 
@@ -146,7 +146,7 @@
 
 `GenericContainer.hostConfig`
 
-***
+---
 
 <a id="imagename"></a>
 
@@ -158,7 +158,7 @@
 
 `GenericContainer.imageName`
 
-***
+---
 
 <a id="logconsumer"></a>
 
@@ -180,7 +180,7 @@
 
 `GenericContainer.logConsumer`
 
-***
+---
 
 <a id="networkaliases"></a>
 
@@ -192,7 +192,7 @@
 
 `GenericContainer.networkAliases`
 
-***
+---
 
 <a id="networkmode"></a>
 
@@ -204,7 +204,7 @@
 
 `GenericContainer.networkMode`
 
-***
+---
 
 <a id="pullpolicy"></a>
 
@@ -216,7 +216,7 @@
 
 `GenericContainer.pullPolicy`
 
-***
+---
 
 <a id="reuse"></a>
 
@@ -228,19 +228,19 @@
 
 `GenericContainer.reuse`
 
-***
+---
 
-<a id="startuptimeout"></a>
+<a id="startuptimeoutms"></a>
 
-### startupTimeout?
+### startupTimeoutMs?
 
-> `protected` `optional` **startupTimeout**: `number`
+> `protected` `optional` **startupTimeoutMs**: `number`
 
 #### Inherited from
 
-`GenericContainer.startupTimeout`
+`GenericContainer.startupTimeoutMs`
 
-***
+---
 
 <a id="waitstrategy"></a>
 
@@ -268,7 +268,7 @@
 
 `GenericContainer.beforeContainerCreated`
 
-***
+---
 
 <a id="containercreated"></a>
 
@@ -290,7 +290,7 @@
 
 `GenericContainer.containerCreated`
 
-***
+---
 
 <a id="containerstarted"></a>
 
@@ -312,7 +312,7 @@
 
 `GenericContainer.containerStarted`
 
-***
+---
 
 <a id="containerstarting"></a>
 
@@ -338,7 +338,7 @@
 
 `GenericContainer.containerStarting`
 
-***
+---
 
 <a id="start"></a>
 
@@ -354,7 +354,7 @@
 
 `GenericContainer.start`
 
-***
+---
 
 <a id="stop"></a>
 
@@ -368,7 +368,7 @@ Dừng container sau khi sử dụng
 
 `Promise`\<`void`\>
 
-***
+---
 
 <a id="withaddedcapabilities"></a>
 
@@ -390,7 +390,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withAddedCapabilities`
 
-***
+---
 
 <a id="withautoremove"></a>
 
@@ -412,7 +412,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withAutoRemove`
 
-***
+---
 
 <a id="withbindmounts"></a>
 
@@ -434,7 +434,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withBindMounts`
 
-***
+---
 
 <a id="withcommand"></a>
 
@@ -456,7 +456,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withCommand`
 
-***
+---
 
 <a id="withcopyarchivestocontainer"></a>
 
@@ -478,7 +478,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withCopyArchivesToContainer`
 
-***
+---
 
 <a id="withcopycontenttocontainer"></a>
 
@@ -500,7 +500,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withCopyContentToContainer`
 
-***
+---
 
 <a id="withcopydirectoriestocontainer"></a>
 
@@ -522,7 +522,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withCopyDirectoriesToContainer`
 
-***
+---
 
 <a id="withcopyfilestocontainer"></a>
 
@@ -544,7 +544,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withCopyFilesToContainer`
 
-***
+---
 
 <a id="withdefaultlogdriver"></a>
 
@@ -560,7 +560,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withDefaultLogDriver`
 
-***
+---
 
 <a id="withdroppedcapabilities"></a>
 
@@ -582,7 +582,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withDroppedCapabilities`
 
-***
+---
 
 <a id="withentrypoint"></a>
 
@@ -604,7 +604,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withEntrypoint`
 
-***
+---
 
 <a id="withenvironment"></a>
 
@@ -626,7 +626,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withEnvironment`
 
-***
+---
 
 <a id="withexposedports"></a>
 
@@ -648,7 +648,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withExposedPorts`
 
-***
+---
 
 <a id="withextrahosts"></a>
 
@@ -670,7 +670,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withExtraHosts`
 
-***
+---
 
 <a id="withhealthcheck"></a>
 
@@ -692,7 +692,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withHealthCheck`
 
-***
+---
 
 <a id="withhostname"></a>
 
@@ -714,7 +714,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withHostname`
 
-***
+---
 
 <a id="withipcmode"></a>
 
@@ -736,7 +736,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withIpcMode`
 
-***
+---
 
 <a id="withlabels"></a>
 
@@ -758,7 +758,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withLabels`
 
-***
+---
 
 <a id="withlogconsumer"></a>
 
@@ -780,7 +780,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withLogConsumer`
 
-***
+---
 
 <a id="withname"></a>
 
@@ -802,7 +802,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withName`
 
-***
+---
 
 <a id="withnetwork"></a>
 
@@ -824,7 +824,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withNetwork`
 
-***
+---
 
 <a id="withnetworkaliases"></a>
 
@@ -846,7 +846,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withNetworkAliases`
 
-***
+---
 
 <a id="withnetworkmode"></a>
 
@@ -868,7 +868,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withNetworkMode`
 
-***
+---
 
 <a id="withplatform"></a>
 
@@ -890,7 +890,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withPlatform`
 
-***
+---
 
 <a id="withprivilegedmode"></a>
 
@@ -906,7 +906,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withPrivilegedMode`
 
-***
+---
 
 <a id="withpullpolicy"></a>
 
@@ -928,7 +928,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withPullPolicy`
 
-***
+---
 
 <a id="withresourcesquota"></a>
 
@@ -950,7 +950,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withResourcesQuota`
 
-***
+---
 
 <a id="withreuse"></a>
 
@@ -966,7 +966,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withReuse`
 
-***
+---
 
 <a id="withsharedmemorysize"></a>
 
@@ -988,7 +988,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withSharedMemorySize`
 
-***
+---
 
 <a id="withstartuptimeout"></a>
 
@@ -1010,7 +1010,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withStartupTimeout`
 
-***
+---
 
 <a id="withtmpfs"></a>
 
@@ -1032,7 +1032,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withTmpFs`
 
-***
+---
 
 <a id="withulimits"></a>
 
@@ -1054,7 +1054,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withUlimits`
 
-***
+---
 
 <a id="withuser"></a>
 
@@ -1076,7 +1076,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withUser`
 
-***
+---
 
 <a id="withwaitstrategy"></a>
 
@@ -1098,7 +1098,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withWaitStrategy`
 
-***
+---
 
 <a id="withworkingdir"></a>
 
@@ -1120,7 +1120,7 @@ Dừng container sau khi sử dụng
 
 `GenericContainer.withWorkingDir`
 
-***
+---
 
 <a id="fromdockerfile"></a>
 

@@ -44,7 +44,7 @@ Image Docker của ToxiProxy, mặc định là "ghcr.io/shopify/toxiproxy:2.11.
 
 `GenericContainer.archivesToCopy`
 
-***
+---
 
 <a id="autoremove"></a>
 
@@ -56,7 +56,7 @@ Image Docker của ToxiProxy, mặc định là "ghcr.io/shopify/toxiproxy:2.11.
 
 `GenericContainer.autoRemove`
 
-***
+---
 
 <a id="contentstocopy"></a>
 
@@ -68,7 +68,7 @@ Image Docker của ToxiProxy, mặc định là "ghcr.io/shopify/toxiproxy:2.11.
 
 `GenericContainer.contentsToCopy`
 
-***
+---
 
 <a id="createopts"></a>
 
@@ -80,7 +80,7 @@ Image Docker của ToxiProxy, mặc định là "ghcr.io/shopify/toxiproxy:2.11.
 
 `GenericContainer.createOpts`
 
-***
+---
 
 <a id="directoriestocopy"></a>
 
@@ -92,7 +92,7 @@ Image Docker của ToxiProxy, mặc định là "ghcr.io/shopify/toxiproxy:2.11.
 
 `GenericContainer.directoriesToCopy`
 
-***
+---
 
 <a id="environment"></a>
 
@@ -104,7 +104,7 @@ Image Docker của ToxiProxy, mặc định là "ghcr.io/shopify/toxiproxy:2.11.
 
 `GenericContainer.environment`
 
-***
+---
 
 <a id="exposedports"></a>
 
@@ -116,7 +116,7 @@ Image Docker của ToxiProxy, mặc định là "ghcr.io/shopify/toxiproxy:2.11.
 
 `GenericContainer.exposedPorts`
 
-***
+---
 
 <a id="filestocopy"></a>
 
@@ -128,7 +128,7 @@ Image Docker của ToxiProxy, mặc định là "ghcr.io/shopify/toxiproxy:2.11.
 
 `GenericContainer.filesToCopy`
 
-***
+---
 
 <a id="healthcheck"></a>
 
@@ -140,7 +140,7 @@ Image Docker của ToxiProxy, mặc định là "ghcr.io/shopify/toxiproxy:2.11.
 
 `GenericContainer.healthCheck`
 
-***
+---
 
 <a id="hostconfig"></a>
 
@@ -152,7 +152,7 @@ Image Docker của ToxiProxy, mặc định là "ghcr.io/shopify/toxiproxy:2.11.
 
 `GenericContainer.hostConfig`
 
-***
+---
 
 <a id="imagename"></a>
 
@@ -164,7 +164,7 @@ Image Docker của ToxiProxy, mặc định là "ghcr.io/shopify/toxiproxy:2.11.
 
 `GenericContainer.imageName`
 
-***
+---
 
 <a id="logconsumer"></a>
 
@@ -186,7 +186,7 @@ Image Docker của ToxiProxy, mặc định là "ghcr.io/shopify/toxiproxy:2.11.
 
 `GenericContainer.logConsumer`
 
-***
+---
 
 <a id="networkaliases"></a>
 
@@ -198,7 +198,7 @@ Image Docker của ToxiProxy, mặc định là "ghcr.io/shopify/toxiproxy:2.11.
 
 `GenericContainer.networkAliases`
 
-***
+---
 
 <a id="networkmode"></a>
 
@@ -210,7 +210,7 @@ Image Docker của ToxiProxy, mặc định là "ghcr.io/shopify/toxiproxy:2.11.
 
 `GenericContainer.networkMode`
 
-***
+---
 
 <a id="pullpolicy"></a>
 
@@ -222,7 +222,7 @@ Image Docker của ToxiProxy, mặc định là "ghcr.io/shopify/toxiproxy:2.11.
 
 `GenericContainer.pullPolicy`
 
-***
+---
 
 <a id="reuse"></a>
 
@@ -234,19 +234,19 @@ Image Docker của ToxiProxy, mặc định là "ghcr.io/shopify/toxiproxy:2.11.
 
 `GenericContainer.reuse`
 
-***
+---
 
-<a id="startuptimeout"></a>
+<a id="startuptimeoutms"></a>
 
-### startupTimeout?
+### startupTimeoutMs?
 
-> `protected` `optional` **startupTimeout**: `number`
+> `protected` `optional` **startupTimeoutMs**: `number`
 
 #### Inherited from
 
-`GenericContainer.startupTimeout`
+`GenericContainer.startupTimeoutMs`
 
-***
+---
 
 <a id="waitstrategy"></a>
 
@@ -274,7 +274,7 @@ Image Docker của ToxiProxy, mặc định là "ghcr.io/shopify/toxiproxy:2.11.
 
 `GenericContainer.beforeContainerCreated`
 
-***
+---
 
 <a id="containercreated"></a>
 
@@ -296,7 +296,7 @@ Image Docker của ToxiProxy, mặc định là "ghcr.io/shopify/toxiproxy:2.11.
 
 `GenericContainer.containerCreated`
 
-***
+---
 
 <a id="containerstarted"></a>
 
@@ -326,7 +326,7 @@ Image Docker của ToxiProxy, mặc định là "ghcr.io/shopify/toxiproxy:2.11.
 
 `GenericContainer.containerStarted`
 
-***
+---
 
 <a id="containerstarting"></a>
 
@@ -352,7 +352,7 @@ Image Docker của ToxiProxy, mặc định là "ghcr.io/shopify/toxiproxy:2.11.
 
 `GenericContainer.containerStarting`
 
-***
+---
 
 <a id="start"></a>
 
@@ -372,7 +372,7 @@ Promise với instance StartedToxiProxyContainer
 
 `GenericContainer.start`
 
-***
+---
 
 <a id="withaddedcapabilities"></a>
 
@@ -394,7 +394,7 @@ Promise với instance StartedToxiProxyContainer
 
 `GenericContainer.withAddedCapabilities`
 
-***
+---
 
 <a id="withautoremove"></a>
 
@@ -416,7 +416,7 @@ Promise với instance StartedToxiProxyContainer
 
 `GenericContainer.withAutoRemove`
 
-***
+---
 
 <a id="withbindmounts"></a>
 
@@ -438,7 +438,7 @@ Promise với instance StartedToxiProxyContainer
 
 `GenericContainer.withBindMounts`
 
-***
+---
 
 <a id="withcommand"></a>
 
@@ -460,7 +460,7 @@ Promise với instance StartedToxiProxyContainer
 
 `GenericContainer.withCommand`
 
-***
+---
 
 <a id="withcopyarchivestocontainer"></a>
 
@@ -482,7 +482,7 @@ Promise với instance StartedToxiProxyContainer
 
 `GenericContainer.withCopyArchivesToContainer`
 
-***
+---
 
 <a id="withcopycontenttocontainer"></a>
 
@@ -504,7 +504,7 @@ Promise với instance StartedToxiProxyContainer
 
 `GenericContainer.withCopyContentToContainer`
 
-***
+---
 
 <a id="withcopydirectoriestocontainer"></a>
 
@@ -526,7 +526,7 @@ Promise với instance StartedToxiProxyContainer
 
 `GenericContainer.withCopyDirectoriesToContainer`
 
-***
+---
 
 <a id="withcopyfilestocontainer"></a>
 
@@ -548,7 +548,7 @@ Promise với instance StartedToxiProxyContainer
 
 `GenericContainer.withCopyFilesToContainer`
 
-***
+---
 
 <a id="withdefaultlogdriver"></a>
 
@@ -564,7 +564,7 @@ Promise với instance StartedToxiProxyContainer
 
 `GenericContainer.withDefaultLogDriver`
 
-***
+---
 
 <a id="withdroppedcapabilities"></a>
 
@@ -586,7 +586,7 @@ Promise với instance StartedToxiProxyContainer
 
 `GenericContainer.withDroppedCapabilities`
 
-***
+---
 
 <a id="withentrypoint"></a>
 
@@ -608,7 +608,7 @@ Promise với instance StartedToxiProxyContainer
 
 `GenericContainer.withEntrypoint`
 
-***
+---
 
 <a id="withenvironment"></a>
 
@@ -630,7 +630,7 @@ Promise với instance StartedToxiProxyContainer
 
 `GenericContainer.withEnvironment`
 
-***
+---
 
 <a id="withexposedports"></a>
 
@@ -652,7 +652,7 @@ Promise với instance StartedToxiProxyContainer
 
 `GenericContainer.withExposedPorts`
 
-***
+---
 
 <a id="withextrahosts"></a>
 
@@ -674,7 +674,7 @@ Promise với instance StartedToxiProxyContainer
 
 `GenericContainer.withExtraHosts`
 
-***
+---
 
 <a id="withhealthcheck"></a>
 
@@ -696,7 +696,7 @@ Promise với instance StartedToxiProxyContainer
 
 `GenericContainer.withHealthCheck`
 
-***
+---
 
 <a id="withhostname"></a>
 
@@ -718,7 +718,7 @@ Promise với instance StartedToxiProxyContainer
 
 `GenericContainer.withHostname`
 
-***
+---
 
 <a id="withipcmode"></a>
 
@@ -740,7 +740,7 @@ Promise với instance StartedToxiProxyContainer
 
 `GenericContainer.withIpcMode`
 
-***
+---
 
 <a id="withlabels"></a>
 
@@ -762,7 +762,7 @@ Promise với instance StartedToxiProxyContainer
 
 `GenericContainer.withLabels`
 
-***
+---
 
 <a id="withlogconsumer"></a>
 
@@ -784,7 +784,7 @@ Promise với instance StartedToxiProxyContainer
 
 `GenericContainer.withLogConsumer`
 
-***
+---
 
 <a id="withname"></a>
 
@@ -806,7 +806,7 @@ Promise với instance StartedToxiProxyContainer
 
 `GenericContainer.withName`
 
-***
+---
 
 <a id="withnetwork"></a>
 
@@ -828,7 +828,7 @@ Promise với instance StartedToxiProxyContainer
 
 `GenericContainer.withNetwork`
 
-***
+---
 
 <a id="withnetworkaliases"></a>
 
@@ -850,7 +850,7 @@ Promise với instance StartedToxiProxyContainer
 
 `GenericContainer.withNetworkAliases`
 
-***
+---
 
 <a id="withnetworkmode"></a>
 
@@ -872,7 +872,7 @@ Promise với instance StartedToxiProxyContainer
 
 `GenericContainer.withNetworkMode`
 
-***
+---
 
 <a id="withplatform"></a>
 
@@ -894,7 +894,7 @@ Promise với instance StartedToxiProxyContainer
 
 `GenericContainer.withPlatform`
 
-***
+---
 
 <a id="withprivilegedmode"></a>
 
@@ -910,7 +910,7 @@ Promise với instance StartedToxiProxyContainer
 
 `GenericContainer.withPrivilegedMode`
 
-***
+---
 
 <a id="withpullpolicy"></a>
 
@@ -932,7 +932,7 @@ Promise với instance StartedToxiProxyContainer
 
 `GenericContainer.withPullPolicy`
 
-***
+---
 
 <a id="withresourcesquota"></a>
 
@@ -954,7 +954,7 @@ Promise với instance StartedToxiProxyContainer
 
 `GenericContainer.withResourcesQuota`
 
-***
+---
 
 <a id="withreuse"></a>
 
@@ -970,7 +970,7 @@ Promise với instance StartedToxiProxyContainer
 
 `GenericContainer.withReuse`
 
-***
+---
 
 <a id="withsharedmemorysize"></a>
 
@@ -992,7 +992,7 @@ Promise với instance StartedToxiProxyContainer
 
 `GenericContainer.withSharedMemorySize`
 
-***
+---
 
 <a id="withstartuptimeout"></a>
 
@@ -1014,7 +1014,7 @@ Promise với instance StartedToxiProxyContainer
 
 `GenericContainer.withStartupTimeout`
 
-***
+---
 
 <a id="withtmpfs"></a>
 
@@ -1036,7 +1036,7 @@ Promise với instance StartedToxiProxyContainer
 
 `GenericContainer.withTmpFs`
 
-***
+---
 
 <a id="withulimits"></a>
 
@@ -1058,7 +1058,7 @@ Promise với instance StartedToxiProxyContainer
 
 `GenericContainer.withUlimits`
 
-***
+---
 
 <a id="withuser"></a>
 
@@ -1080,7 +1080,7 @@ Promise với instance StartedToxiProxyContainer
 
 `GenericContainer.withUser`
 
-***
+---
 
 <a id="withwaitstrategy"></a>
 
@@ -1102,7 +1102,7 @@ Promise với instance StartedToxiProxyContainer
 
 `GenericContainer.withWaitStrategy`
 
-***
+---
 
 <a id="withworkingdir"></a>
 
@@ -1124,7 +1124,7 @@ Promise với instance StartedToxiProxyContainer
 
 `GenericContainer.withWorkingDir`
 
-***
+---
 
 <a id="fromdockerfile"></a>
 
