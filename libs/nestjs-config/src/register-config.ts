@@ -2,7 +2,7 @@ import { ClassConstructor, plainToInstance } from 'class-transformer';
 import { validateSync } from 'class-validator';
 import { registerAs, ConfigObject } from '@nestjs/config';
 
-export function registerConfig<TEnviromentObject, TConfig extends ConfigObject>(
+export function registerConfig<TEnviromentObject, TConfig extends ConfigObject = ConfigObject>(
   token: string,
   envClss: ClassConstructor<TEnviromentObject>,
   defaults: { [key: string]: string } | undefined,
