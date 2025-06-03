@@ -1,0 +1,120 @@
+import { HttpStatus } from '@nestjs/common';
+import {
+  MongoDBContainer,
+  StartedMongoDBContainer,
+  TestLogger,
+} from "@ecoma/testing";
+import axios from "axios";
+import mongoose from "mongoose";
+import { GenericContainer, StartedTestContainer } from "testcontainers";
+
+describe("<%=name.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')%> E2E Tests", () => {
+  let mongoContainer: StartedMongoDBContainer;
+  let iamServiceContainer: StartedTestContainer;
+  let mongoConnection: mongoose.Connection;
+
+  // Thiết lập môi trường test trước tất cả các test case
+  beforeAll(async () => {
+    TestLogger.divider("<%=name.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')%> E2E Test Setup");
+    TestLogger.log(
+      "Setting up test environment for <%=name.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')%> E2E tests..."
+    );
+
+    // Khởi tạo MongoDB container
+    TestLogger.log("Starting MongoDB container...");
+    mongoContainer = await new MongoDBContainer().start();
+    TestLogger.log(
+      `MongoDB container started at ${mongoContainer.getConnectionString()}`
+    );
+
+
+    // Khởi tạo iam service container
+    TestLogger.log("Starting <%=name.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')%> container...");
+    iamServiceContainer = await new GenericContainer('iam-service')
+      .withEnvironment({
+        LOG_LEVEL: "debug",
+        LOG_FORMAT: "text",
+        MONGODB_URI: mongoContainer.getConnectionString(),
+        PORT: "3000",
+      })
+      .withExposedPorts(3000)
+      .withLogConsumer((stream) => {
+        stream.on("data", (line: string) => {
+          TestLogger.log(line);
+        });
+        stream.on("error", (error: Error) => {
+          TestLogger.error("Error consuming logs:", error);
+        });
+      })
+      .start();
+
+    TestLogger.log("Started <%=name.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')%> container successfully");
+
+    // Cấu hình axios để trỏ đến IAM service
+    const host = iamServiceContainer.getHost();
+    const port = iamServiceContainer.getMappedPort(3000);
+    axios.defaults.baseURL = `http://${host}:${port}`;
+    TestLogger.log(
+      `<%=name.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')%> container accessible at http://${host}:${port}`
+    );
+
+    // Kết nối đến MongoDB
+    TestLogger.log("Connecting to MongoDB...");
+    mongoConnection = await mongoose
+      .createConnection(mongoContainer.getConnectionString(), {
+        dbName: "iam",
+      })
+      .asPromise();
+    TestLogger.log("Connected to MongoDB successfully");
+
+
+    TestLogger.log("Test environment setup completed successfully!");
+  }, 120000); // Timeout 60s cho việc khởi tạo
+
+  // Dọn dẹp sau khi tất cả các test hoàn thành
+  afterAll(async () => {
+    TestLogger.divider("<%=name.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')%> E2E Test Teardown");
+
+    try {
+
+      // Đóng kết nối MongoDB
+      if (mongoConnection) {
+        TestLogger.log("Closing MongoDB connection...");
+        await mongoConnection.close();
+      }
+
+      // Dừng các containers theo thứ tự ngược lại
+      if (iamServiceContainer) {
+        TestLogger.log("Stopping <%=name.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')%> container...");
+        await iamServiceContainer.stop();
+      }
+      if (mongoContainer) {
+        TestLogger.log("Stopping MongoDB container...");
+        await mongoContainer.stop();
+      }
+
+      TestLogger.log("Test environment teardown completed successfully!");
+    } catch (error) {
+      TestLogger.error("Error during test teardown:", error);
+      throw error;
+    }
+  }, 30000); // Timeout 30s cho việc dọn dẹp
+
+  // Xóa tất cả dữ liệu audit log trước mỗi test
+  beforeEach(async () => {
+    // Xóa dữ liệu trong collection entries
+    await mongoConnection.db.collection("entries").deleteMany({});
+    // Xóa dữ liệu trong collection retention-policies
+    await mongoConnection.db.collection("retention-policies").deleteMany({});
+  });
+
+  // Test case: Kiểm tra health endpoint
+  it("should return health status OK", async () => {
+    TestLogger.divider("Case: Health endpoint");
+    const response = await axios.get("/health");
+    expect(response.status).toBe(200);
+    expect(response.data.status).toBe("ok");
+  });
+
+
+});

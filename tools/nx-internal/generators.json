@@ -19,6 +19,11 @@
       "factory": "./src/generators/nestjslib/generator",
       "schema": "./src/generators/nestjslib/schema.json",
       "description": "nestjslib generator"
+    },
+    "nestjsapp": {
+      "factory": "./src/generators/nestjsapp/generator",
+      "schema": "./src/generators/nestjsapp/schema.json",
+      "description": "nestjsapp generator"
     }
   }
 }
