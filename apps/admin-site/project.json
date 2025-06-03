@@ -65,7 +65,8 @@
     "serve": {
       "executor": "@angular-devkit/build-angular:dev-server",
       "options": {
-        "host": "admin.fbi.com",
+        "disableHostCheck": true,
+        "host": "0.0.0.0",
         "port": 4202,
         "buildTarget": "admin-site:browser:development"
       }

@@ -96,7 +96,8 @@
     "ssr": {
       "executor": "@angular-devkit/build-angular:ssr-dev-server",
       "options": {
-        "host": "app.fbi.com",
+        "disableHostCheck": true,
+        "host": "0.0.0.0",
         "port": 4203,
         "browserTarget": "app-site:browser:development",
         "serverTarget": "app-site:build:development"
