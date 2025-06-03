@@ -25,6 +25,9 @@
         "assets": ["libs/<%= name %>/*.md"]
       }
     },
+    "gen-docs": {
+      "executor": "@ecoma/nx-typedoc:executor"
+    },
     "publish": {
       "dependsOn": ["build"],
       "executor": "nx:run-commands",
