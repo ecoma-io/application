@@ -14,6 +14,11 @@
       "factory": "./src/generators/angularapp/generator",
       "schema": "./src/generators/angularapp/schema.json",
       "description": "angularapp generator"
+    },
+    "nestjslib": {
+      "factory": "./src/generators/nestjslib/generator",
+      "schema": "./src/generators/nestjslib/schema.json",
+      "description": "nestjslib generator"
     }
   }
 }
