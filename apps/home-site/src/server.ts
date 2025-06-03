@@ -4,13 +4,21 @@ import { APP_BASE_HREF } from '@angular/common';
 import { CommonEngine } from '@angular/ssr/node';
 import express from 'express';
 import { join } from 'node:path';
-
 import bootstrap from './main.server';
+import { provideSsrDomain } from '@ecoma/nge-domain';
+import { provideSsrCookie } from '@ecoma/nge-cookie';
+import { provideSsrSvgInjector } from '@ecoma/nge-svg-injector';
+import {provideLocation, provideUserAgent} from '@ng-web-apis/universal';
 
-// The Express app is exported so that it can be used by serverless Functions.
+/**
+ * Tạo và cấu hình ứng dụng Express.
+ * Xử lý các yêu cầu SSR và phục vụ tệp tĩnh.
+ * @returns Ứng dụng Express đã được cấu hình
+ */
 export function app(): express.Express {
   const server = express();
   server.set('trust proxy', 'uniquelocal');
+
   const distFolder = join(__dirname, '../browser');
   const indexHtml = join(distFolder, 'index.html');
 
@@ -28,8 +36,7 @@ export function app(): express.Express {
     res.status(200).send('OK');
   });
 
-  // All regular routes use the Angular engine
-  server.get('*', (req, res, next) => {
+  server.get("*", (req, res, next) => {
     const { protocol, originalUrl, baseUrl, headers } = req;
 
     commonEngine
@@ -42,6 +49,11 @@ export function app(): express.Express {
           { provide: APP_BASE_HREF, useValue: baseUrl },
           { provide: 'REQUEST', useValue: req },
           { provide: 'RESPONSE', useValue: res },
+          provideLocation(req),
+          provideUserAgent(req),
+          provideSsrSvgInjector(`${protocol}://${headers.host}${baseUrl}`),
+          provideSsrDomain(req),
+          provideSsrCookie(req),
         ],
       })
       .then((html) => res.send(html))
@@ -51,6 +63,10 @@ export function app(): express.Express {
   return server;
 }
 
+/**
+ * Khởi chạy máy chủ Express.
+ * Lắng nghe các kết nối HTTP trên cổng được chỉ định.
+ */
 function run(): void {
   const port = process.env['PORT'] || 4000;
 

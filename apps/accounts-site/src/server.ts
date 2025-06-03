@@ -8,6 +8,7 @@ import bootstrap from './main.server';
 import { provideSsrDomain } from '@ecoma/nge-domain';
 import { provideSsrCookie } from '@ecoma/nge-cookie';
 import { provideSsrSvgInjector } from '@ecoma/nge-svg-injector';
+import {provideLocation, provideUserAgent} from '@ng-web-apis/universal';
 
 /**
  * Tạo và cấu hình ứng dụng Express.
@@ -48,6 +49,8 @@ export function app(): express.Express {
           { provide: APP_BASE_HREF, useValue: baseUrl },
           { provide: 'REQUEST', useValue: req },
           { provide: 'RESPONSE', useValue: res },
+          provideLocation(req),
+          provideUserAgent(req),
           provideSsrSvgInjector(`${protocol}://${headers.host}${baseUrl}`),
           provideSsrDomain(req),
           provideSsrCookie(req),

@@ -79,13 +79,16 @@ importers:
         version: 11.2.0(@nestjs/common@11.1.2(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.2)(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)
       '@nestjs/terminus':
         specifier: ^11.0.0
-        version: 11.0.0(2ff1ee625823beb4703cbafa4d6e7f4e)
+        version: 11.0.0(g3m4fnbnd2ff2lkys6ovlnjgwa)
       '@nestjs/typeorm':
         specifier: ^11.0.0
         version: 11.0.0(@nestjs/common@11.1.2(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.2)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@0.3.24(babel-plugin-macros@3.1.0)(ioredis@5.6.1)(mongodb@6.16.0(socks@2.8.4))(reflect-metadata@0.2.2)(ts-node@10.9.1(@swc/core@1.5.29(@swc/helpers@0.5.17))(@types/node@22.15.29)(typescript@5.8.3)))
       '@ng-web-apis/common':
         specifier: ^4.12.0
         version: 4.12.0(@angular/common@19.2.0(@angular/core@19.2.0(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@19.2.0(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2)
+      '@ng-web-apis/universal':
+        specifier: ^4.12.0
+        version: 4.12.0(@angular/core@19.2.0(rxjs@7.8.2)(zone.js@0.15.1))(@ng-web-apis/common@4.12.0(@angular/common@19.2.0(@angular/core@19.2.0(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@19.2.0(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@types/node@22.15.29)(rxjs@7.8.2)
       '@sapphire/snowflake':
         specifier: ^3.5.5
         version: 3.5.5
@@ -158,7 +161,7 @@ importers:
         version: 0.6.0
       '@angular-devkit/build-angular':
         specifier: 19.2.0
-        version: 19.2.0(56662f9ab0f8de3ea29b8ba3ea577165)
+        version: 19.2.0(bzr5q56xxlepg6mofjl57sawsa)
       '@angular-devkit/core':
         specifier: 19.2.0
         version: 19.2.0
@@ -200,7 +203,7 @@ importers:
         version: 6.7.1(@nx/devkit@21.1.2(nx@21.1.2(@swc-node/register@1.9.2(@swc/core@1.5.29(@swc/helpers@0.5.17))(@swc/types@0.1.21)(typescript@5.8.3))(@swc/core@1.5.29(@swc/helpers@0.5.17))))(@nx/js@21.1.2(@babel/traverse@7.27.3)(@swc-node/register@1.9.2(@swc/core@1.5.29(@swc/helpers@0.5.17))(@swc/types@0.1.21)(typescript@5.8.3))(@swc/core@1.5.29(@swc/helpers@0.5.17))(nx@21.1.2(@swc-node/register@1.9.2(@swc/core@1.5.29(@swc/helpers@0.5.17))(@swc/types@0.1.21)(typescript@5.8.3))(@swc/core@1.5.29(@swc/helpers@0.5.17)))(verdaccio@6.1.2(encoding@0.1.13)(typanion@3.14.0)))(dotenv@16.5.0)(nx@21.1.2(@swc-node/register@1.9.2(@swc/core@1.5.29(@swc/helpers@0.5.17))(@swc/types@0.1.21)(typescript@5.8.3))(@swc/core@1.5.29(@swc/helpers@0.5.17)))(tslib@2.8.1)
       '@nx/angular':
         specifier: 21.1.2
-        version: 21.1.2(b0773883fd92783548a0d35073153a37)
+        version: 21.1.2(dneeowfttzyrvrksuha7nhlcfa)
       '@nx/devkit':
         specifier: 21.1.2
         version: 21.1.2(nx@21.1.2(@swc-node/register@1.9.2(@swc/core@1.5.29(@swc/helpers@0.5.17))(@swc/types@0.1.21)(typescript@5.8.3))(@swc/core@1.5.29(@swc/helpers@0.5.17)))
@@ -3084,6 +3087,14 @@ packages:
     peerDependencies:
       '@angular/common': '>=16.0.0'
       '@angular/core': '>=16.0.0'
+      rxjs: '>=7.0.0'
+
+  '@ng-web-apis/universal@4.12.0':
+    resolution: {integrity: sha512-stEUfuL8sWjTyWDeab3jnUcA+Rq5Fo07jZR6RC9ZLTFhKV5SlAdUJ8XNzXKyHOVEA8B+9Z/cCtk1pn2AUO9v2w==}
+    peerDependencies:
+      '@angular/core': '>=16.0.0'
+      '@ng-web-apis/common': '>=4.12.0'
+      '@types/node': '>=22.13.14'
       rxjs: '>=7.0.0'
 
   '@ngtools/webpack@19.2.0':
@@ -11298,13 +11309,13 @@ snapshots:
     transitivePeerDependencies:
       - chokidar
 
-  '@angular-devkit/build-angular@19.2.0(56662f9ab0f8de3ea29b8ba3ea577165)':
+  '@angular-devkit/build-angular@19.2.0(bzr5q56xxlepg6mofjl57sawsa)':
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@angular-devkit/architect': 0.1902.0
       '@angular-devkit/build-webpack': 0.1902.0(webpack-dev-server@5.2.0)(webpack@5.98.0)
       '@angular-devkit/core': 19.2.0
-      '@angular/build': 19.2.0(c22ba6751e92bd300bdaca187c230d31)
+      '@angular/build': 19.2.0(yso7ytlo3qmnvn2krc5zfcmj2a)
       '@angular/compiler-cli': 19.2.0(@angular/compiler@19.2.0(@angular/core@19.2.0(rxjs@7.8.2)(zone.js@0.15.1)))(typescript@5.8.3)
       '@babel/core': 7.26.9
       '@babel/generator': 7.26.9
@@ -11523,7 +11534,7 @@ snapshots:
       eslint: 9.27.0(jiti@2.4.2)
       typescript: 5.8.3
 
-  '@angular/build@19.2.0(c22ba6751e92bd300bdaca187c230d31)':
+  '@angular/build@19.2.0(yso7ytlo3qmnvn2krc5zfcmj2a)':
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@angular-devkit/architect': 0.1902.0
@@ -14688,7 +14699,7 @@ snapshots:
       class-transformer: 0.5.1
       class-validator: 0.14.2
 
-  '@nestjs/terminus@11.0.0(2ff1ee625823beb4703cbafa4d6e7f4e)':
+  '@nestjs/terminus@11.0.0(g3m4fnbnd2ff2lkys6ovlnjgwa)':
     dependencies:
       '@nestjs/common': 11.1.2(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/core': 11.1.2(@nestjs/common@11.1.2(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/microservices@11.1.2)(@nestjs/platform-express@11.1.2)(reflect-metadata@0.2.2)(rxjs@7.8.2)
@@ -14727,6 +14738,14 @@ snapshots:
     dependencies:
       '@angular/common': 19.2.0(@angular/core@19.2.0(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2)
       '@angular/core': 19.2.0(rxjs@7.8.2)(zone.js@0.15.1)
+      rxjs: 7.8.2
+      tslib: 2.8.1
+
+  '@ng-web-apis/universal@4.12.0(@angular/core@19.2.0(rxjs@7.8.2)(zone.js@0.15.1))(@ng-web-apis/common@4.12.0(@angular/common@19.2.0(@angular/core@19.2.0(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@19.2.0(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@types/node@22.15.29)(rxjs@7.8.2)':
+    dependencies:
+      '@angular/core': 19.2.0(rxjs@7.8.2)(zone.js@0.15.1)
+      '@ng-web-apis/common': 4.12.0(@angular/common@19.2.0(@angular/core@19.2.0(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@19.2.0(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2)
+      '@types/node': 22.15.29
       rxjs: 7.8.2
       tslib: 2.8.1
 
@@ -14878,9 +14897,9 @@ snapshots:
       tmp: 0.2.3
       tslib: 2.8.1
 
-  '@nx/angular@21.1.2(b0773883fd92783548a0d35073153a37)':
+  '@nx/angular@21.1.2(dneeowfttzyrvrksuha7nhlcfa)':
     dependencies:
-      '@angular-devkit/build-angular': 19.2.0(56662f9ab0f8de3ea29b8ba3ea577165)
+      '@angular-devkit/build-angular': 19.2.0(bzr5q56xxlepg6mofjl57sawsa)
       '@angular-devkit/core': 19.2.0
       '@angular-devkit/schematics': 19.2.0
       '@nx/devkit': 21.1.2(nx@21.1.2(@swc-node/register@1.9.2(@swc/core@1.5.29(@swc/helpers@0.5.17))(@swc/types@0.1.21)(typescript@5.8.3))(@swc/core@1.5.29(@swc/helpers@0.5.17)))
