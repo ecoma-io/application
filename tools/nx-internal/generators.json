@@ -9,6 +9,11 @@
       "factory": "./src/generators/angularlib/generator",
       "schema": "./src/generators/angularlib/schema.json",
       "description": "angularlib generator"
+    },
+    "angularapp": {
+      "factory": "./src/generators/angularapp/generator",
+      "schema": "./src/generators/angularapp/schema.json",
+      "description": "angularapp generator"
     }
   }
 }
