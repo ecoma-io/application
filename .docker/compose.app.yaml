@@ -39,6 +39,8 @@ services:
     networks:
       ecomma:
         ipv4_address: 10.10.30.2
+    extra_hosts:
+      - icons.fbi.com:10.10.10.1
     healthcheck:
       test: ['CMD', 'wget', '--spider', '--quiet', 'http://127.0.0.1:4000/health']
       interval: 5s
@@ -55,6 +57,8 @@ services:
     networks:
       ecomma:
         ipv4_address: 10.10.30.3
+    extra_hosts:
+      - icons.fbi.com:10.10.10.1
     healthcheck:
       test: ['CMD', 'wget', '--spider', '--quiet', 'http://127.0.0.1:4000/health']
       interval: 5s
@@ -71,6 +75,8 @@ services:
     networks:
       ecomma:
         ipv4_address: 10.10.30.4
+    extra_hosts:
+      - icons.fbi.com:10.10.10.1
     healthcheck:
       test: ['CMD', 'wget', '--spider', '--quiet', 'http://127.0.0.1:4000/health']
       interval: 5s
