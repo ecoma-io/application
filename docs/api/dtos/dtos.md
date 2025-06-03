@@ -7,6 +7,8 @@
 
 ## Classes
 
+- [BaseSucessResponseDataDTO](/api/dtos/Class.BaseSucessResponseDataDTO.md)
+- [BaseSucessResponseDatasDTO](/api/dtos/Class.BaseSucessResponseDatasDTO.md)
 - [ErrorResponseDetail](/api/dtos/Class.ErrorResponseDetail.md)
 - [ErrorResponseDetailsDTO](/api/dtos/Class.ErrorResponseDetailsDTO.md)
 - [ErrorResponseDTO](/api/dtos/Class.ErrorResponseDTO.md)
@@ -15,6 +17,4 @@
 - [PaginationDTO](/api/dtos/Class.PaginationDTO.md)
 - [ResponseDTO](/api/dtos/Class.ResponseDTO.md)
 - [SortingDTO](/api/dtos/Class.SortingDTO.md)
-- [SucessResponseDataDTO](/api/dtos/Class.SucessResponseDataDTO.md)
-- [SucessResponseDatasDTO](/api/dtos/Class.SucessResponseDatasDTO.md)
 - [SucessResponseDto](/api/dtos/Class.SucessResponseDto.md)

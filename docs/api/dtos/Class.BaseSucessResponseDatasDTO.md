@@ -1,4 +1,4 @@
-# Class: SucessResponseDataDTO\<T\>
+# Class: `abstract` BaseSucessResponseDatasDTO\<T\>
 
 ## Extends
 
@@ -16,11 +16,11 @@
 
 ### Constructor
 
-> **new SucessResponseDataDTO**\<`T`\>(): `SucessResponseDataDTO`\<`T`\>
+> **new BaseSucessResponseDatasDTO**\<`T`\>(): `BaseSucessResponseDatasDTO`\<`T`\>
 
 #### Returns
 
-`SucessResponseDataDTO`\<`T`\>
+`BaseSucessResponseDatasDTO`\<`T`\>
 
 #### Inherited from
 
@@ -32,7 +32,7 @@
 
 ### data
 
-> **data**: `T`
+> **data**: `T`[]
 
 ---
 

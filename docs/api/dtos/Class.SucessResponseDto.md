@@ -6,8 +6,8 @@
 
 ## Extended by
 
-- [`SucessResponseDataDTO`](/api/dtos/Class.SucessResponseDataDTO.md)
-- [`SucessResponseDatasDTO`](/api/dtos/Class.SucessResponseDatasDTO.md)
+- [`BaseSucessResponseDataDTO`](/api/dtos/Class.BaseSucessResponseDataDTO.md)
+- [`BaseSucessResponseDatasDTO`](/api/dtos/Class.BaseSucessResponseDatasDTO.md)
 
 ## Constructors
 
