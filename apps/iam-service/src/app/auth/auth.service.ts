@@ -6,6 +6,7 @@ import { TooMananyRequestOtpException, UserNotFoundException, InvalidOrExpiredOt
 import { PinoLogger } from "@ecoma/nestjs-logger";
 import { SucessResponseDto } from "@ecoma/dtos";
 import { v7 as uuidv7 } from 'uuid';
+import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
 
 
 @Injectable()
@@ -13,7 +14,7 @@ export class AuthService {
 
   private logger = new PinoLogger(AuthService.name);
 
-  constructor(private sessionRepo: SessionRepository, private userRepo: UserRepository, private otpRepo: OTPRepository) {
+  constructor(private sessionRepo: SessionRepository, private userRepo: UserRepository, private otpRepo: OTPRepository, private amqpConnection: AmqpConnection) {
 
   }
 
@@ -66,12 +67,29 @@ export class AuthService {
     });
     this.logger.debug({ userId: user._id }, 'OTP stored successfully');
 
-    // 5. Send OTP (placeholder for actual implementation)
-    this.logger.info({
-      userId: user._id,
-      email: user.email
-    }, 'OTP ready to be sent');
-    // TODO: thêm logic send OTP
+    // 5. Send OTP
+    this.logger.info({ userId: user._id, email: user.email }, 'OTP ready to be sent');
+    try {
+      await this.amqpConnection.publish(
+        'notification',
+        'otp',
+        {
+          template: 'otp',
+          data: {
+            userId: user._id,
+            email: user.email,
+            otp: otp
+          }
+        },
+        {
+          persistent: true, // keep message in queue even if server is restarted
+          expiration: new Date(Date.now() + 5 * 60 * 1000).toISOString() // 5 minutes expiration
+        }
+      );
+      this.logger.debug({ userId: user._id, email: user.email }, 'OTP message published to RabbitMQ');
+    } catch (error) {
+      this.logger.error({ userId: user._id, email: user.email, error }, 'Failed to publish OTP message to RabbitMQ');
+    }
 
     // 6. Return response
     this.logger.debug({ userId: user._id }, 'OTP request completed successfully');
@@ -129,7 +147,7 @@ export class AuthService {
     this.logger.debug({ userId: user._id, token }, 'Sign in completed successfully');
     return {
       success: true,
-      data:{
+      data: {
         token,
         id: user._id?.toString?.(),
         email: user.email,
