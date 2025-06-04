@@ -83,3 +83,46 @@ services:
       timeout: 8s
       retries: 10
       start_period: 10s
+
+  iam-service:
+    container_name: iam-service
+    build:
+      context: ..
+      dockerfile: apps/iam-service/Dockerfile
+      target: debug
+    environment:
+      MONGODB_URI: mongodb://user:password@mongodb:27017
+      RABBITMQ_URI: amqp://rabbitmq:5672
+      LOG_FORMAT: text
+      LOG_LEVEL: debug
+    networks:
+      ecomma:
+        ipv4_address: 10.10.60.1
+    healthcheck:
+      test: ['CMD', 'wget', '--spider', '--quiet', 'http://127.0.0.1:3000/health']
+      interval: 5s
+      timeout: 8s
+      retries: 10
+      start_period: 10s
+
+  ndm-service:
+    container_name: ndm-service
+    build:
+      context: ..
+      dockerfile: apps/ndm-service/Dockerfile
+      target: debug
+    environment:
+      MONGODB_URI: mongodb://user:password@mongodb:27017
+      RABBITMQ_URI: amqp://rabbitmq:5672
+      SMTP_URI: smtp://maildev:1025?secure=false
+      LOG_FORMAT: text
+      LOG_LEVEL: debug
+    networks:
+      ecomma:
+        ipv4_address: 10.10.60.2
+    healthcheck:
+      test: ['CMD', 'wget', '--spider', '--quiet', 'http://127.0.0.1:3000/health']
+      interval: 5s
+      timeout: 8s
+      retries: 10
+      start_period: 10s
