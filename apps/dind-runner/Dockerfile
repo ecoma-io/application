@@ -5,6 +5,7 @@ RUN apk update && apk add --no-cache \
     docker \
     docker-cli \
     containerd \
+    git \
     runc \
     iptables \
     e2fsprogs-libs \
