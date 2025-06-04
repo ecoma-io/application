@@ -1,10 +1,10 @@
 # Playwright with Docker-in-Docker
-Dự án này cung cấp một Docker image tùy chỉnh được xây dựng trên nền tảng Playwright chính thức (mcr.microsoft.com/playwright) và tích hợp thêm khả năng chạy Docker bên trong container (Docker-in-Docker).
+This project provides a custom Docker image built on the official Playwright platform (mcr.microsoft.com/playwright) with additional Docker-in-Docker capabilities.
 
-Mục tiêu chính:
+Main objectives:
 
-- Tạo ra một môi trường cô lập, sẵn sàng để thực thi các bài kiểm thử tự động với Playwright.
-- Cung cấp khả năng chạy các lệnh Docker (ví dụ: xây dựng, khởi động các dịch vụ phụ trợ trong container) ngay trong quá trình kiểm thử Playwright.
-Đ- ảm bảo tính nhất quán của môi trường trên nhiều nền tảng, đặc biệt hữu ích cho các hệ thống Tích hợp Liên tục/Triển khai Liên tục (CI/CD) như GitHub Actions.
+- Create an isolated environment ready for automated testing with Playwright
+- Enable running Docker commands (e.g., building, starting auxiliary services in containers) during Playwright testing
+- Ensure environment consistency across platforms, particularly useful for Continuous Integration/Continuous Deployment (CI/CD) systems like GitHub Actions
 
-Với image này, các nhà phát triển có thể tăng tốc quy trình kiểm thử bằng cách loại bỏ nhu cầu cài đặt trình duyệt và các công cụ Docker thủ công, đồng thời có thể dễ dàng kiểm thử các ứng dụng phụ thuộc vào Docker ngay trong môi trường kiểm thử Playwright.
+With this image, developers can accelerate the testing process by eliminating the need for manual browser and Docker tool installation, while easily testing Docker-dependent applications within the Playwright testing environment.
