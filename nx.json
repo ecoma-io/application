@@ -63,6 +63,9 @@
         "production",
         "^production"
       ]
+    },
+    "build": {
+      "cache": true
     }
   },
   "plugins": [],
