@@ -14,12 +14,16 @@ export class LoginService {
   ) { }
 
   requestOTP(email: string): Observable<SucessResponseDto> {
-    return this.http.post<SucessResponseDto>(`${this.domains.getIamServiceBaseUrl()}/auth/requestOtp`, { email })
+    const url = `${this.domains.getIamServiceBaseUrl()}/auth/requestOtp`;
+    return this.http
+      .post<SucessResponseDto>(url, { email })
       .pipe()
   }
 
   verifyOTP(email: string, otp: string): Observable<SucessResponseDto> {
-    return this.http.post<SucessResponseDto>(`${this.domains.getIamServiceBaseUrl()}/auth/login`, { email, otp })
+    const url = `${this.domains.getIamServiceBaseUrl()}/auth/login`;
+    return this.http
+      .post<SucessResponseDto>(url, { email, otp })
       .pipe()
   }
 }

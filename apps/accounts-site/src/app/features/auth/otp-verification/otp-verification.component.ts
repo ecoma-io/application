@@ -5,77 +5,75 @@ import { Router } from '@angular/router';
 import { SvgInjector } from '@ecoma/nge-svg-injector';
 import { Domains } from '@ecoma/nge-domain';
 import { LoginService } from '../../../core/services/login.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-otp-verification',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, SvgInjector],
-
+  host: {
+    class: 'space-y-8'
+  },
   template: `
-    <div class="min-h-screen bg-gradient-to-br from-primary/10 via-base-200 to-secondary/10 flex items-center justify-center px-4">
-      <div class="card w-full max-w-md bg-base-100 shadow-2xl">
-        <div class="card-body space-y-6">
-          <!-- Header -->
-          <div class="text-center space-y-2">
-            <div class="avatar placeholder">
-              <div class="bg-primary/10 text-primary rounded-full w-24">
-                <nge-svg-injector path="/icon.svg" class="w-12 h-12"> </nge-svg-injector>
-              </div>
-            </div>
-            <h2 class="text-2xl font-bold">Verify Your Email</h2>
-            <p class="text-base-content/70">
-              We've sent a verification code to<br />
-              <span class="font-medium text-primary">{{ email }}</span>
-            </p>
-          </div>
-
-          <form [formGroup]="otpForm" (ngSubmit)="onSubmit()" class="space-y-6">
-            <div class="grid grid-cols-6 gap-3 px-4">
-              <input
-                *ngFor="let control of otpControls; let i = index"
-                #otpInput
-                [formControlName]="'digit' + i"
-                type="text"
-                inputmode="numeric"
-                autocomplete="one-time-code"
-                maxlength="1"
-                class="input input-bordered w-full text-center text-2xl font-bold aspect-square p-0"
-                (keyup)="onKeyUp($event, i)"
-                (keydown)="onKeyDown($event)"
-                (paste)="onPaste($event)"
-              />
-            </div>
-
-            <div class="alert alert-error shadow-lg" *ngIf="errorMessage">
-              <nge-svg-injector [path]="iconUrl('/duotone/exclamation.svg')" class="shrink-0 w-6 h-6"> </nge-svg-injector>
-              <span>{{ errorMessage }}</span>
-            </div>
-
-            <div class="space-y-4">
-              <button type="submit" class="btn btn-primary w-full" #verifyButton [disabled]="!otpForm.valid || isLoading">
-                <span class="loading loading-spinner" *ngIf="isLoading"></span>
-                {{ isLoading ? 'Verifying...' : 'Verify Code' }}
-              </button>
-
-              <div class="flex flex-col gap-2 items-center text-sm">
-                <p class="text-base-content/70">
-                  Didn't receive the code?
-                  <button type="button" class="btn btn-link btn-sm px-2 normal-case" [class.btn-disabled]="!canResend" (click)="resendCode()">
-                    <nge-svg-injector
-                      [path]="iconUrl('/duotone/arrow-down-to-square.svg')"
-                      class="w-4 h-4 fill-primary/50"
-                      [class.animate-spin]="isResending"
-                    >
-                    </nge-svg-injector>
-                    Resend {{ resendTimer > 0 ? '(' + resendTimer + 's)' : '' }}
-                  </button>
-                </p>
-              </div>
-            </div>
-          </form>
+    <!-- Header -->
+    <div class="text-center space-y-2">
+      <div class="avatar placeholder">
+        <div class="bg-primary/10 text-primary rounded-full w-24">
+          <nge-svg-injector path="/icon.svg" class="w-12 h-12"> </nge-svg-injector>
         </div>
       </div>
+      <h2 class="text-2xl font-bold">Verify Your Email</h2>
+      <p class="text-base-content/70">
+        We've sent a verification code to<br />
+        <span class="font-medium text-primary">{{ email }}</span>
+      </p>
     </div>
+
+
+    <form [formGroup]="otpForm" (ngSubmit)="onSubmit()" class="space-y-6">
+      <div class="alert alert-error" *ngIf="errorMessage">
+        <nge-svg-injector [path]="iconUrl('/duotone/exclamation.svg')" class="shrink-0 w-6 h-6"> </nge-svg-injector>
+        <span>{{ errorMessage }}</span>
+      </div>
+
+      <div class="grid grid-cols-6 gap-3 px-4">
+        <input
+          *ngFor="let control of otpControls; let i = index"
+          #otpInput
+          [formControlName]="'digit' + i"
+          type="text"
+          inputmode="numeric"
+          autocomplete="one-time-code"
+          maxlength="1"
+          class="input input-bordered w-full text-center text-2xl font-bold aspect-square p-0"
+          (keyup)="onKeyUp($event, i)"
+          (keydown)="onKeyDown($event)"
+        />
+      </div>
+
+
+      <div class="space-y-4">
+        <button type="submit" class="btn btn-primary w-full" #verifyButton [disabled]="!otpForm.valid || isLoading">
+          <span class="loading loading-spinner" *ngIf="isLoading"></span>
+          {{ isLoading ? 'Verifying...' : 'Verify Code' }}
+        </button>
+
+        <div class="flex flex-col gap-2 items-center text-sm">
+          <p class="text-base-content/70">
+            Didn't receive the code?
+            <button type="button" class="btn btn-link btn-sm px-2 normal-case" [class.btn-disabled]="!canResend" (click)="resendCode()">
+              <nge-svg-injector
+                [path]="iconUrl('/duotone/arrow-down-to-square.svg')"
+                class="w-4 h-4 fill-primary/50"
+                [class.animate-spin]="isResending"
+              >
+              </nge-svg-injector>
+              Resend {{ resendTimer > 0 ? '(' + resendTimer + 's)' : '' }}
+            </button>
+          </p>
+        </div>
+      </div>
+    </form>
   `,
 })
 export class OtpVerificationComponent implements OnInit, OnDestroy {
@@ -91,8 +89,17 @@ export class OtpVerificationComponent implements OnInit, OnDestroy {
   errorMessage = '';
   email = '';
   private timerInterval: any;
+  private pasteListener: ((event: ClipboardEvent) => void) | undefined;
 
-  constructor(private fb: FormBuilder, private router: Router, private loginService: LoginService, private domain: Domains) {
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private loginService: LoginService,
+    private domain: Domains,
+    private el: ElementRef,
+    private title: Title,
+  ) {
+    this.title.setTitle("OTP Verify");
     this.iconsBaseUrl = this.domain.getIconsBaseUrl();
     this.otpForm = this.fb.group({
       digit0: ['', [Validators.required, Validators.pattern(/^[0-9]$/)]],
@@ -122,6 +129,10 @@ export class OtpVerificationComponent implements OnInit, OnDestroy {
         firstInput.nativeElement.focus();
       }
     }, 0);
+
+    // Manually add paste event listener
+    this.pasteListener = this.onPasteEvent.bind(this);
+    this.el.nativeElement.addEventListener('paste', this.pasteListener);
   }
 
   onKeyDown(event: KeyboardEvent) {
@@ -136,9 +147,10 @@ export class OtpVerificationComponent implements OnInit, OnDestroy {
     const value = input.value;
     const inputs = this.otpInputs.toArray();
 
-    if (event.key === 'Backspace' || event.key === 'Delete') {
+    if (event.key === 'Backspace') {
       if (index > 0 && !value) {
-        inputs[index - 1].nativeElement.focus();
+        const previousInput = inputs[index - 1].nativeElement;
+        previousInput.focus();
       }
     } else if (value) {
       if (index < 5) {
@@ -154,10 +166,14 @@ export class OtpVerificationComponent implements OnInit, OnDestroy {
     }
   }
 
-  onPaste(event: ClipboardEvent) {
+  onPasteEvent(event: ClipboardEvent) {
+    // eslint-disable-next-line no-console
+    console.log('Manual Paste event triggered');
     event.preventDefault();
     const clipboardData = event.clipboardData?.getData('text');
-    if (!clipboardData) return;
+    if (!clipboardData) {
+      return;
+    }
 
     const numbers = clipboardData.replace(/\D/g, '').slice(0, 6).split('');
     const inputs = this.otpInputs.toArray();
@@ -244,6 +260,10 @@ export class OtpVerificationComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.timerInterval) {
       clearInterval(this.timerInterval);
+    }
+    // Manually remove paste event listener
+    if (this.pasteListener) {
+      this.el.nativeElement.removeEventListener('paste', this.pasteListener);
     }
   }
 }

@@ -4,7 +4,9 @@ export const appRoutes: Routes = [
   { path: '', redirectTo: '/auth/login', pathMatch: 'full' },
   {
     path: 'auth',
+    loadComponent: () => import('./features/auth/auth.component').then((m) => m.AuthComponent),
     children: [
+      { path: '', redirectTo: 'login', pathMatch: 'full' },
       {
         path: 'login',
         loadComponent: () => import('./features/auth/login/login.component').then((m) => m.LoginComponent),
@@ -13,7 +15,6 @@ export const appRoutes: Routes = [
         path: 'verify',
         loadComponent: () => import('./features/auth/otp-verification/otp-verification.component').then((m) => m.OtpVerificationComponent),
       },
-      { path: '', redirectTo: 'login', pathMatch: 'full' },
     ],
   },
   {
@@ -24,9 +25,7 @@ export const appRoutes: Routes = [
         loadComponent: () => import('./features/dashboard/dashboard.component').then((m) => m.DashboardComponent),
         children: [
           {
-            path: '',
-            redirectTo: 'profile',
-            pathMatch: 'full',
+            path: '', redirectTo: 'profile', pathMatch: 'full',
           },
           {
             path: 'profile',

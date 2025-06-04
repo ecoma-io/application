@@ -77,20 +77,20 @@ import { Domains } from '@ecoma/nge-domain';
         <nav class="flex-1 px-4 py-6">
           <ul class="menu menu-lg gap-2">
             <li>
-              <a routerLink="profile" routerLinkActive="active" class="flex items-center gap-4 min-h-12 rounded-xl">
-                <nge-svg-injector [path]="iconUrl('/duotone/phone.svg')" class="w-5 h-5"></nge-svg-injector>
+              <a routerLink="profile" routerLinkActive="active [&>*]:fill-secondary" class="flex items-center gap-4 min-h-8 rounded-xl text-base">
+                <nge-svg-injector [path]="iconUrl('/duotone/id-card.svg')" class="w-5 h-5 fill-primary"></nge-svg-injector>
                 Profile
               </a>
             </li>
             <li>
-              <a routerLink="sessions" routerLinkActive="active" class="flex items-center gap-4 min-h-12 rounded-xl">
-                <nge-svg-injector [path]="iconUrl('/duotone/phone.svg')" class="w-5 h-5"></nge-svg-injector>
+              <a routerLink="sessions" routerLinkActive="active [&>*]:fill-secondary" class="flex items-center gap-4 min-h-8 rounded-xl text-base">
+                <nge-svg-injector [path]="iconUrl('/duotone/chalkboard-user.svg')" class="w-5 h-5 fill-primary/50"></nge-svg-injector>
                 Sessions
               </a>
             </li>
             <li>
-              <a routerLink="settings" routerLinkActive="active" class="flex items-center gap-4 min-h-12 rounded-xl">
-                <nge-svg-injector [path]="iconUrl('/duotone/phone.svg')" class="w-5 h-5"></nge-svg-injector>
+              <a routerLink="settings" routerLinkActive="active [&>*]:fill-secondary" class="flex items-center gap-4 min-h-8 rounded-xl text-base">
+                <nge-svg-injector [path]="iconUrl('/duotone/gears.svg')" class="w-5 h-5 fill-primary"></nge-svg-injector>
                 Settings
               </a>
             </li>
