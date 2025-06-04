@@ -73,8 +73,25 @@ jobs:
       - name: Run containerize docker images
         run: npx nx affected --targets=containerize --base=origin/main --head=${{ github.sha }} --parallel 4
 
-  automation-test:
-    name: Automation Tests
+  integration-test:
+    name: Integration Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@85e6279cec87321a52edac9c87bce653a07cf6c2
+        with:
+          fetch-depth: 0
+          filter: tree:0
+
+      - name: Setup project
+        uses: ./.github/actions/setup
+
+      - name: Automate Integration
+        run: npx nx affected --target=automate-integration-test --base=origin/main --head=${{ github.sha }} --parallel 1
+
+
+  e2e-test:
+    name: E2E Tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -88,15 +105,13 @@ jobs:
         with:
           run-playwright-install: true
 
-      - name: Automate Integration
-        run: npx nx affected --target=automate-integration-test --base=origin/main --head=${{ github.sha }} --parallel 1
-
       - name: Automate E2E Test
         run: npx nx affected --target=automate-e2e-test --base=origin/main --head=${{ github.sha }} --parallel 1
 
+
   release:
     name: Release
-    needs: [validation, automation-test]
+    needs: [validation, integration-test, e2e-test]
     if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     steps:
