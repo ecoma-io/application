@@ -70,6 +70,9 @@ jobs:
       - name: Run build
         run: npx nx affected --targets=build --base=$NX_AFFECTED_BASE --head=$NX_AFFECTED_HEAD --parallel 8
 
+      - name: Run containerize docker images
+        run: npx nx affected --targets=containerize --base=origin/main --head=${{ github.sha }} --parallel 4
+
   automation-test:
     name: Automation Tests
     runs-on: ubuntu-latest
@@ -84,9 +87,6 @@ jobs:
         uses: ./.github/actions/setup
         with:
           run-playwright-install: true
-
-      - name: Run containerize docker images
-        run: npx nx affected --targets=containerize --base=origin/main --head=${{ github.sha }} --parallel 4
 
       - name: Automate Integration
         run: npx nx affected --target=automate-integration-test --base=origin/main --head=${{ github.sha }} --parallel 1
