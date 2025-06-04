@@ -6,19 +6,47 @@
   "packages": {
     "apps/accounts-site": {
       "package-name": "accounts-site",
-      "release-type": "simple"
+      "release-type": "simple",
+      "extra-files": [
+        {
+          "type": "xml",
+          "path": "apps/accounts-site/chart/Chart.yaml",
+          "xpath": "//version"
+        }
+      ]
     },
     "apps/admin-site": {
       "package-name": "admin-site",
-      "release-type": "simple"
+      "release-type": "simple",
+      "extra-files": [
+        {
+          "type": "xml",
+          "path": "apps/admin-site/chart/Chart.yaml",
+          "xpath": "//version"
+        }
+      ]
     },
     "apps/app-site": {
       "package-name": "app-site",
-      "release-type": "simple"
+      "release-type": "simple",
+      "extra-files": [
+        {
+          "type": "xml",
+          "path": "apps/app-site/chart/Chart.yaml",
+          "xpath": "//version"
+        }
+      ]
     },
     "apps/home-site": {
       "package-name": "home-site",
-      "release-type": "simple"
+      "release-type": "simple",
+      "extra-files": [
+        {
+          "type": "xml",
+          "path": "apps/home-site/chart/Chart.yaml",
+          "xpath": "//version"
+        }
+      ]
     },
     "apps/icons": {
       "package-name": "icons",
@@ -37,12 +65,30 @@
     },
     "apps/iam-service": {
       "package-name": "iam-service",
-      "release-type": "simple"
+      "release-type": "simple",
+      "extra-files": [
+        {
+          "type": "xml",
+          "path": "apps/iam-service/chart/Chart.yaml",
+          "xpath": "//version"
+        }
+      ]
     },
-    "libs/nestj-config": {
+    "apps/ndm-service": {
+      "package-name": "ndm-service",
+      "release-type": "simple",
+      "extra-files": [
+        {
+          "type": "xml",
+          "path": "apps/ndm-service/chart/Chart.yaml",
+          "xpath": "//version"
+        }
+      ]
+    },
+    "libs/nestjs-config": {
       "release-type": "node"
     },
-    "libs/nestj-logger": {
+    "libs/nestjs-logger": {
       "release-type": "node"
     },
     "libs/nge-auth": {

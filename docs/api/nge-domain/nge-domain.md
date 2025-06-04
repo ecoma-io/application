@@ -10,7 +10,7 @@ It includes methods to get the current protocol, root domain, and base URLs for 
 
 ## Variables
 
-- [REQUEST_TOKEN](/api/nge-domain/Variable.REQUEST_TOKEN.md)
+- [REQUEST\_TOKEN](/api/nge-domain/Variable.REQUEST_TOKEN.md)
 
 ## Functions
 

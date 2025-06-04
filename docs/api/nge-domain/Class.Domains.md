@@ -57,7 +57,7 @@ Gets the base URL for the accounts site
 
 The complete accounts site URL (e.g., 'https://accounts.example.com')
 
----
+***
 
 <a id="getadminsitebaseurl"></a>
 
@@ -73,7 +73,7 @@ Gets the base URL for the admin site
 
 The complete admin site URL (e.g., 'https://admin.example.com')
 
----
+***
 
 <a id="gethomesitebaseurl"></a>
 
@@ -89,7 +89,7 @@ Gets the base URL for the home site
 
 The complete home site URL (e.g., 'https://example.com')
 
----
+***
 
 <a id="getiamservicebaseurl"></a>
 
@@ -105,7 +105,7 @@ Gets the base URL for the IAM service
 
 The complete IAM service URL (e.g., 'https://iam.example.com')
 
----
+***
 
 <a id="geticonsbaseurl"></a>
 
@@ -121,7 +121,7 @@ Gets the base URL for the icons
 
 The complete admin site URL (e.g., 'https://icons.example.com')
 
----
+***
 
 <a id="getndmservicebaseurl"></a>
 
@@ -137,7 +137,7 @@ Gets the base URL for the NDM service
 
 The complete NDM service URL (e.g., 'https://ndm.example.com')
 
----
+***
 
 <a id="getprotocol"></a>
 
@@ -153,7 +153,7 @@ Gets the current protocol
 
 The current protocol (e.g., 'https:', 'http:')
 
----
+***
 
 <a id="getrootdomain"></a>
 
@@ -173,7 +173,7 @@ The root domain (e.g., 'example.com' from 'www.example.com')
 
 ```ts
 // Returns 'example.com'
-getRootDomain('www.example.com');
+getRootDomain('www.example.com')
 // Returns 'co.uk'
-getRootDomain('sub.domain.co.uk');
+getRootDomain('sub.domain.co.uk')
 ```

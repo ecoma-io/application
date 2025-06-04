@@ -24,7 +24,7 @@
 
 > `optional` **limit**: `number` = `10`
 
----
+***
 
 <a id="page"></a>
 

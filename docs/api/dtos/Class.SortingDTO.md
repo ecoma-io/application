@@ -20,7 +20,7 @@
 
 > `optional` **sortBy**: `string`
 
----
+***
 
 <a id="sortorder"></a>
 

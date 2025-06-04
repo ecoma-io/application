@@ -28,7 +28,7 @@
 
 > **details**: [`ErrorResponseDetail`](/api/dtos/Class.ErrorResponseDetail.md)
 
----
+***
 
 <a id="message"></a>
 
@@ -40,7 +40,7 @@
 
 [`ErrorResponseDTO`](/api/dtos/Class.ErrorResponseDTO.md).[`message`](/api/dtos/Class.ErrorResponseDTO.md#message)
 
----
+***
 
 <a id="success"></a>
 

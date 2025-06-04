@@ -8,23 +8,23 @@
 
 > **EQUAL**: `"eq"`
 
----
+***
 
 <a id="greater_than"></a>
 
-### GREATER_THAN
+### GREATER\_THAN
 
-> **GREATER_THAN**: `"gt"`
+> **GREATER\_THAN**: `"gt"`
 
----
+***
 
 <a id="greater_than_or_equal"></a>
 
-### GREATER_THAN_OR_EQUAL
+### GREATER\_THAN\_OR\_EQUAL
 
-> **GREATER_THAN_OR_EQUAL**: `"gte"`
+> **GREATER\_THAN\_OR\_EQUAL**: `"gte"`
 
----
+***
 
 <a id="ilike"></a>
 
@@ -32,7 +32,7 @@
 
 > **ILIKE**: `"ilike"`
 
----
+***
 
 <a id="in"></a>
 
@@ -40,39 +40,39 @@
 
 > **IN**: `"in"`
 
----
+***
 
 <a id="is_not_null"></a>
 
-### IS_NOT_NULL
+### IS\_NOT\_NULL
 
-> **IS_NOT_NULL**: `"isNotNull"`
+> **IS\_NOT\_NULL**: `"isNotNull"`
 
----
+***
 
 <a id="is_null"></a>
 
-### IS_NULL
+### IS\_NULL
 
-> **IS_NULL**: `"isNull"`
+> **IS\_NULL**: `"isNull"`
 
----
+***
 
 <a id="less_than"></a>
 
-### LESS_THAN
+### LESS\_THAN
 
-> **LESS_THAN**: `"lt"`
+> **LESS\_THAN**: `"lt"`
 
----
+***
 
 <a id="less_than_or_equal"></a>
 
-### LESS_THAN_OR_EQUAL
+### LESS\_THAN\_OR\_EQUAL
 
-> **LESS_THAN_OR_EQUAL**: `"lte"`
+> **LESS\_THAN\_OR\_EQUAL**: `"lte"`
 
----
+***
 
 <a id="like"></a>
 
@@ -80,18 +80,18 @@
 
 > **LIKE**: `"like"`
 
----
+***
 
 <a id="not_equal"></a>
 
-### NOT_EQUAL
+### NOT\_EQUAL
 
-> **NOT_EQUAL**: `"ne"`
+> **NOT\_EQUAL**: `"ne"`
 
----
+***
 
 <a id="not_in"></a>
 
-### NOT_IN
+### NOT\_IN
 
-> **NOT_IN**: `"nin"`
+> **NOT\_IN**: `"nin"`

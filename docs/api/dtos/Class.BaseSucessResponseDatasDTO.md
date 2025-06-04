@@ -34,7 +34,7 @@
 
 > **data**: `T`[]
 
----
+***
 
 <a id="message"></a>
 
@@ -46,7 +46,7 @@
 
 [`SucessResponseDto`](/api/dtos/Class.SucessResponseDto.md).[`message`](/api/dtos/Class.SucessResponseDto.md#message)
 
----
+***
 
 <a id="success"></a>
 

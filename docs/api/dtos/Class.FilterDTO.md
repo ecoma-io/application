@@ -20,7 +20,7 @@
 
 > **field**: `string`
 
----
+***
 
 <a id="operator"></a>
 
@@ -28,7 +28,7 @@
 
 > **operator**: [`FilterOperator`](/api/dtos/Enumeration.FilterOperator.md)
 
----
+***
 
 <a id="value"></a>
 
@@ -36,7 +36,7 @@
 
 > `optional` **value**: `string` \| `number` \| `boolean` \| `string`[] \| `number`[]
 
----
+***
 
 <a id="values"></a>
 

@@ -1,5 +1,5 @@
-# Variable: REQUEST_TOKEN
+# Variable: REQUEST\_TOKEN
 
-> `const` **REQUEST_TOKEN**: `InjectionToken`\<`Request`\>
+> `const` **REQUEST\_TOKEN**: `InjectionToken`\<`Request`\>
 
 Injection token for providing the Express Request object in server-side environment

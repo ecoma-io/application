@@ -15,6 +15,9 @@ done
 echo "Sanned $scan_count gitHub actions and found no errors!"
 echo ""
 
+echo "Runt lint release config"
+./scripts/release-lint
+
 echo "Running lint targets with affected projects..."
 npx nx affected --base=origin/main -t lint --fix --output-style static
 echo ""

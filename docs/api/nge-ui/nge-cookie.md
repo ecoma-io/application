@@ -35,26 +35,26 @@ yarn add @ecoma/ecng-cookies
 #### In an Angular Component/Service:
 
 ```ts
-import { Cookies } from '@ecoma/ecng-cookies';
-import { Component } from '@angular/core';
+import { Cookies } from "@ecoma/ecng-cookies";
+import { Component } from "@angular/core";
 
 @Component({
-  selector: 'app-example',
-  templateUrl: './example.component.html',
+  selector: "app-example",
+  templateUrl: "./example.component.html",
 })
 export class ExampleComponent {
   constructor(private cookies: Cookies) {}
 
   setCookie() {
-    this.cookies.set('user', 'ecomaUser', { expires: 7, path: '/' });
+    this.cookies.set("user", "ecomaUser", { expires: 7, path: "/" });
   }
 
   getCookie() {
-    console.log(this.cookies.get('user'));
+    console.log(this.cookies.get("user"));
   }
 
   deleteCookie() {
-    this.cookies.delete('user');
+    this.cookies.delete("user");
   }
 }
 ```
@@ -104,7 +104,7 @@ server.get('*', (req: express.Request, res: express.Response, next: express.Next
 Sets a cookie with optional parameters.
 
 ```ts
-cookies.set('session', 'abcd1234', { expires: 3, path: '/', secure: true });
+cookies.set("session", "abcd1234", { expires: 3, path: "/", secure: true });
 ```
 
 #### Options:
@@ -125,7 +125,7 @@ cookies.set('session', 'abcd1234', { expires: 3, path: '/', secure: true });
 Retrieves the value of a cookie.
 
 ```ts
-const user = cookies.get('user');
+const user = cookies.get("user");
 ```
 
 ---
@@ -145,8 +145,8 @@ const allCookies = cookies.getAll();
 Checks if a cookie exists.
 
 ```ts
-if (cookies.check('session')) {
-  console.log('Session cookie exists');
+if (cookies.check("session")) {
+  console.log("Session cookie exists");
 }
 ```
 
@@ -157,7 +157,7 @@ if (cookies.check('session')) {
 Deletes a specific cookie.
 
 ```ts
-cookies.delete('user');
+cookies.delete("user");
 ```
 
 ---
@@ -176,7 +176,7 @@ cookies.deleteAll();
 
 ## Variables
 
-- [REQUEST_TOKEN](/api/nge-cookie/Variable.REQUEST_TOKEN.md)
+- [REQUEST\_TOKEN](/api/nge-cookie/Variable.REQUEST_TOKEN.md)
 
 ## Functions
 

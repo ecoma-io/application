@@ -28,7 +28,7 @@
 
 > `optional` **filters**: [`FilterDTO`](/api/dtos/Class.FilterDTO.md)[]
 
----
+***
 
 <a id="limit"></a>
 
@@ -40,7 +40,7 @@
 
 [`PaginationDTO`](/api/dtos/Class.PaginationDTO.md).[`limit`](/api/dtos/Class.PaginationDTO.md#limit)
 
----
+***
 
 <a id="page"></a>
 
@@ -52,7 +52,7 @@
 
 [`PaginationDTO`](/api/dtos/Class.PaginationDTO.md).[`page`](/api/dtos/Class.PaginationDTO.md#page)
 
----
+***
 
 <a id="search"></a>
 
@@ -60,7 +60,7 @@
 
 > `optional` **search**: `string`
 
----
+***
 
 <a id="sort"></a>
 
