@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/ecoma-io/application/compare/dind-runner@v1.3.0...dind-runner@v1.4.0) (2025-06-04)
+
+
+### Features
+
+* **dind-runner:** preinstall git ([cc9eb57](https://github.com/ecoma-io/application/commit/cc9eb5748948243486375da26ae5564ac8778b2f))
+
 ## [1.3.0](https://github.com/ecoma-io/application/compare/dind-runner@v1.2.0...dind-runner@v1.3.0) (2025-06-04)
 
 
