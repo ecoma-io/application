@@ -74,7 +74,6 @@ export class AuthService {
         'notification',
         'otp',
         {
-          template: 'otp',
           data: {
             userId: user._id,
             email: user.email,
