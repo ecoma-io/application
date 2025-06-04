@@ -76,6 +76,14 @@ describe('DomainsService', () => {
     it('should get the icons base URL', () => {
       expect(service.getIconsBaseUrl()).toBe('https://icons.example.com');
     });
+
+    it('should get the IAM service base URL', () => {
+      expect(service.getIamServiceBaseUrl()).toBe('https://iam.example.com');
+    });
+
+    it('should get the NDM service base URL', () => {
+      expect(service.getNdmServiceBaseUrl()).toBe('https://ndm.example.com');
+    });
   });
 
   describe('in server environment', () => {
@@ -159,6 +167,32 @@ describe('DomainsService', () => {
       });
       service = TestBed.inject(Domains);
       expect(service.getIconsBaseUrl()).toBe('https://icons.example.com');
+    });
+
+    it('should get the IAM service base URL', () => {
+      TestBed.configureTestingModule({
+        providers: [
+          Domains,
+          { provide: PLATFORM_ID, useValue: 'server' },
+          { provide: DOCUMENT, useValue: document },
+          { provide: REQUEST_TOKEN, useValue: request },
+        ],
+      });
+      service = TestBed.inject(Domains);
+      expect(service.getIamServiceBaseUrl()).toBe('https://iam.example.com');
+    });
+
+    it('should get the NDM service base URL', () => {
+      TestBed.configureTestingModule({
+        providers: [
+          Domains,
+          { provide: PLATFORM_ID, useValue: 'server' },
+          { provide: DOCUMENT, useValue: document },
+          { provide: REQUEST_TOKEN, useValue: request },
+        ],
+      });
+      service = TestBed.inject(Domains);
+      expect(service.getNdmServiceBaseUrl()).toBe('https://ndm.example.com');
     });
 
     it('should throw an error if REQUEST_TOKEN is not provided', () => {

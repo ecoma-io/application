@@ -125,6 +125,22 @@ export class Domains {
   }
 
   /**
+   * Gets the base URL for the IAM service
+   * @returns The complete IAM service URL (e.g., 'https://iam.example.com')
+   */
+  getIamServiceBaseUrl(): string {
+    return `${this.protocol}//iam.${this.getRootDomain()}`;
+  }
+
+  /**
+   * Gets the base URL for the NDM service
+   * @returns The complete NDM service URL (e.g., 'https://ndm.example.com')
+   */
+  getNdmServiceBaseUrl(): string {
+    return `${this.protocol}//ndm.${this.getRootDomain()}`;
+  }
+
+  /**
    * Extracts the root domain from a hostname
    * @param hostname - The hostname to extract from (e.g., 'www.example.com')
    * @returns The root domain (e.g., 'example.com')

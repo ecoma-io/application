@@ -91,6 +91,22 @@ The complete home site URL (e.g., 'https://example.com')
 
 ---
 
+<a id="getiamservicebaseurl"></a>
+
+### getIamServiceBaseUrl()
+
+> **getIamServiceBaseUrl**(): `string`
+
+Gets the base URL for the IAM service
+
+#### Returns
+
+`string`
+
+The complete IAM service URL (e.g., 'https://iam.example.com')
+
+---
+
 <a id="geticonsbaseurl"></a>
 
 ### getIconsBaseUrl()
@@ -104,6 +120,22 @@ Gets the base URL for the icons
 `string`
 
 The complete admin site URL (e.g., 'https://icons.example.com')
+
+---
+
+<a id="getndmservicebaseurl"></a>
+
+### getNdmServiceBaseUrl()
+
+> **getNdmServiceBaseUrl**(): `string`
+
+Gets the base URL for the NDM service
+
+#### Returns
+
+`string`
+
+The complete NDM service URL (e.g., 'https://ndm.example.com')
 
 ---
 
