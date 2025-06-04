@@ -57,7 +57,7 @@ jobs:
     name: Integration Tests
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/ecoma-io/playwright-runner:1.2.0
+      image: ghcr.io/ecoma-io/dind-runner:1.3.0
       options: --privileged
     steps:
       - name: Checkout
@@ -89,10 +89,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup project
+      - name: Determine Nx Affected Base and Head SHA
         uses: ./.github/actions/nx-sha
 
-      - name: Determine Nx Affected Base and Head SHA
+      - name: Setup project
         uses: ./.github/actions/setup
         with:
           run-playwright-install: true
