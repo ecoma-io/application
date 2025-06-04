@@ -1,22 +1,23 @@
 import { HttpStatus } from '@nestjs/common';
 import {
   MongoDBContainer,
-  NatsContainer,
   StartedMongoDBContainer,
-  StartedNatsContainer,
   TestLogger,
+  RabbitMQContainer, StartedRabbitMQContainer
 } from "@ecoma/testing";
-import { ClientProxy, ClientsModule, Transport } from "@nestjs/microservices";
-import { Test, TestingModule } from "@nestjs/testing";
 import axios from "axios";
 import mongoose from "mongoose";
-import { join } from "path";
-import { GenericContainer, PullPolicy, StartedTestContainer } from "testcontainers";
+import { GenericContainer, StartedTestContainer, Wait } from "testcontainers";
+import * as amqp from 'amqplib'; // Use import * as style
 
 describe("IAM Service E2E Tests", () => {
   let mongoContainer: StartedMongoDBContainer;
   let iamServiceContainer: StartedTestContainer;
+  let rabbitmqContainer: StartedRabbitMQContainer;
   let mongoConnection: mongoose.Connection;
+  let rabbitMqConnection: amqp.ChannelModel;
+  let rabbitMqChannel: amqp.Channel;
+
 
   // Thiết lập môi trường test trước tất cả các test case
   beforeAll(async () => {
@@ -32,15 +33,38 @@ describe("IAM Service E2E Tests", () => {
       `MongoDB container started at ${mongoContainer.getConnectionString()}`
     );
 
+    // Khởi tạo RabbitMQ container
+    TestLogger.log("Starting RabbitMQ container...");
+    rabbitmqContainer = await new RabbitMQContainer().start();
+    TestLogger.log(
+      `RabbitMQ container started at amqp://${rabbitmqContainer.getHost()}:${rabbitmqContainer.getMappedPort(5672)}`
+    );
+    // Kết nối đến RabbitMQ
+    TestLogger.log('Connecting to RabbitMQ...');
+    rabbitMqConnection = await amqp.connect(rabbitmqContainer.getAmqpUrl());
+    rabbitMqChannel = await rabbitMqConnection.createChannel();
+    TestLogger.log('Connected to RabbitMQ and channel created successfully');
+
+    // Ensure RabbitMQ exchange and queue exist
+    TestLogger.log('Asserting RabbitMQ exchange and queue...');
+    const exchange = 'notification';
+    const routingKey = 'otp';
+    const queue = 'otp-email'; // Assuming the worker listens to this queue for OTP emails
+
+    await rabbitMqChannel.assertExchange(exchange, 'topic', { durable: true });
+    await rabbitMqChannel.assertQueue(queue, { durable: true });
+    await rabbitMqChannel.bindQueue(queue, exchange, routingKey);
+    TestLogger.log(`RabbitMQ exchange "${exchange}" and queue "${queue}" asserted and bound.`);
 
     // Khởi tạo iam service container
     TestLogger.log("Starting IAM Service container...");
     iamServiceContainer = await new GenericContainer('iam-service')
       .withEnvironment({
+        PORT: "3000",
         LOG_LEVEL: "debug",
         LOG_FORMAT: "text",
         MONGODB_URI: mongoContainer.getConnectionString(),
-        PORT: "3000",
+        RABBITMQ_URI: `amqp://${rabbitmqContainer.getHost()}:${rabbitmqContainer.getMappedPort(5672)}`,
       })
       .withExposedPorts(3000)
       .withLogConsumer((stream) => {
@@ -51,6 +75,7 @@ describe("IAM Service E2E Tests", () => {
           TestLogger.error("Error consuming logs:", error);
         });
       })
+      .withWaitStrategy(Wait.forHttp('/health', 3000, { abortOnContainerExit: true }))
       .start();
 
     TestLogger.log("Started IAM Service container successfully");
@@ -84,6 +109,16 @@ describe("IAM Service E2E Tests", () => {
 
     try {
 
+      // Đóng kết nối RabbitMQ
+      if (rabbitMqChannel) {
+        TestLogger.log('Closing RabbitMQ channel...');
+        await rabbitMqChannel.close();
+      }
+      if (rabbitMqConnection) {
+        TestLogger.log('Closing RabbitMQ connection...');
+        await rabbitMqConnection.close();
+      }
+
       // Đóng kết nối MongoDB
       if (mongoConnection) {
         TestLogger.log("Closing MongoDB connection...");
@@ -98,6 +133,10 @@ describe("IAM Service E2E Tests", () => {
       if (mongoContainer) {
         TestLogger.log("Stopping MongoDB container...");
         await mongoContainer.stop();
+      }
+      if (rabbitmqContainer) {
+        TestLogger.log("Stopping RabbitMQ container...");
+        await rabbitmqContainer.stop();
       }
 
       TestLogger.log("Test environment teardown completed successfully!");
@@ -133,11 +172,46 @@ describe("IAM Service E2E Tests", () => {
       it("should request OTP successfully", async () => {
         TestLogger.divider("Case: Request OTP");
         const testEmail = "testuser@example.com";
+        const expectedQueue = "otp-email"; // Tên queue mà service được cấu hình để gửi
+
+
+        // Promise để chờ message từ queue
+        const messagePromise = new Promise<any>((resolve, reject) => {
+          rabbitMqChannel.consume(
+            expectedQueue,
+            (msg) => {
+              if (msg) {
+                TestLogger.log(
+                  `Received message: ${msg.content.toString()}`
+                );
+                resolve(JSON.parse(msg.content.toString()));
+                rabbitMqChannel.ack(msg);
+              }
+            },
+            { noAck: false }
+          );
+
+          setTimeout(() => {
+            reject(
+              new Error(
+                `Timeout waiting for message on queue ${expectedQueue}`
+              )
+            );
+          }, 10000); // 10 giây timeout
+        });
+
+
         const response = await axios.post("/auth/requestOtp", { email: testEmail });
         expect(response.status).toBe(HttpStatus.CREATED);
         expect(response.data).toBeDefined();
         expect(response.data.success).toBe(true);
+
+        const receivedMessage = await messagePromise;
+        expect(receivedMessage).toBeDefined();
+        expect(receivedMessage.email).toBe(testEmail);
       });
+
+
 
       // Test case: Kiểm tra giới hạn tốc độ khi yêu cầu OTP quá nhanh
       it("should return error when requesting OTP too fast", async () => {
@@ -269,7 +343,7 @@ describe("IAM Service E2E Tests", () => {
         const user = await mongoConnection.db.collection('users').findOne({ email: testEmail });
         const otpDoc = await mongoConnection.db.collection('otps').findOne({ userId: user._id, isUsed: false });
         expect(otpDoc).toBeDefined();
-        const response = await axios.post("/auth/login", { email: testEmail, otpCode: otpDoc.code });
+        const response = await axios.post("/auth/login", { email: testEmail, otp: otpDoc.code });
         expect(response.status).toBe(HttpStatus.ACCEPTED);
         expect(response.data.success).toBe(true);
         expect(response.data.data).toBeDefined();
@@ -281,7 +355,7 @@ describe("IAM Service E2E Tests", () => {
       it("should return 404 if user does not exist", async () => {
         TestLogger.divider("Case: Sign in with non-existent user");
         try {
-          await axios.post("/auth/login", { email: "nouser@example.com", otpCode: "123456" });
+          await axios.post("/auth/login", { email: "nouser@example.com", otp: "123456" });
           fail("Sign in with non-existent user should fail");
         } catch (error: any) {
           expect(error.response.status).toBe(HttpStatus.NOT_FOUND);
@@ -294,7 +368,7 @@ describe("IAM Service E2E Tests", () => {
         const testEmail = "invalidotpuser@example.com";
         await axios.post("/auth/requestOtp", { email: testEmail });
         try {
-          await axios.post("/auth/login", { email: testEmail, otpCode: "000000" });
+          await axios.post("/auth/login", { email: testEmail, otp: "000000" });
           fail("Sign in with invalid OTP should fail");
         } catch (error: any) {
           expect(error.response.status).toBe(HttpStatus.UNAUTHORIZED);
@@ -313,7 +387,7 @@ describe("IAM Service E2E Tests", () => {
           { $set: { expiresAt: new Date(Date.now() - 60 * 1000) } }
         );
         try {
-          await axios.post("/auth/login", { email: testEmail, otpCode: otpDoc.code });
+          await axios.post("/auth/login", { email: testEmail, otp: otpDoc.code });
           fail("Sign in with expired OTP should fail");
         } catch (error: any) {
           expect(error.response.status).toBe(HttpStatus.UNAUTHORIZED);
@@ -321,6 +395,8 @@ describe("IAM Service E2E Tests", () => {
         }
       });
     });
+
+
 
   })
 
