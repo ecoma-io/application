@@ -95,9 +95,6 @@ importers:
       amqp-connection-manager:
         specifier: ^4.1.14
         version: 4.1.14(amqplib@0.10.8)
-      amqplib:
-        specifier: ^0.10.7
-        version: 0.10.8
       axios:
         specifier: ^1.9.0
         version: 1.9.0
