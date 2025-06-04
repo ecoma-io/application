@@ -75,7 +75,7 @@
       "release-type": "simple"
     },
     "apps/dind-runner": {
-      "package-name": "playwright-runner",
+      "package-name": "dind-runner",
       "release-type": "simple"
     },
     "apps/ndm-service": {
