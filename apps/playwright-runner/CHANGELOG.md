@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.1](https://github.com/ecoma-io/application/compare/playwright-runner@v1.3.0...playwright-runner@v1.3.1) (2025-06-04)
+
+
+### Bug Fixes
+
+* **playwright-runner:** fix release version error ([32572ad](https://github.com/ecoma-io/application/commit/32572ad23bc7ce8bee48abb04977388566b41101))
+
 ## [1.3.0](https://github.com/ecoma-io/application/compare/playwright-runner@v1.2.0...playwright-runner@v1.3.0) (2025-06-04)
 
 
