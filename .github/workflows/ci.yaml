@@ -68,10 +68,10 @@ jobs:
           git config --global --add safe.directory /__w/application/application
           git fetch origin
 
-      - name: Setup project
+      - name:  Determine Nx Affected Base and Head SHA
         uses: ./.github/actions/nx-sha
 
-      - name: Determine Nx Affected Base and Head SHA
+      - name: Setup project
         uses: ./.github/actions/setup
 
       - name: Automate Integration
