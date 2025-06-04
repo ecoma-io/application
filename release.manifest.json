@@ -5,6 +5,7 @@
   "apps/home-site": "0.0.0",
   "apps/icons": "1.2.1",
   "apps/playwright-runner": "1.2.0",
+  "apps/dind-runner": "0.0.0",
   "apps/iam-service": "0.0.0",
   "apps/ndm-service": "0.0.0",
   "libs/nestjs-config": "0.0.0",
