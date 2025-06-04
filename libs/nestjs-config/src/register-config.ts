@@ -9,9 +9,9 @@ export function registerConfig<TEnviromentObject, TConfig extends ConfigObject =
   callback: (enviroments: TEnviromentObject) => TConfig
 ) {
   // Tạo một bản sao của process.env để gán giá trị mặc định nếu có
-  const envWithDefaults = { ...process.env, ...(defaults ?? {}) };
-
+  const envWithDefaults = { ...(defaults ?? {}), ...process.env };
   const validatedConfig = plainToInstance(envClss, envWithDefaults, { enableImplicitConversion: true });
+
   const errors = validateSync(validatedConfig as object, { skipMissingProperties: false });
 
   if (errors.length > 0) {
