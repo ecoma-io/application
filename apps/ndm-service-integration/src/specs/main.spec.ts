@@ -1,5 +1,4 @@
-import { HttpStatus } from '@nestjs/common';
-import { MongoDBContainer, StartedMongoDBContainer, TestLogger, MaildevContainer, StartedMaildevContainer, MaildevClient } from '@ecoma/testing';
+import { MongoDBContainer, StartedMongoDBContainer, TestLogger, MaildevContainer, StartedMaildevContainer, MaildevClient, RabbitMQContainer, StartedRabbitMQContainer } from '@ecoma/testing';
 import axios from 'axios';
 import mongoose from 'mongoose';
 import { GenericContainer, StartedTestContainer, Wait } from 'testcontainers';
@@ -7,7 +6,7 @@ import * as amqp from 'amqplib'; // Use import * as style
 
 describe('Ndm Service E2E Tests', () => {
   let mongoContainer: StartedMongoDBContainer;
-  let rabbitMqContainer: StartedTestContainer;
+  let rabbitMqContainer: StartedRabbitMQContainer;
   let ndmServiceContainer: StartedTestContainer;
   let maildevContainer: StartedMaildevContainer;
   let mongoConnection: mongoose.Connection;
@@ -27,12 +26,8 @@ describe('Ndm Service E2E Tests', () => {
 
     // Khởi tạo RabbitMQ container
     TestLogger.log('Starting RabbitMQ container...');
-    rabbitMqContainer = await new GenericContainer('rabbitmq:3.8-management')
-      .withExposedPorts(5672, 15672)
-      .withWaitStrategy(Wait.forLogMessage('Server startup complete'))
-      .start();
-    const rabbitMqConnectionString = `amqp://guest:guest@${rabbitMqContainer.getHost()}:${rabbitMqContainer.getMappedPort(5672)}`;
-    TestLogger.log(`RabbitMQ container started at ${rabbitMqConnectionString}`);
+    rabbitMqContainer = await new RabbitMQContainer().start();
+    TestLogger.log(`RabbitMQ container started at ${rabbitMqContainer.getAmqpUrl()}`);
 
     // Khởi tạo Maildev container
     TestLogger.log('Starting Maildev container...');
@@ -46,7 +41,7 @@ describe('Ndm Service E2E Tests', () => {
 
     // Kết nối đến RabbitMQ
     TestLogger.log('Connecting to RabbitMQ...');
-    rabbitMqConnection = await amqp.connect(rabbitMqConnectionString);
+    rabbitMqConnection = await amqp.connect(rabbitMqContainer.getAmqpUrl());
     rabbitMqChannel = await rabbitMqConnection.createChannel();
     TestLogger.log('Connected to RabbitMQ and channel created successfully');
 
@@ -68,7 +63,7 @@ describe('Ndm Service E2E Tests', () => {
         LOG_LEVEL: 'debug',
         LOG_FORMAT: 'text',
         MONGODB_URI: mongoContainer.getConnectionString(),
-        RABBITMQ_URI: rabbitMqConnectionString,
+        RABBITMQ_URI: rabbitMqContainer.getAmqpUrl(),
         SMTP_URI: maildevSmtpUrl,
         PORT: '3000',
       })
@@ -182,12 +177,9 @@ describe('Ndm Service E2E Tests', () => {
       const otp = '123456';
 
       const message = {
-        data: {
-          userId: userId,
-          email: email,
-          otp: otp
-        },
-        metadata: {}
+        userId: userId,
+        email: email,
+        otp: otp
       };
       const exchange = 'notification';
       const routingKey = 'otp';
