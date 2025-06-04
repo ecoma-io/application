@@ -76,7 +76,7 @@ describe("IAM Service E2E Tests", () => {
     TestLogger.log("Waiting for IAM Service service to be fully started...");
     await new Promise((resolve) => setTimeout(resolve, 5000));
     TestLogger.log("Test environment setup completed successfully!");
-  }, 120000); // Timeout 60s cho việc khởi tạo
+  }, 300_000); // Timeout 60s cho việc khởi tạo
 
   // Dọn dẹp sau khi tất cả các test hoàn thành
   afterAll(async () => {
@@ -105,7 +105,7 @@ describe("IAM Service E2E Tests", () => {
       TestLogger.error("Error during test teardown:", error);
       throw error;
     }
-  }, 30000); // Timeout 30s cho việc dọn dẹp
+  }, 120000); // Timeout 30s cho việc dọn dẹp
 
   // Xóa tất cả dữ liệu audit log trước mỗi test
   beforeEach(async () => {

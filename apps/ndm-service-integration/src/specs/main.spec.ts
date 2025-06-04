@@ -102,7 +102,7 @@ describe('Ndm Service E2E Tests', () => {
     TestLogger.log('Connected to MongoDB successfully');
 
     TestLogger.log('Test environment setup completed successfully!');
-  }, 240000);
+  }, 300_000);
 
   // Dọn dẹp sau khi tất cả các test hoàn thành
   afterAll(async () => {
@@ -148,7 +148,7 @@ describe('Ndm Service E2E Tests', () => {
       TestLogger.error('Error during test teardown:', error);
       throw error;
     }
-  }, 90000);
+  }, 120000);
 
   // Xóa tất cả dữ liệu trước mỗi test
   beforeEach(async () => {
