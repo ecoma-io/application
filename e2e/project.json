@@ -8,16 +8,22 @@
     "admin-site",
     "app-site",
     "home-site",
-    "icons"
+    "icons",
+    "iam-service",
+    "ndm-service"
   ],
   "targets": {
     "lint": {
       "executor": "@nx/eslint:lint"
     },
     "automate-e2e-test": {
-      "dependsOn": ["^build", "^server"],
+      "dependsOn": [
+        "^build"
+      ],
       "executor": "@nx/playwright:playwright",
-      "outputs": ["{workspaceRoot}/dist/.playwright/e2e"],
+      "outputs": [
+        "{workspaceRoot}/dist/.playwright/e2e"
+      ],
       "options": {
         "skipInstall": true,
         "config": "e2e/playwright.config.ts"
