@@ -14,7 +14,15 @@ import { RabbitmqConfig } from "../config/rabbitmq.config";
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         ...configService.get<RabbitmqConfig>('rabbitmq'),
-        connectionInitOptions: { wait: true },
+        connectionInitOptions: {
+          wait: true,
+          timeout: 30_000,
+        },
+        connectionManagerOptions: {
+          connectionOptions: {
+            timeout: 30_000
+          }
+        }
       }),
     }),
   ],

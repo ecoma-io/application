@@ -14,6 +14,15 @@ import { DatabaseModule } from '../database/database.module';
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         ...configService.get<RabbitmqConfig>('rabbitmq'),
+        connectionInitOptions: {
+          wait: true,
+          timeout: 30_000,
+        },
+        connectionManagerOptions: {
+          connectionOptions: {
+            timeout: 30_000
+          }
+        },
         exchanges: [
           {
             name: 'notification',
