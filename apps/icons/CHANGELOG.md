@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.0](https://github.com/ecoma-io/application/compare/icons@v1.2.1...icons@v1.3.0) (2025-06-04)
+
+
+### Features
+
+* **dind-runner:** add dind-runner application with docker in docker support ([37db888](https://github.com/ecoma-io/application/commit/37db888ecdd2ab15c889c091006d1f73c4247fd4))
+
+
+### Bug Fixes
+
+* **icons:** add index.html for docker healcheck ([159151f](https://github.com/ecoma-io/application/commit/159151fb1eff58e5ef0d43b5a84859e7bc4c85eb))
+
 ## [1.2.1](https://github.com/ecoma-io/application/compare/icons@v1.2.0...icons@v1.2.1) (2025-05-30)
 
 

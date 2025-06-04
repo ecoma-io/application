@@ -1,6 +1,6 @@
 {
   "name": "@ecoma/nge-redirect",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "peerDependencies": {
     "@angular/core": "^19.0.0",
     "@angular/common": "^19.0.0",
