@@ -11,6 +11,7 @@ RUN apk update && apk add --no-cache \
     util-linux \
     ca-certificates \
     openssl \
+    bash \
     && rm -rf /var/cache/apk/*
 
 COPY apps/dind-runner/entrypoint.sh /usr/local/bin/entrypoint.sh
