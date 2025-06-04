@@ -24,7 +24,7 @@ export class NotificationService {
     queue: 'otp-email',
   })
   async handleOtpMessage(msg: OtpNotificationMessageDto) {
-    this.logger.info(`Processing OTP notification for email: ${msg.data.email}`);
+    this.logger.info(`Processing OTP notification for email: ${msg.email}`);
     this.logger.debug(`Received message: ${JSON.stringify(msg)}`);
     try {
       // 1. Lấy template nội dung
@@ -47,15 +47,15 @@ export class NotificationService {
       const layout = Handlebars.compile(layoutDoc.bodyHtml);
       this.logger.debug('Layout compiled successfully');
       // 3. Render nội dung riêng
-      const content = Handlebars.compile(templateDoc.bodyHtml)(msg.data);
+      const content = Handlebars.compile(templateDoc.bodyHtml)(msg);
       this.logger.debug(`Content rendered (first 100 chars): ${content.substring(0, 100)}...`);
       // 4. Render layout với {{{body}}}
-      const html = layout({ ...msg.data, body: content, subject: 'Mã xác thực OTP', year: new Date().getFullYear() });
+      const html = layout({ ...msg, body: content, subject: 'Mã xác thực OTP', year: new Date().getFullYear() });
       this.logger.debug(`Final HTML rendered (first 100 chars): ${html.substring(0, 100)}...`);
       // 5. Gửi email
-      this.logger.info(`Attempting to send email to: ${msg.data.email}`);
+      this.logger.info(`Attempting to send email to: ${msg.email}`);
       await this.emailService.sendMail({
-        to: msg.data.email,
+        to: msg.email,
         subject: 'Mã xác thực OTP',
         html,
       });
@@ -63,27 +63,27 @@ export class NotificationService {
       // 6. Lưu lịch sử gửi
       this.logger.info('Attempting to save history');
       await this.historyRepo.create({
-        userId: new Types.ObjectId(msg.data.userId),
-        email: msg.data.email,
+        userId: new Types.ObjectId(msg.userId),
+        email: msg.email,
         templateName: 'otp-email',
         notificationType: 'otp',
         status: NotificationStatus.SENT,
-        data: msg.data,
+        data: msg as unknown as Record<string, unknown>,
         processingAttempts: [{ status: NotificationStatus.SENT, attemptedAt: new Date() }],
       });
-      this.logger.info(`OTP email sent and history saved for ${msg.data.email}`);
+      this.logger.info(`OTP email sent and history saved for ${msg.email}`);
     } catch (error) {
-      this.logger.error(`Failed to process OTP notification for ${msg.data.email}`, error);
+      this.logger.error(`Failed to process OTP notification for ${msg.email}`, error);
       // Lưu lịch sử gửi thất bại
       this.logger.debug('Attempting to save failed history');
       await this.historyRepo.create({
-        userId: new Types.ObjectId(msg.data.userId),
-        email: msg.data.email,
+        userId: new Types.ObjectId(msg.userId),
+        email: msg.email,
         templateName: 'otp-email',
         notificationType: 'otp',
         status: NotificationStatus.FAILED,
         errorMessage: error?.message,
-        data: msg.data,
+        data: msg as unknown as Record<string, unknown>,
         processingAttempts: [{ status: NotificationStatus.FAILED, attemptedAt: new Date(), errorMessage: error?.message }],
       });
       this.logger.debug('Failed history saved');
