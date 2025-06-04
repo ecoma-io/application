@@ -1,0 +1,28 @@
+name: Determine Nx Affected Base and Head SHA
+description: Determine Nx Affected Base and Head SHA
+runs:
+  using: composite
+  steps:
+    - name: Determine Nx Affected Base and Head
+      shell: bash
+      run: |
+        # Default to origin/main and current commit for push events
+        BASE="origin/main"
+        HEAD="${{ github.sha }}"
+
+        # For pull_request_target, use the base branch of the PR
+        if [ "${{ github.event_name }}" == "pull_request_target" ]; then
+          BASE="origin/${{ github.base_ref }}"
+          HEAD="origin/${{ github.head_ref }}"
+          echo "Running on pull_request_target. Base: $BASE, Head: $HEAD"
+        fi
+
+        # For merge_group, the base is the merge group ref and head is the current commit
+        if [ "${{ github.event_name }}" == "merge_group" ]; then
+          BASE="${{ github.base_ref }}"
+          HEAD="${{ github.sha }}"
+          echo "Running on merge_group. Base: $BASE, Head: $HEAD"
+        fi
+
+        echo "NX_AFFECTED_BASE=$BASE" >> $GITHUB_ENV
+        echo "NX_AFFECTED_HEAD=$HEAD" >> $GITHUB_ENV
