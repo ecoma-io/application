@@ -86,7 +86,7 @@ jobs:
           run-playwright-install: true
 
       - name: Run containerize docker images
-        run: npx nx affected --targets=containerize --base=origin/main --head=${{ github.sha }} --parallel 1
+        run: npx nx affected --targets=containerize --base=origin/main --head=${{ github.sha }} --parallel 4
 
       - name: Automate Integration
         run: npx nx affected --target=automate-integration-test --base=origin/main --head=${{ github.sha }} --parallel 1
