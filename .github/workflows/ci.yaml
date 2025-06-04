@@ -57,7 +57,8 @@ jobs:
     name: Integration Tests
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/ecoma-io/playwright-runner:1.2.0
+      image: ghcr.io/ecoma-io/dind-runner:1.2.0
+      options: --privileged
     steps:
       - name: Checkout
         uses: actions/checkout@85e6279cec87321a52edac9c87bce653a07cf6c2
