@@ -57,7 +57,7 @@ jobs:
     name: Integration Tests
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/ecoma-io/dind-runner:1.4.0
+      image: ghcr.io/ecoma-io/playwright-runner:1.3.0
       options: --privileged
     steps:
 
