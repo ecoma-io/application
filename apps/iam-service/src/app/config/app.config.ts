@@ -6,6 +6,6 @@ export class ApplicationConfig {
 }
 
 
-export const appConfig = registerConfig<AppEnvironmentVariables, ApplicationConfig>('app', AppEnvironmentVariables, { PORT: '3000' }, (enviroments) => {
+export const appConfig = registerConfig<AppEnvironmentVariables, ApplicationConfig>('app', AppEnvironmentVariables, { PORT: '3001' }, (enviroments) => {
   return { port: enviroments.PORT }
 });

@@ -91,10 +91,11 @@ services:
       dockerfile: apps/iam-service/Dockerfile
       target: debug
     environment:
-      MONGODB_URI: mongodb://user:password@mongodb:27017
-      RABBITMQ_URI: amqp://rabbitmq:5672
+      PORT: 3000
       LOG_FORMAT: text
       LOG_LEVEL: debug
+      MONGODB_URI: mongodb://user:password@mongodb:27017
+      RABBITMQ_URI: amqp://rabbitmq:5672
     networks:
       ecomma:
         ipv4_address: 10.10.60.1
@@ -112,11 +113,12 @@ services:
       dockerfile: apps/ndm-service/Dockerfile
       target: debug
     environment:
+      PORT: 3000
+      LOG_FORMAT: text
+      LOG_LEVEL: debug
       MONGODB_URI: mongodb://user:password@mongodb:27017
       RABBITMQ_URI: amqp://rabbitmq:5672
       SMTP_URI: smtp://maildev:1025?secure=false
-      LOG_FORMAT: text
-      LOG_LEVEL: debug
     networks:
       ecomma:
         ipv4_address: 10.10.60.2
