@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/ecoma-io/application/compare/dind-runner@v1.2.0...dind-runner@v1.3.0) (2025-06-04)
+
+
+### Features
+
+* **dind-runner:** add bash to Dockerfile for improved script execution ([cb02691](https://github.com/ecoma-io/application/commit/cb02691db50b051e0dae5557fbf6613471195c8c))
+
 ## [1.2.0](https://github.com/ecoma-io/application/compare/dind-runner@v1.1.0...dind-runner@v1.2.0) (2025-06-04)
 
 
