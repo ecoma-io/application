@@ -12,8 +12,11 @@ import { RabbitmqConfig } from "../config/rabbitmq.config";
     RabbitMQModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (configService: ConfigService) => configService.get<RabbitmqConfig>("rabbitmq")
-    })
+      useFactory: (configService: ConfigService) => ({
+        ...configService.get<RabbitmqConfig>('rabbitmq'),
+        connectionInitOptions: { wait: true },
+      }),
+    }),
   ],
   controllers: [AuthController],
   providers: [AuthService]

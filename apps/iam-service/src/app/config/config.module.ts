@@ -4,6 +4,7 @@ import { Module } from "@nestjs/common";
 import { ConfigModule as NestConfigModule, ConfigService as NestConfigService } from "@nestjs/config";
 import { appConfig } from "./app.config";
 import { mongodbConfig } from "./mongodb.config";
+import { rabbitmqConfig } from "./rabbitmq.config";
 
 
 export { NestConfigService as ConfigService };
@@ -12,7 +13,7 @@ export { NestConfigService as ConfigService };
   imports: [
     NestConfigModule.forRoot({
       isGlobal: true,
-      load: [appConfig, mongodbConfig],
+      load: [appConfig, mongodbConfig, rabbitmqConfig],
     })
   ],
   controllers: [],

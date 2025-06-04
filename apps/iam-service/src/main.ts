@@ -9,11 +9,10 @@ import { ConfigService } from "@nestjs/config";
 import { ApplicationConfig } from './app/config/app.config';
 import { BadRequestException, ClassSerializerInterceptor, UnprocessableEntityException, ValidationError, ValidationPipe } from '@nestjs/common';
 import { ErrorResponseDetailsDTO } from '@ecoma/dtos';
-import { error, log } from 'console';
 
 async function bootstrap() {
   const logger = new PinoLogger('Boostrap');
-  const app = await NestFactory.create(AppModule, { logger });
+  const app = await NestFactory.create(AppModule, { logger, cors: { origin: '*' } });
 
   app.useGlobalPipes(new ValidationPipe({
     whitelist: true,
@@ -22,7 +21,6 @@ async function bootstrap() {
     disableErrorMessages: false,
     exceptionFactory: (errors: ValidationError[]) => {
       const logger = new PinoLogger('ValidationPipe.exceptionFactory');
-
 
       if (errors.some(error => Object.keys(error.constraints).some(key => key === 'whitelistValidation'))) {
         logger.debug({ errors }, "Have and error with whitelistValidation");

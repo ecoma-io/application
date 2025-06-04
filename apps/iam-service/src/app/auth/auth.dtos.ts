@@ -25,7 +25,7 @@ export class AuthSignInDTO {
   @ApiProperty({ required: true, description: 'OTP code for sign-in' })
   @IsString()
   @Length(6)
-  otpCode: string; // Made optional for the requestOTP use case
+  otp: string;
 }
 
 

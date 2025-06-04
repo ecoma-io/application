@@ -14,7 +14,12 @@ export class AuthService {
 
   private logger = new PinoLogger(AuthService.name);
 
-  constructor(private sessionRepo: SessionRepository, private userRepo: UserRepository, private otpRepo: OTPRepository, private amqpConnection: AmqpConnection) {
+  constructor(
+    private sessionRepo: SessionRepository,
+    private userRepo: UserRepository,
+    private otpRepo: OTPRepository,
+    private readonly amqpConnection: AmqpConnection,
+  ) {
 
   }
 
@@ -74,20 +79,15 @@ export class AuthService {
         'notification',
         'otp',
         {
-          data: {
-            userId: user._id,
-            email: user.email,
-            otp: otp
-          }
-        },
-        {
-          persistent: true, // keep message in queue even if server is restarted
-          expiration: new Date(Date.now() + 5 * 60 * 1000).toISOString() // 5 minutes expiration
+          userId: user._id,
+          email: user.email,
+          firstName: user.firstName,
+          otp: otp
         }
       );
       this.logger.debug({ userId: user._id, email: user.email }, 'OTP message published to RabbitMQ');
     } catch (error) {
-      this.logger.error({ userId: user._id, email: user.email, error }, 'Failed to publish OTP message to RabbitMQ');
+      this.logger.error({ userId: user._id, email: user.email, err: error }, 'Failed to publish OTP message to RabbitMQ');
     }
 
     // 6. Return response
@@ -116,19 +116,19 @@ export class AuthService {
     this.logger.debug({ userId: user._id }, 'User found');
 
     // 3. Find valid OTP for the user and provided code using the new method
-    this.logger.debug({ userId: user._id, otpCode: signInDTO.otpCode }, 'Checking OTP validity');
-    const validOtp = await this.otpRepo.findValidOtp(user._id, signInDTO.otpCode);
+    this.logger.debug({ userId: user._id, otp: signInDTO.otp }, 'Checking OTP validity');
+    const validOtp = await this.otpRepo.findValidOtp(user._id, signInDTO.otp);
 
     // 4. Verify if OTP is valid and not expired (findValidOtp handles this)
     if (!validOtp) {
-      this.logger.debug({ userId: user._id, otpCode: signInDTO.otpCode }, 'OTP is invalid or expired');
+      this.logger.debug({ userId: user._id, otp: signInDTO.otp }, 'OTP is invalid or expired');
       throw new InvalidOrExpiredOtpException();
     }
-    this.logger.debug({ userId: user._id, otpCode: signInDTO.otpCode }, 'OTP is valid');
+    this.logger.debug({ userId: user._id, otp: signInDTO.otp }, 'OTP is valid');
 
     // 5. OTP is valid, invalidate it using createOrUpdateOtp
     await this.otpRepo.createOrUpdateOtp({ userId: user._id, token: validOtp.code, expiresAt: validOtp.expiresAt, isUsed: true });
-    this.logger.debug({ userId: user._id, otpCode: signInDTO.otpCode }, 'OTP invalidated');
+    this.logger.debug({ userId: user._id, otp: signInDTO.otp }, 'OTP invalidated');
 
     // 6. Generate session token using uuid v7
     const token = uuidv7();
