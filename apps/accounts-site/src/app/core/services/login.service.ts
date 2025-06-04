@@ -1,38 +1,25 @@
-import { AuthService } from '@ecoma/nge-auth';
+import { SucessResponseDto } from '@ecoma/dtos';
 import { Injectable } from '@angular/core';
-import { Observable, of, throwError } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Domains } from '@ecoma/nge-domain';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LoginService {
-  constructor(private auth: AuthService) {}
+  constructor(
+    private http: HttpClient,
+    private domains: Domains,
+  ) { }
 
-  requestOTP(email: string): Observable<any> {
-    // Mock API response for OTP request
-    if (email.includes('@')) {
-      return of({ success: true, message: 'Verification code sent successfully' }).pipe(delay(1000));
-    }
-    return throwError(() => new Error('Invalid email address'));
+  requestOTP(email: string): Observable<SucessResponseDto> {
+    return this.http.post<SucessResponseDto>(`${this.domains.getIamServiceBaseUrl()}/auth/requestOtp`, { email })
+      .pipe()
   }
 
-  verifyOTP(email: string, otp: string): Observable<any> {
-    // Mock API response for OTP verification
-    if (otp === '123456') {
-      // For testing purposes
-      const mockResponse = {
-        token: 'mock_jwt_token',
-        user: {
-          id: '1',
-          email,
-          firstName: 'John',
-          lastName: 'Doe',
-        },
-      };
-      this.auth.setToken(mockResponse.token);
-      return of(mockResponse).pipe(delay(1000));
-    }
-    return throwError(() => new Error('Invalid verification code'));
+  verifyOTP(email: string, otp: string): Observable<SucessResponseDto> {
+    return this.http.post<SucessResponseDto>(`${this.domains.getIamServiceBaseUrl()}/auth/login`, { email, otp })
+      .pipe()
   }
 }
