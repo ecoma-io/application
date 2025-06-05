@@ -4,36 +4,42 @@ import { AuthenticateIdentificationPage } from './acccounts-site-authenticate.id
 import { AuthenticateInitializationPage } from './acccounts-site-authenticate.initialization.page';
 import { AuthenticateVerificationPage } from './accounts-site-authenticate.verification.page';
 
+function encodeURIComponentFix(input: string) {
+  return encodeURIComponent(input).replace('%3A', ':')
+}
 
 test.describe('Authentication Feature', { tag: ['@accounts-site', '@authentication'] }, () => {
 
-
-  // Test case: Kiểm tra chuyển hướng khi truy cập trang dashboard mà chưa đăng nhập
+  // Te  st case: Kiểm tra chuyển hướng khi truy cập trang dashboard mà chưa đăng nhập
   test(`Redirect to /authenticate/identification when accessing /dashboard without login`, async ({ page }) => {
     await page.goto(`${ACCOUNTS_SITE_URL}/dashboard`);
-    await page.waitForURL(`${ACCOUNTS_SITE_URL}/authenticate/identification`)
-    expect(page.url()).toBe(`${ACCOUNTS_SITE_URL}/authenticate/identification`);
+    const redirectUrlExpected = `${ACCOUNTS_SITE_URL}/authenticate/identification?continue=${encodeURIComponentFix(ACCOUNTS_SITE_URL + '/dashboard')}`;
+    await page.waitForURL(redirectUrlExpected);
+    expect(page.url()).toBe(redirectUrlExpected);
   });
 
   // Test case: Kiểm tra chuyển hướng khi truy cập trang profile mà chưa đăng nhập
   test(`Redirect to /authenticate/identification when accessing /dashboard/profile without login`, async ({ page }) => {
     await page.goto(`${ACCOUNTS_SITE_URL}/dashboard/profile`);
-    await page.waitForURL(`${ACCOUNTS_SITE_URL}/authenticate/identification`)
-    expect(page.url()).toBe(`${ACCOUNTS_SITE_URL}/authenticate/identification`);
+    const redirectUrlExpected = `${ACCOUNTS_SITE_URL}/authenticate/identification?continue=${encodeURIComponentFix(ACCOUNTS_SITE_URL + '/dashboard/profile')}`;
+    await page.waitForURL(redirectUrlExpected);
+    expect(page.url()).toBe(redirectUrlExpected);
   });
 
   // Test case: Kiểm tra chuyển hướng khi truy cập trang sessions mà chưa đăng nhập
   test(`Redirect to /authenticate/identification when accessing /dashboard/sessions without login`, async ({ page }) => {
     await page.goto(`${ACCOUNTS_SITE_URL}/dashboard/sessions`);
-    await page.waitForURL(`${ACCOUNTS_SITE_URL}/authenticate/identification`)
-    expect(page.url()).toBe(`${ACCOUNTS_SITE_URL}/authenticate/identification`);
+    const redirectUrlExpected = `${ACCOUNTS_SITE_URL}/authenticate/identification?continue=${encodeURIComponentFix(ACCOUNTS_SITE_URL + '/dashboard/sessions')}`;
+    await page.waitForURL(redirectUrlExpected);
+    expect(page.url()).toBe(redirectUrlExpected);
   });
 
   // Test case: Kiểm tra chuyển hướng khi truy cập trang settings mà chưa đăng nhập
   test(`Redirect to /authenticate/identification when accessing /dashboard/settings without login`, async ({ page }) => {
     await page.goto(`${ACCOUNTS_SITE_URL}/dashboard/settings`);
-    await page.waitForURL(`${ACCOUNTS_SITE_URL}/authenticate/identification`)
-    expect(page.url()).toBe(`${ACCOUNTS_SITE_URL}/authenticate/identification`);
+    const redirectUrlExpected = `${ACCOUNTS_SITE_URL}/authenticate/identification?continue=${encodeURIComponentFix(ACCOUNTS_SITE_URL + '/dashboard/settings')}`;
+    await page.waitForURL(redirectUrlExpected);
+    expect(page.url()).toBe(redirectUrlExpected);
   });
 
 
@@ -135,7 +141,7 @@ test.describe('Authentication Feature', { tag: ['@accounts-site', '@authenticati
         expect(storedEmail).toBe(validEmail);
       });
 
-      test('should navigate to initialization page on old user', async ({ page }) => {
+      test('should navigate to verification page on old user', async ({ page }) => {
         const identificationPage = new AuthenticateIdentificationPage(page);
 
         // Mock API call to succeed
@@ -198,6 +204,66 @@ test.describe('Authentication Feature', { tag: ['@accounts-site', '@authenticati
 
     });
 
+    // New test case: Navigate from Identification to Initialization with continue parameter
+    test('should navigate to initialization page with continue parameter on new user', async ({ page }) => {
+      const identificationPage = new AuthenticateIdentificationPage(page);
+      const validEmail = 'newuser@example.com';
+      const identifyApiUrl = IAM_SERVICE_URL + '/auth/identify';
+      const continueToUrl = 'https://example.com/app/new-user-setup'; // Full URL
+
+      // Mock API call to succeed for a new user
+      await page.route(identifyApiUrl, async route => {
+        await route.fulfill({
+          status: 200,
+          contentType: 'application/json',
+          body: JSON.stringify({ success: true, data: {} }), // No firstName means new user
+        });
+      });
+
+      await identificationPage.gotoWithContinue(continueToUrl);
+      await identificationPage.fillEmail(validEmail);
+      await identificationPage.clickContinueWithEmail();
+
+      // Check if navigating to the initialization page and continue parameter is preserved
+      const expectedUrl = `${ACCOUNTS_SITE_URL}/authenticate/initialization?continue=${encodeURIComponentFix(continueToUrl)}`;
+      await page.waitForURL(expectedUrl);
+      expect(page.url()).toBe(expectedUrl);
+
+      const storedEmail = await page.evaluate(() => sessionStorage.getItem('current-user-email'));
+      expect(storedEmail).toBe(validEmail);
+    });
+
+    // New test case: Navigate from Identification to Verification with continue parameter
+    test('should navigate to verification page with continue parameter on old user', async ({ page }) => {
+      const identificationPage = new AuthenticateIdentificationPage(page);
+      const validEmail = 'olduser@example.com';
+      const identifyApiUrl = IAM_SERVICE_URL + '/auth/identify';
+      const continueToUrl = 'https://example.com/app/dashboard-overview'; // Full URL
+
+      // Mock API call to succeed for an old user
+      await page.route(identifyApiUrl, async route => {
+        await route.fulfill({
+          status: 200,
+          contentType: 'application/json',
+          body: JSON.stringify({ success: true, data: { firstName: 'Existing' } }), // firstName means old user
+        });
+      });
+
+      await identificationPage.gotoWithContinue(continueToUrl);
+      await identificationPage.fillEmail(validEmail);
+      await identificationPage.clickContinueWithEmail();
+
+      // Check if navigating to the verification page and continue parameter is preserved
+      const expectedUrl = `${ACCOUNTS_SITE_URL}/authenticate/verification?continue=${encodeURIComponentFix(continueToUrl)}`;
+      await page.waitForURL(expectedUrl);
+      expect(page.url()).toBe(expectedUrl);
+
+      const storedEmail = await page.evaluate(() => sessionStorage.getItem('current-user-email'));
+      expect(storedEmail).toBe(validEmail);
+      const storedFirstName = await page.evaluate(() => sessionStorage.getItem('current-user-first-name'));
+      expect(storedFirstName).toBe('Existing');
+    });
+
   });
 
   test.describe('Initialization Page', { tag: ['@initialization'] }, () => {
@@ -251,6 +317,11 @@ test.describe('Authentication Feature', { tag: ['@accounts-site', '@authenticati
 
       test.beforeEach(async ({ page }) => {
         initializationPage = new AuthenticateInitializationPage(page);
+        await page.goto(ACCOUNTS_SITE_URL);
+        await page.evaluate(() => {
+          sessionStorage.clear();
+          sessionStorage.setItem('current-user-email', 'test@example.com');
+        });
         await initializationPage.goto();
       });
 
@@ -311,16 +382,19 @@ test.describe('Authentication Feature', { tag: ['@accounts-site', '@authenticati
 
       test.beforeEach(async ({ page }) => {
         initializationPage = new AuthenticateInitializationPage(page);
-        // Set session storage to simulate coming from identification page
-        await page.goto(ACCOUNTS_SITE_URL);
-        await page.evaluate(() => sessionStorage.setItem('current-user-email', 'test@example.com'));
-        await initializationPage.goto();
+        // Set session storage and navigate with continue parameter
+        const continueToUrl = 'https://example.com/app/profile-setup'; // Full URL
+        await page.goto(ACCOUNTS_SITE_URL); // Go to a base page to clear storage reliably
+        await page.evaluate((email) => sessionStorage.setItem('current-user-email', email), 'test@example.com');
+        await initializationPage.gotoWithContinue(continueToUrl);
       });
 
-      // Test case: Submit with valid First Name and Last Name
-      test('should save first and last name to session storage and navigate to verification on valid submit', async ({ page }) => {
+      // Test case: Submit with valid First Name and Last Name and preserve continue parameter
+      test('should save first and last name, navigate to verification with continue on valid submit', async ({ page }) => {
         const firstName = 'Test';
         const lastName = 'User';
+        const continueToUrl = 'https://example.com/app/profile-setup'; // Full URL, must match beforeEach
+
         await initializationPage.fillFirstName(firstName);
         await initializationPage.fillLastName(lastName);
 
@@ -332,14 +406,17 @@ test.describe('Authentication Feature', { tag: ['@accounts-site', '@authenticati
         const storedLastName = await page.evaluate(() => sessionStorage.getItem('current-user-last-name'));
         expect(storedLastName).toBe(lastName);
 
-        // Check navigation
-        await page.waitForURL(ACCOUNTS_SITE_URL + '/authenticate/verification');
-        expect(page.url()).toBe(ACCOUNTS_SITE_URL + '/authenticate/verification');
+        // Check navigation and that continue parameter is preserved
+        const expectedUrl = `${ACCOUNTS_SITE_URL}/authenticate/verification?continue=${encodeURIComponentFix(continueToUrl)}`;
+        await page.waitForURL(expectedUrl);
+        expect(page.url()).toBe(expectedUrl);
       });
 
-      // Test case: Submit with only valid First Name
-      test('should save only first name to session storage and navigate to verification on valid submit (without last name)', async ({ page }) => {
+      // Test case: Submit with only valid First Name and preserve continue parameter
+      test('should save only first name, navigate to verification with continue on valid submit (without last name)', async ({ page }) => {
         const firstName = 'Test';
+        const continueToUrl = 'https://example.com/app/profile-setup'; // Full URL, must match beforeEach
+
         await initializationPage.fillFirstName(firstName);
 
         await initializationPage.clickCreateAccount();
@@ -350,9 +427,10 @@ test.describe('Authentication Feature', { tag: ['@accounts-site', '@authenticati
         const storedLastName = await page.evaluate(() => sessionStorage.getItem('current-user-last-name'));
         expect(storedLastName).toBe(null); // Ensure last name is not stored or is removed
 
-        // Check navigation
-        await page.waitForURL(ACCOUNTS_SITE_URL + '/authenticate/verification');
-        expect(page.url()).toBe(ACCOUNTS_SITE_URL + '/authenticate/verification');
+        // Check navigation and that continue parameter is preserved
+        const expectedUrl = `${ACCOUNTS_SITE_URL}/authenticate/verification?continue=${encodeURIComponentFix(continueToUrl)}`;
+        await page.waitForURL(expectedUrl);
+        expect(page.url()).toBe(expectedUrl);
       });
 
     });
@@ -381,7 +459,8 @@ test.describe('Authentication Feature', { tag: ['@accounts-site', '@authenticati
       await page.goto(ACCOUNTS_SITE_URL); // Go to a base page to clear storage reliably
       await page.evaluate(() => sessionStorage.clear());
 
-      await page.goto(`${ACCOUNTS_SITE_URL}/authenticate/verification`);
+      await verificationPage.goto();
+
       await page.waitForURL(`${ACCOUNTS_SITE_URL}/authenticate/identification`);
       expect(page.url()).toBe(`${ACCOUNTS_SITE_URL}/authenticate/identification`);
     });
@@ -395,7 +474,8 @@ test.describe('Authentication Feature', { tag: ['@accounts-site', '@authenticati
         sessionStorage.setItem('current-user-email', 'test@example.com');
       });
 
-      await page.goto(`${ACCOUNTS_SITE_URL}/authenticate/verification`);
+      await verificationPage.goto();
+
       await page.waitForURL(`${ACCOUNTS_SITE_URL}/authenticate/initialization`);
       expect(page.url()).toBe(`${ACCOUNTS_SITE_URL}/authenticate/initialization`);
     });
@@ -429,8 +509,11 @@ test.describe('Authentication Feature', { tag: ['@accounts-site', '@authenticati
       await page.evaluate(() => {
         sessionStorage.removeItem('current-user-last-name');
       });
-      await verificationPage.goto(); // Reload page after changing session storage
-      await expect(verificationPage.pageIntro).toContainText('Hi Test!'); // Checks for first name only
+
+      const verificationPageWithoutLastName = new AuthenticateVerificationPage(page);
+      await verificationPageWithoutLastName.goto();
+
+      await expect(verificationPageWithoutLastName.pageIntro).toContainText('Hi Test!'); // Checks for first name only
     });
 
     test.describe('Form Validation', () => {
@@ -443,7 +526,7 @@ test.describe('Authentication Feature', { tag: ['@accounts-site', '@authenticati
           sessionStorage.setItem('current-user-email', 'test@example.com');
           sessionStorage.setItem('current-user-first-name', 'Test');
         });
-        await verificationPage.goto(); // Navigate to verification page with session storage set
+        await verificationPage.goto();
       });
 
       // Test case: Show required error for OTP when empty
@@ -503,7 +586,7 @@ test.describe('Authentication Feature', { tag: ['@accounts-site', '@authenticati
           });
         });
 
-        await verificationPage.goto(); // Navigate to verification page
+        await verificationPage.goto();
         // Ensure the resend button is initially enabled (if no initial cooldown)
         await expect(verificationPage.resendButton).not.toBeDisabled();
       });
@@ -574,8 +657,46 @@ test.describe('Authentication Feature', { tag: ['@accounts-site', '@authenticati
 
     });
 
-    // Test case: Verify OTP successfully and navigate to dashboard
-    test('should verify OTP successfully and navigate to dashboard', async ({ page }) => {
+    // New Test case: Verify OTP successfully and navigate to 'continue' URL (full URL)
+    test('should verify OTP successfully and navigate to continue URL', async ({ page }) => {
+      const verifyOtpApiUrl = IAM_SERVICE_URL + '/auth/login';
+      const continueToUrl = 'https://example.com/app/protected-page'; // Full URL for continue
+
+      // Mock the verify-otp API call to succeed
+      await page.route(verifyOtpApiUrl, async route => {
+        await route.fulfill({
+          status: 202,
+          contentType: 'application/json',
+          body: JSON.stringify({ success: true, data: { token: 'mocked-token' } }),
+        });
+      });
+
+      const verificationPageWithContinue = new AuthenticateVerificationPage(page);
+      await verificationPageWithContinue.gotoWithContinue(continueToUrl);
+
+      // Fill a valid OTP (format-wise)
+      await verificationPageWithContinue.fillOTP('123456');
+
+      // Click the verify button
+      await verificationPageWithContinue.clickVerify();
+
+      // Wait for the browser to navigate to the external URL
+      await page.waitForURL(continueToUrl, { timeout: 15000 }); // Increased timeout
+
+      // Assert that the current URL is the continue URL
+      expect(page.url()).toBe(continueToUrl);
+
+      // Assert that session storage is cleared
+      const authEmailAfterVerification = await page.evaluate(() => sessionStorage.getItem('current-user-email'));
+      expect(authEmailAfterVerification).toBeNull();
+      const storedFirstName = await page.evaluate(() => sessionStorage.getItem('current-user-first-name'));
+      expect(storedFirstName).toBeNull();
+      const storedLastName = await page.evaluate(() => sessionStorage.getItem('current-user-last-name'));
+      expect(storedLastName).toBeNull();
+    });
+
+    // Modify existing test case to navigate to dashboard if no continue parameter
+    test('should verify OTP successfully and navigate to dashboard when no continue parameter', async ({ page }) => {
       // beforeEach sets up session storage with email and first/last name
       const verifyOtpApiUrl = IAM_SERVICE_URL + '/auth/login';
 
@@ -588,25 +709,28 @@ test.describe('Authentication Feature', { tag: ['@accounts-site', '@authenticati
         });
       });
 
-      await verificationPage.goto(); // Navigate to the verification page
+      const verificationPageWithoutContinue = new AuthenticateVerificationPage(page);
+      await verificationPageWithoutContinue.goto();
 
       // Fill a valid OTP (format-wise)
-      await verificationPage.fillOTP('123456');
+      await verificationPageWithoutContinue.fillOTP('123456');
 
       // Click the verify button
-      await verificationPage.clickVerify();
+      await verificationPageWithoutContinue.clickVerify();
 
       // Wait for navigation to the dashboard URL
       await page.waitForURL(ACCOUNTS_SITE_URL + '/dashboard/profile');
 
       // Assert that the current URL is the dashboard
-      expect(page.url()).toBe(ACCOUNTS_SITE_URL + '/dashboard/profile');
+      expect(page.url()).toBe(ACCOUNTS_SITE_URL + '/dashboard/profile'); // Changed assertion
 
-      // Assert that 'auth_email' (or corresponding key) is removed from session storage
-      const authEmailAfterVerification = await page.evaluate(() => sessionStorage.getItem('auth_email'));
+      // Assert that session storage is cleared
+      const authEmailAfterVerification = await page.evaluate(() => sessionStorage.getItem('current-user-email'));
       expect(authEmailAfterVerification).toBeNull();
-
-      // Optionally, check if other relevant auth tokens/flags are set in storage if applicable
+      const storedFirstName = await page.evaluate(() => sessionStorage.getItem('current-user-first-name'));
+      expect(storedFirstName).toBeNull();
+      const storedLastName = await page.evaluate(() => sessionStorage.getItem('current-user-last-name'));
+      expect(storedLastName).toBeNull();
     });
 
   });

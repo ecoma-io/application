@@ -30,6 +30,10 @@ export class AuthenticateIdentificationPage {
     await this.page.goto(ACCOUNTS_SITE_URL + '/authenticate/identification');
   }
 
+  async gotoWithContinue(continueUrl: string) {
+    await this.page.goto(`${ACCOUNTS_SITE_URL}/authenticate/identification?continue=${encodeURIComponent(continueUrl)}`);
+  }
+
   async fillEmail(email: string) {
     await this.emailInput.fill(email);
   }

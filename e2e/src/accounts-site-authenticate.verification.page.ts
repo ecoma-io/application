@@ -39,6 +39,10 @@ export class AuthenticateVerificationPage {
     await this.page.goto(this.url);
   }
 
+  async gotoWithContinue(continueUrl: string) {
+    await this.page.goto(`${this.url}?continue=${encodeURIComponent(continueUrl)}`);
+  }
+
   async fillOTP(otp: string) {
     await this.otpInput.fill(otp);
   }

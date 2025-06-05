@@ -167,9 +167,9 @@ export class IdentificationComponent {
           }
 
           if (response.data.firstName) {
-            this.router.navigate(['/authenticate/verification']);
+            this.router.navigate(['/authenticate/verification'], { queryParamsHandling: 'merge' });
           } else {
-            this.router.navigate(['/authenticate/initialization']);
+            this.router.navigate(['/authenticate/initialization'], { queryParamsHandling: 'merge' });
           }
         },
         error: (error: HttpErrorResponse) => {

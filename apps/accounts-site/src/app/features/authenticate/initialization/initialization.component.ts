@@ -104,7 +104,7 @@ export class InitializationComponent implements OnInit {
     this.title.setTitle('Identity verification');
     const currentUserEmail = sessionStorage.getItem('current-user-email');
     if (!currentUserEmail) {
-      this.router.navigate(['/authenticate/identification']);
+      this.router.navigate(['/authenticate/identification'], { queryParamsHandling: 'merge' });
       sessionStorage.removeItem('current-user-firt-name');
       sessionStorage.removeItem('current-user-last-name');
       return;
@@ -137,7 +137,7 @@ export class InitializationComponent implements OnInit {
       }
 
 
-      this.router.navigate(['/authenticate/verification']);
+      this.router.navigate(['/authenticate/verification'], { queryParamsHandling: 'merge' });
     }
   }
 }

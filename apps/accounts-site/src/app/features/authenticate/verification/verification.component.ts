@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Route, Router, RouterLink } from '@angular/router';
 import { SvgInjector } from '@ecoma/nge-svg-injector';
 import { Domains } from '@ecoma/nge-domain';
 import { Title } from '@angular/platform-browser';
@@ -93,6 +93,7 @@ export class VerificationComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private router: Router,
     private authService: AuthService,
+    private activatedRoute: ActivatedRoute,
     private domain: Domains,
     private title: Title
   ) {
@@ -184,7 +185,13 @@ export class VerificationComponent implements OnInit, OnDestroy {
           sessionStorage.removeItem('current-user-email');
           sessionStorage.removeItem('current-user-first-name');
           sessionStorage.removeItem('current-user-last-name');
-          this.router.navigate(['/dashboard']);
+
+          const continueUrl = this.activatedRoute.snapshot.queryParams['continue'];
+          if (continueUrl) {
+            window.location.href = continueUrl;
+          } else {
+            this.router.navigate(['/dashboard']);
+          }
         },
         error: (error) => {
           this.isLoading = false;

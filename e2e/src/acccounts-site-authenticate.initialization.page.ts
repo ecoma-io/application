@@ -28,6 +28,10 @@ export class AuthenticateInitializationPage {
     await this.page.goto(`${ACCOUNTS_SITE_URL}/authenticate/initialization`);
   }
 
+  async gotoWithContinue(continueUrl: string) {
+    await this.page.goto(`${ACCOUNTS_SITE_URL}/authenticate/initialization?continue=${encodeURIComponent(continueUrl)}`);
+  }
+
   async fillFirstName(firstName: string) {
     await this.firstNameInput.fill(firstName);
   }
