@@ -1,0 +1,26 @@
+{
+  "name": "nginx-spa",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/nginx-spa",
+  "prefix": "app",
+  "targets": {
+    "containerize": {
+      "executor": "@nx-tools/nx-container:build",
+      "configurations": {
+        "development": {},
+        "production": {
+          "push": true
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "publish": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "{workspaceRoot}",
+        "command": "INPUT_TAGS=ghcr.io/ecoma-io/{projectName}:$(cat {projectRoot}/version.txt) npx nx containerize {projectName} -c production"
+      }
+    }
+  }
+}

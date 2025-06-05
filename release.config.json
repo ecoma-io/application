@@ -78,6 +78,10 @@
       "package-name": "dind-runner",
       "release-type": "simple"
     },
+    "apps/nginx-spa": {
+      "package-name": "nginx-spa",
+      "release-type": "simple"
+    },
     "apps/ndm-service": {
       "package-name": "ndm-service",
       "release-type": "simple",
