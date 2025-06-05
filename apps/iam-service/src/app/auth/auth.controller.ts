@@ -1,7 +1,7 @@
 import { Body, Controller, Post, HttpCode, HttpStatus, Headers } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';
-import { AuthRequestOtpDTO, AuthSignInDTO, AuthSignInResponseDto } from "./auth.dtos";
+import { AuthIdentifyDTO, AuthIdentifyResponseDTO, AuthRequestOtpDTO, AuthSignInDTO, AuthSignInResponseDto } from "@ecoma/iam-service-dtos";
 import { ErrorResponseDetailsDTO, ErrorResponseDTO, SucessResponseDto } from "@ecoma/dtos";
 
 @Controller("auth")
@@ -9,6 +9,23 @@ import { ErrorResponseDetailsDTO, ErrorResponseDTO, SucessResponseDto } from "@e
 export class AuthController {
 
   constructor(private authService: AuthService) { }
+
+
+  /**
+   * @summary Get basic user identification information
+   * @param authIdentifyDTO - Data transfer object for OTP request
+   * @returns A response object about basic user identification information
+   */
+  @Post('identify')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Get basic user identification information' })
+  @ApiBody({ type: AuthIdentifyDTO })
+  @ApiResponse({ status: HttpStatus.OK, description: 'Basic user identification information', type: AuthIdentifyResponseDTO })
+  @ApiResponse({ status: HttpStatus.INTERNAL_SERVER_ERROR, description: 'A technical error occurred on the server side.', type: ErrorResponseDTO })
+  public identify(@Body() authIdentifyDTO: AuthIdentifyDTO): Promise<AuthIdentifyResponseDTO> {
+    return this.authService.identify(authIdentifyDTO);
+  }
+
 
   /**
    * @summary Request one-time password
@@ -19,10 +36,11 @@ export class AuthController {
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: 'Request one-time password' })
   @ApiBody({ type: AuthRequestOtpDTO })
-  @ApiResponse({ status: 201, description: 'One-time password sent successfully', type: SucessResponseDto })
-  @ApiResponse({ status: 400, description: 'The request data is malformed', type: ErrorResponseDTO })
-  @ApiResponse({ status: 429, description: 'Request too fast', type: ErrorResponseDTO })
-  @ApiResponse({ status: 422, description: 'Invalid input data', type: ErrorResponseDetailsDTO })
+  @ApiResponse({ status: HttpStatus.CREATED, description: 'One-time password sent successfully', type: SucessResponseDto })
+  @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'The request data is malformed', type: ErrorResponseDTO })
+  @ApiResponse({ status: HttpStatus.TOO_MANY_REQUESTS, description: 'Request too fast', type: ErrorResponseDTO })
+  @ApiResponse({ status: HttpStatus.UNPROCESSABLE_ENTITY, description: 'Invalid input data', type: ErrorResponseDetailsDTO })
+  @ApiResponse({ status: HttpStatus.INTERNAL_SERVER_ERROR, description: 'A technical error occurred on the server side.' })
   public requestOTP(@Body() requestOtpDTO: AuthRequestOtpDTO): Promise<SucessResponseDto> {
     return this.authService.requestOTP(requestOtpDTO);
   }
@@ -40,6 +58,7 @@ export class AuthController {
   @ApiResponse({ status: 200, description: 'Login successful', type: AuthSignInResponseDto })
   @ApiResponse({ status: 401, description: 'OTP code is invalid' })
   @ApiResponse({ status: 422, description: 'Invalid input data' })
+  @ApiResponse({ status: HttpStatus.INTERNAL_SERVER_ERROR, description: 'A technical error occurred on the server side.' })
   public signIn(@Body() signInDTO: AuthSignInDTO, @Headers() headers: Record<string, string>): Promise<AuthSignInResponseDto> {
     return this.authService.signIn(signInDTO, headers);
   }
@@ -53,6 +72,7 @@ export class AuthController {
   @ApiOperation({ summary: 'User logout' })
   @ApiResponse({ status: 200, description: 'Logout successful', type: SucessResponseDto })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: HttpStatus.INTERNAL_SERVER_ERROR, description: 'A technical error occurred on the server side.' })
   public logout() {
     return this.authService.signOut();
   }

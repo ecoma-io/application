@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { AuthRequestOtpDTO, AuthSignInDTO, AuthSignInResponseDto } from "./auth.dtos";
+import { AuthIdentifyDTO, AuthIdentifyResponseDTO, AuthRequestOtpDTO, AuthSignInDTO, AuthSignInResponseDto } from "@ecoma/iam-service-dtos";
 import { SessionRepository, UserRepository } from "../database/repositories";
 import { OTPRepository } from "../database/repositories/otp.repository";
 import { TooMananyRequestOtpException, UserNotFoundException, InvalidOrExpiredOtpException } from "./auth.errors";
@@ -12,6 +12,7 @@ import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
 @Injectable()
 export class AuthService {
 
+
   private logger = new PinoLogger(AuthService.name);
 
   constructor(
@@ -23,6 +24,21 @@ export class AuthService {
 
   }
 
+  /**
+   * Get basic user identification information
+   * @param authIdentifyDTO - Data transfer object containing user email for identification
+   * @returns Promise<AuthIdentifyResponseDTO> - Response containing user's first and last name if found, empty object if not found
+   * @throws {Error} - If there is an error accessing the database
+   */
+  async identify(authIdentifyDTO: AuthIdentifyDTO): Promise<AuthIdentifyResponseDTO> {
+    this.logger.debug({ email: authIdentifyDTO.email }, 'Getting user identity');
+    const user = await this.userRepo.findByEmail(authIdentifyDTO.email);
+    if (user) {
+      return { success: true, data: { firstName: user.firstName, lastName: user.lastName } }
+    } else {
+      return { success: true, data: {} }
+    }
+  }
 
   /**
    *

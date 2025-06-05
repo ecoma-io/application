@@ -167,6 +167,96 @@ describe("IAM Service E2E Tests", () => {
 
   describe("/auth", () => {
 
+    describe("/auth/identify", () => {
+      // Test case: Kiểm tra tính năng identify
+      it("should get identify successfully", async () => {
+        TestLogger.divider("Case: Get identify");
+        const notExistingUserEmail = "non-existing@example.com";
+
+        const response = await axios.post("/auth/identify", { email: notExistingUserEmail });
+        expect(response.status).toBe(HttpStatus.OK);
+        expect(response.data).toBeDefined();
+        expect(response.data.success).toBe(true);
+        expect(response.data.data).toBeDefined();
+        expect(response.data.data).toStrictEqual({});
+      });
+
+      it("should get identify successfully with existing user", async () => {
+        TestLogger.divider("Case: Get identify");
+        const existingUserEmail = "testuser@example.com";
+        const existingUserFirstName = 'John';
+
+        await mongoConnection.collection('users').insertOne({
+          email: existingUserEmail,
+          firstName: existingUserFirstName,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        });
+
+        const response = await axios.post("/auth/identify", { email: existingUserEmail });
+        expect(response.status).toBe(HttpStatus.OK);
+        expect(response.data).toBeDefined();
+        expect(response.data.success).toBe(true);
+        expect(response.data.data).toBeDefined();
+        expect(response.data.data.firstName).toBe(existingUserFirstName);
+      });
+
+
+      // // Test case: Kiểm tra khi gửi dữ liệu không hợp lệ (thiếu email)
+      it("should return 422 for missing email", async () => {
+        TestLogger.divider("Case: Invalid Input - Missing Email");
+
+        try {
+          await axios.post("/auth/identify", {});
+          // If the request does not throw, fail the test
+          fail("Request with missing email should have failed");
+        } catch (error: any) {
+          // Kiểm tra status code 422 (Unprocessable Entity) như định nghĩa trong controller
+          expect(error.response.status).toBe(HttpStatus.UNPROCESSABLE_ENTITY);
+          expect(error.response.data.success).toBe(false);
+          expect(error.response.data.details.email).toBe('email should not be empty');
+        }
+      });
+
+      // // Test case: Kiểm tra khi gửi dữ liệu không hợp lệ (email sai định dạng)
+      it("should return 422 for invalid email format", async () => {
+        TestLogger.divider("Case: Invalid Input - Invalid Email Format");
+        const invalidEmail = "invalid-email-format";
+
+        try {
+          await axios.post("/auth/identify", { email: invalidEmail });
+          // If the request does not throw, fail the test
+          fail("Request with invalid email format should have failed");
+        } catch (error: any) {
+          // Kiểm tra status code 422 (Unprocessable Entity)
+          expect(error.response.status).toBe(HttpStatus.UNPROCESSABLE_ENTITY);
+          expect(error.response.data.success).toBe(false);
+          expect(error.response.data.details.email).toBe('email should be in valid standard email format');
+        }
+      });
+
+
+      // // Test case: Kiểm tra khi gửi dữ liệu không hợp lệ (dữ liệu thừa)
+      it("should return 422 for input with extra fields", async () => {
+        TestLogger.divider("Case: Invalid Input - Extra Fields");
+
+        try {
+          // Gửi request với trường email hợp lệ và một trường thừa
+          await axios.post("/auth/identify", { email: "extrafielduser@example.com", extraField: "some data" });
+          // If the request does not throw, fail the test
+          fail("Request with extra fields should have failed validation");
+        } catch (error: any) {
+          // Kiểm tra status code 422 (Unprocessable Entity) từ ValidationPipe
+          expect(error.response.status).toBe(HttpStatus.BAD_REQUEST);
+          // Kiểm tra message lỗi từ ValidationPipe
+          // ValidationPipe mặc định trả về mảng message trong error.response.data.message
+          expect(error.response.data.message).toBeDefined();
+          expect(error.response.data.message).toBe('The request data is malformed');
+        }
+      });
+
+    })
+
     describe("/auth/requestOtp", () => {
       // Test case: Kiểm tra tính năng requestOtp
       it("should request OTP successfully", async () => {
