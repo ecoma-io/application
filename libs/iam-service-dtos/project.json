@@ -1,0 +1,40 @@
+{
+  "name": "iam-service-dtos",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/iam-service-dtos/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/iam-service-dtos/jest.config.ts"
+      }
+    },
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/iam-service-dtos",
+        "main": "libs/iam-service-dtos/src/index.ts",
+        "tsConfig": "libs/iam-service-dtos/tsconfig.lib.json",
+        "assets": ["libs/iam-service-dtos/*.md"]
+      }
+    },
+    "gen-docs": {
+      "executor": "@ecoma/nx-typedoc:executor"
+    },
+    "publish": {
+      "dependsOn": ["build"],
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "{workspaceRoot}/dist/{projectRoot}",
+        "command": "npm publish --access public"
+      }
+    }
+  }
+}

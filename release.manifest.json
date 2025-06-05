@@ -9,6 +9,7 @@
   "apps/nginx-spa": "1.0.0",
   "apps/iam-service": "1.0.0",
   "apps/ndm-service": "1.0.0",
+  "libs/iam-service-dtos": "0.0.0",
   "libs/nestjs-config": "1.0.0",
   "libs/nestjs-logger": "1.0.0",
   "libs/nge-form-error": "0.0.0",

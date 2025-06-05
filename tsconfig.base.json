@@ -17,6 +17,7 @@
     "baseUrl": ".",
     "paths": {
       "@ecoma/dtos": ["libs/dtos/src/index.ts"],
+      "@ecoma/iam-service-dtos": ["libs/iam-service-dtos/src/index.ts"],
       "@ecoma/nestjs-config": ["libs/nestjs-config/src/index.ts"],
       "@ecoma/nestjs-logger": ["libs/nestjs-logger/src/index.ts"],
       "@ecoma/nge-auth": ["libs/nge-auth/src/index.ts"],

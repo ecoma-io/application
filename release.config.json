@@ -93,6 +93,9 @@
         }
       ]
     },
+    "libs/iam-service-dtos": {
+      "release-type": "node"
+    },
     "libs/nestjs-config": {
       "release-type": "node"
     },
