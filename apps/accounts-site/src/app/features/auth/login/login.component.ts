@@ -4,15 +4,15 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Domains } from '@ecoma/nge-domain';
-import { LoginService } from '../../../core/services/login.service';
 import { Title } from '@angular/platform-browser';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, SvgInjector],
   host: {
-    class: 'space-y-8'
+    class: 'space-y-8',
   },
   template: `
     <!-- Header -->
@@ -22,14 +22,13 @@ import { Title } from '@angular/platform-browser';
           <nge-svg-injector path="/icon.svg" class="p-4" />
         </div>
       </div>
-      <p class="text-base-content/70 font-semibold text-lg">Sign in to your account<br>or create a new one instantly</p>
+      <p class="text-base-content/70 font-semibold text-lg">Sign in to your account<br />or create a new one instantly</p>
     </div>
 
     <div class="alert alert-error shadow-lg text-sm" *ngIf="errorMessage">
       <nge-svg-injector [path]="iconUrl('/duotone/exclamation.svg')" class="w-6 h-6"></nge-svg-injector>
       <span>{{ errorMessage }}</span>
     </div>
-
 
     <!-- Login Form -->
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-6">
@@ -55,16 +54,18 @@ import { Title } from '@angular/platform-browser';
         </label>
       </div>
 
-
       <div class="space-y-4">
         <button
           type="submit"
           class="btn btn-accent w-full min-h-12 shadow-lg hover:shadow-primary/30 transition-all duration-300"
           [disabled]="isLoading"
         >
-
           <span class="loading loading-spinner" *ngIf="isLoading"></span>
-          <nge-svg-injector *ngIf="!isLoading" [path]="iconUrl('/duotone/envelope-open-text.svg')" class="w-6 h-6 fill-accent-content"></nge-svg-injector>
+          <nge-svg-injector
+            *ngIf="!isLoading"
+            [path]="iconUrl('/duotone/envelope-open-text.svg')"
+            class="w-6 h-6 fill-accent-content"
+          ></nge-svg-injector>
           {{ isLoading ? 'Sending Code...' : 'Continue with Email' }}
         </button>
 
@@ -90,7 +91,7 @@ import { Title } from '@angular/platform-browser';
         <a href="#" class="link link-hover text-primary">Privacy Policy</a>
       </div>
     </div>
-`,
+  `,
 })
 export class LoginComponent {
   loginForm: FormGroup;
@@ -98,14 +99,8 @@ export class LoginComponent {
   errorMessage = '';
   iconsBaseUrl: string;
 
-  constructor(
-    private fb: FormBuilder,
-    private loginService: LoginService,
-    private router: Router,
-    private domain: Domains,
-    private title: Title,
-  ) {
-    this.title.setTitle("Sign in to Ecoma Accounts");
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router, private domain: Domains, private title: Title) {
+    this.title.setTitle('Sign in');
     this.iconsBaseUrl = this.domain.getIconsBaseUrl();
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -122,7 +117,7 @@ export class LoginComponent {
       this.errorMessage = '';
 
       const { email } = this.loginForm.value;
-      this.loginService.requestOTP(email).subscribe({
+      this.authService.requestOTP(email).subscribe({
         next: () => {
           sessionStorage.setItem('auth_email', email);
           this.router.navigate(['/auth/verify']);

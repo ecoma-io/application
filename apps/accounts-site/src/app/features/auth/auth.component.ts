@@ -8,7 +8,7 @@ import { RouterOutlet } from '@angular/router';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterOutlet],
   template: `
-    <div class="min-h-screen relative bg-gradient-to-br from-base-100 to-primary/30 flex items-center justify-center p-4 overflow-hidden">
+    <div class="min-h-screen relative h-screen bg-base-300 flex items-center justify-center p-4 overflow-hidden">
       <div class="card w-full max-w-md bg-base-100/70 glass-effect shadow-[0_8px_30px_rgb(0,0,0,0.12)] backdrop-blur-xl">
         <div class="card-body">
           <router-outlet></router-outlet>
@@ -17,6 +17,4 @@ import { RouterOutlet } from '@angular/router';
     </div>
   `,
 })
-export class AuthComponent {
-
-}
+export class AuthComponent {}

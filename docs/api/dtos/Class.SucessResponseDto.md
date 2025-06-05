@@ -9,6 +9,10 @@
 - [`BaseSucessResponseDataDTO`](/api/dtos/Class.BaseSucessResponseDataDTO.md)
 - [`BaseSucessResponseDatasDTO`](/api/dtos/Class.BaseSucessResponseDatasDTO.md)
 
+## Indexable
+
+\[`x`: `string`\]: `any`
+
 ## Constructors
 
 <a id="constructor"></a>
@@ -33,7 +37,7 @@
 
 > `optional` **message**: `string`
 
-***
+---
 
 <a id="success"></a>
 

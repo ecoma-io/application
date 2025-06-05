@@ -1,4 +1,4 @@
-import { Expose, Type } from "class-transformer";
+import { Expose, Type } from 'class-transformer';
 
 export class ResponseDTO {
   @Expose()
@@ -23,6 +23,7 @@ export class ErrorResponseDetailsDTO extends ErrorResponseDTO {
 }
 
 export class SucessResponseDto extends ResponseDTO {
+  [x: string]: any;
   @Expose()
   override success = true;
 
@@ -31,10 +32,10 @@ export class SucessResponseDto extends ResponseDTO {
 }
 
 export abstract class BaseSucessResponseDataDTO<T> extends SucessResponseDto {
-  data!: T
+  data!: T;
 }
 
 export abstract class BaseSucessResponseDatasDTO<T> extends SucessResponseDto {
   @Expose()
-  data!: Array<T>
+  data!: Array<T>;
 }

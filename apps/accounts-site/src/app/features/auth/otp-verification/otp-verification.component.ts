@@ -4,15 +4,15 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Router } from '@angular/router';
 import { SvgInjector } from '@ecoma/nge-svg-injector';
 import { Domains } from '@ecoma/nge-domain';
-import { LoginService } from '../../../core/services/login.service';
 import { Title } from '@angular/platform-browser';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-otp-verification',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, SvgInjector],
   host: {
-    class: 'space-y-8'
+    class: 'space-y-8',
   },
   template: `
     <!-- Header -->
@@ -28,7 +28,6 @@ import { Title } from '@angular/platform-browser';
         <span class="font-medium text-primary">{{ email }}</span>
       </p>
     </div>
-
 
     <form [formGroup]="otpForm" (ngSubmit)="onSubmit()" class="space-y-6">
       <div class="alert alert-error" *ngIf="errorMessage">
@@ -50,7 +49,6 @@ import { Title } from '@angular/platform-browser';
           (keydown)="onKeyDown($event)"
         />
       </div>
-
 
       <div class="space-y-4">
         <button type="submit" class="btn btn-primary w-full" #verifyButton [disabled]="!otpForm.valid || isLoading">
@@ -94,12 +92,12 @@ export class OtpVerificationComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private loginService: LoginService,
+    private authService: AuthService,
     private domain: Domains,
     private el: ElementRef,
-    private title: Title,
+    private title: Title
   ) {
-    this.title.setTitle("OTP Verify");
+    this.title.setTitle('OTP Verify');
     this.iconsBaseUrl = this.domain.getIconsBaseUrl();
     this.otpForm = this.fb.group({
       digit0: ['', [Validators.required, Validators.pattern(/^[0-9]$/)]],
@@ -217,7 +215,7 @@ export class OtpVerificationComponent implements OnInit, OnDestroy {
       this.attemptsLeft--;
       this.startResendTimer();
 
-      this.loginService.requestOTP(this.email).subscribe({
+      this.authService.requestOTP(this.email).subscribe({
         next: () => {
           this.isResending = false;
           this.otpForm.reset();
@@ -240,7 +238,7 @@ export class OtpVerificationComponent implements OnInit, OnDestroy {
       this.errorMessage = '';
 
       const otp = Object.values(this.otpForm.value).join('');
-      this.loginService.verifyOTP(this.email, otp).subscribe({
+      this.authService.verifyOTP(this.email, otp).subscribe({
         next: () => {
           sessionStorage.removeItem('auth_email');
           this.router.navigate(['/dashboard']);
