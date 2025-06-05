@@ -22,6 +22,7 @@
       "@ecoma/nge-auth": ["libs/nge-auth/src/index.ts"],
       "@ecoma/nge-cookie": ["libs/nge-cookie/src/index.ts"],
       "@ecoma/nge-domain": ["libs/nge-domain/src/index.ts"],
+      "@ecoma/nge-form-error": ["libs/nge-form-error/src/index.ts"],
       "@ecoma/nge-logging": ["libs/nge-logging/src/index.ts"],
       "@ecoma/nge-redirect": ["libs/nge-redirect/src/index.ts"],
       "@ecoma/nge-svg-injector": ["libs/nge-svg-injector/src/index.ts"],

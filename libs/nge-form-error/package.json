@@ -1,0 +1,10 @@
+{
+  "name": "@ecoma/nge-form-error",
+  "version": "0.0.0",
+  "peerDependencies": {
+    "@angular/common": "19.2.0",
+    "@angular/core": "19.2.0",
+    "@angular/forms": "19.2.0"
+  },
+  "sideEffects": false
+}

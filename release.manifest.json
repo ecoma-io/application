@@ -11,6 +11,7 @@
   "apps/ndm-service": "1.0.0",
   "libs/nestjs-config": "1.0.0",
   "libs/nestjs-logger": "1.0.0",
+  "libs/nge-form-error": "0.0.0",
   "libs/nge-auth": "1.0.0",
   "libs/nge-cookie": "1.2.0",
   "libs/nge-logging": "1.2.0",

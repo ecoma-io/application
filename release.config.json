@@ -99,6 +99,9 @@
     "libs/nestjs-logger": {
       "release-type": "node"
     },
+    "libs/nge-form-error": {
+      "release-type": "node"
+    },
     "libs/nge-auth": {
       "release-type": "node"
     },
