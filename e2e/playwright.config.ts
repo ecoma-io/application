@@ -16,6 +16,8 @@ if (!process.env["BASE_DOMAIN"]) {
  */
 // require('dotenv').config();
 
+
+
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
@@ -28,6 +30,9 @@ export default defineConfig({
     trace: "on-first-retry",
     bypassCSP: true,
     ignoreHTTPSErrors: true,
+    screenshot: 'only-on-failure',
+    video: 'retain-on-failure',
+    testIdAttribute: 'data-test-id'
   },
   /* Run your local dev server before starting the tests */
   projects: [

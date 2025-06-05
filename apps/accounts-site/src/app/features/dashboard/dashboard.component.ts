@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterOutlet, RouterLinkActive } from '@angular/router';
 import { SvgInjector } from '@ecoma/nge-svg-injector';
-import { AuthService } from '@ecoma/nge-auth';
 import { Domains } from '@ecoma/nge-domain';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -138,9 +138,10 @@ export class DashboardComponent {
   }
 
   logout() {
-    this.authService.logout();
-    setTimeout(() => {
-      window.location.href = '/auth/login';
-    }, 1000);
+    this.authService.logout().subscribe({
+      complete: () => {
+        window.location.href = '/auth/login';
+      }
+    });
   }
 }

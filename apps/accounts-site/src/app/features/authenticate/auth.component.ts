@@ -8,8 +8,8 @@ import { RouterOutlet } from '@angular/router';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterOutlet],
   template: `
-    <div class="min-h-screen relative h-screen bg-base-300 flex items-center justify-center p-4 overflow-hidden">
-      <div class="card w-full max-w-md bg-base-100/70 glass-effect shadow-[0_8px_30px_rgb(0,0,0,0.12)] backdrop-blur-xl">
+    <div class="min-h-screen relative h-screen bg-base-200 dark:bg-base-100 flex items-center justify-center p-4 overflow-hidden">
+      <div class="card w-full max-w-md bg-base-100 dark:bg-base-300 glass-effect backdrop-blur-xl">
         <div class="card-body">
           <router-outlet></router-outlet>
         </div>

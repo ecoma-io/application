@@ -3,3 +3,6 @@ export const HOME_SITE_URL = `https://${BASE_DOMAIN}`;
 export const ACCOUNTS_SITE_URL = `https://accounts.${BASE_DOMAIN}`;
 export const ADMIN_SITE_URL = `https://admin.${BASE_DOMAIN}`;
 export const APP_SITE_URL = `https://app.${BASE_DOMAIN}`;
+
+export const IAM_SERVICE_URL = `https://iam.${BASE_DOMAIN}`;
+
