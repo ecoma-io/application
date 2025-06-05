@@ -16,11 +16,11 @@
         "jestConfig": "libs/nge-cookie/jest.config.ts"
       }
     },
-    "browser": {
+    "build": {
       "executor": "@angular-devkit/build-angular:browser",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/apps/accounts-site/browser",
+        "outputPath": "dist/apps/accounts-site",
         "index": "apps/accounts-site/src/index.html",
         "main": "apps/accounts-site/src/main.ts",
         "polyfills": ["zone.js"],
@@ -68,50 +68,15 @@
         "disableHostCheck": true,
         "host": "0.0.0.0",
         "port": 4201,
-        "buildTarget": "accounts-site:browser:development"
-      }
-    },
-    "build": {
-      "dependsOn": ["browser"],
-      "executor": "@angular-devkit/build-angular:server",
-      "options": {
-        "outputPath": "dist/apps/accounts-site/server",
-        "main": "apps/accounts-site/src/server.ts",
-        "tsConfig": "apps/accounts-site/tsconfig.server.json",
-        "inlineStyleLanguage": "scss"
-      },
-      "configurations": {
-        "production": {
-          "outputHashing": "media"
-        },
-        "development": {
-          "buildOptimizer": false,
-          "optimization": false,
-          "sourceMap": true,
-          "extractLicenses": false,
-          "vendorChunk": true
-        }
-      },
-      "defaultConfiguration": "production"
-    },
-    "ssr": {
-      "executor": "@angular-devkit/build-angular:ssr-dev-server",
-      "options": {
-        "host": "0.0.0.0",
-        "port": 4201,
-        "browserTarget": "accounts-site:browser:development",
-        "serverTarget": "accounts-site:build:development"
+        "buildTarget": "accounts-site:build:development"
       }
     },
     "containerize": {
       "dependsOn": ["build"],
       "executor": "@nx-tools/nx-container:build",
       "configurations": {
-        "development": {
-          "target": "debug"
-        },
+        "development": {},
         "production": {
-          "target": "debug",
           "push": true
         }
       },
