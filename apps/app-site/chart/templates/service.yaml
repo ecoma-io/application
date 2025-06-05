@@ -8,8 +8,8 @@ spec:
   type: {{ .Values.service.type }}
   ports:
     - port: {{ .Values.service.port }}
-      targetPort: 4000
+      targetPort: 80
       protocol: TCP
-      name: angular-ssr
+      name: http
   selector:
     {{- include "chart.selectorLabels" . | nindent 4 }}
