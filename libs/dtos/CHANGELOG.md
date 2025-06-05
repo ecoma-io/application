@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/ecoma-io/application/compare/dtos@v1.0.0...dtos@v1.1.0) (2025-06-05)
+
+
+### Features
+
+* **accounts-site:** implement authentication guards and service for login flow ([3c52e01](https://github.com/ecoma-io/application/commit/3c52e011c7dc9176bf0a81bdea754a0b6fa4b215))
+
 ## 1.0.0 (2025-06-04)
 
 

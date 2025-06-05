@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/ecoma-io/application/compare/iam-service@v1.0.0...iam-service@v1.1.0) (2025-06-05)
+
+
+### Features
+
+* **auth:** add identify endpoint for user information retrieval and update DTO imports ([fca4b3d](https://github.com/ecoma-io/application/commit/fca4b3d28b15a0e6fd80504d2725be3743747ed2))
+
 ## 1.0.0 (2025-06-04)
 
 

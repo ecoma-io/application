@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.1.0](https://github.com/ecoma-io/application/compare/accounts-site@v1.0.0...accounts-site@v1.1.0) (2025-06-05)
+
+
+### Features
+
+* **accounts-site:** implement authentication guards and service for login flow ([3c52e01](https://github.com/ecoma-io/application/commit/3c52e011c7dc9176bf0a81bdea754a0b6fa4b215))
+* **accounts-site:** refactor authentication flow with new routes and components ([7ff3338](https://github.com/ecoma-io/application/commit/7ff33383ce84798d4bc3ba5eabb3d1b4115d9818))
+
 ## 1.0.0 (2025-06-04)
 
 
