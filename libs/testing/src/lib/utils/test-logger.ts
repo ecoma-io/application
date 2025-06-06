@@ -17,7 +17,8 @@ export class TestLogger {
 
   static divider(title?: string) {
     const line = "─".repeat(60);
-    const formatted = title ? `📌 ${title.toUpperCase()}` : line;
+    const formatted = title ? `📌 ${title}` : line;
     process.stdout.write(`\n${line}\n${formatted}\n${line}\n`);
   }
+
 }

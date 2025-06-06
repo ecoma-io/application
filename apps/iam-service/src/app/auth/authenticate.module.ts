@@ -1,10 +1,10 @@
 import { Module } from "@nestjs/common";
-import { AuthController } from "./auth.controller";
-import { AuthService } from "./auth.service";
 import { DatabaseModule } from "../database/database.module";
 import { RabbitMQModule } from "@golevelup/nestjs-rabbitmq";
 import { ConfigModule, ConfigService } from "../config/config.module";
 import { RabbitmqConfig } from "../config/rabbitmq.config";
+import { AuthenticateService } from "./authenticate.service";
+import { AuthenticateController } from "./authenticate.controller";
 
 @Module({
   imports: [
@@ -14,6 +14,13 @@ import { RabbitmqConfig } from "../config/rabbitmq.config";
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         ...configService.get<RabbitmqConfig>('rabbitmq'),
+        exchanges: [
+          {
+            name: 'notification',
+            type: 'topic',
+            createExchangeIfNotExists: true,
+          }
+        ],
         connectionInitOptions: {
           wait: true,
           timeout: 30_000,
@@ -26,9 +33,9 @@ import { RabbitmqConfig } from "../config/rabbitmq.config";
       }),
     }),
   ],
-  controllers: [AuthController],
-  providers: [AuthService]
+  controllers: [AuthenticateController],
+  providers: [AuthenticateService]
 })
-export class AuthModule {
+export class AuthenticateModule {
 
 }
