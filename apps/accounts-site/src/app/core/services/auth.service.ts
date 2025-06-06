@@ -29,7 +29,7 @@ export class AuthService {
 
   verifyOTP(email: string, otp: string): Observable<AuthSignInResponseDto> {
     const url = `${this.domains.getIamServiceBaseUrl()}/auth/login`;
-    return this.http.post<AuthSignInResponseDto>(url, { email, otp }).pipe(
+    return this.http.post<AuthSignInResponseDto>(url, { email, otp: otp.toString() }).pipe(
       tap((response) => {
         this.setToken(response.data.token);
       })
