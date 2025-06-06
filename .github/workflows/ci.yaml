@@ -92,6 +92,11 @@ jobs:
         with:
           run-playwright-install: true
 
+      - name: Pull images
+        shell: bash
+        run: |
+          docker compose pull
+
       - name: Automate E2E Test
         shell: bash
         run: npx nx affected --target=automate-e2e-test --base=$NX_AFFECTED_BASE --head=$NX_AFFECTED_HEAD --parallel 1
