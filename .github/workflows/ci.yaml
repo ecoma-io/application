@@ -102,6 +102,14 @@ jobs:
         shell: bash
         run: npx nx affected --target=automate-e2e-test --base=$NX_AFFECTED_BASE --head=$NX_AFFECTED_HEAD --parallel 1
 
+      - name: Upload blob report to GitHub Actions Artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-report-${{ github.sha }}
+          path: dist/.playwright
+          retention-days: 1
+
 
   release:
     name: Release
