@@ -1,4 +1,4 @@
-import { RabbitmqEnvironmentVariables, registerConfig } from "@ecoma/nestjs-config";
+import { RabbitmqEnvironmentVariables, registerConfig } from "@ecoma/nestjs";
 import { RabbitMQConfig } from "@golevelup/nestjs-rabbitmq";
 
 

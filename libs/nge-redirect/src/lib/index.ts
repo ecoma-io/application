@@ -1,1 +1,0 @@
-export * from './redirector.service';

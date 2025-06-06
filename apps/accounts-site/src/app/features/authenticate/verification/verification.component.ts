@@ -1,12 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute, Route, Router, RouterLink } from '@angular/router';
-import { SvgInjector } from '@ecoma/nge-svg-injector';
-import { Domains } from '@ecoma/nge-domain';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { AuthService } from '../../../core/services/auth.service';
-import { FormError, MessageableValidators } from '@ecoma/nge-form-error';
+import { FormError, MessageableValidators, SvgInjector, Domains } from '@ecoma/angular';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User, UserDocument } from '../schemas';
-import { PinoLogger } from '@ecoma/nestjs-logger';
+import { PinoLogger } from '@ecoma/nestjs';
 
 @Injectable()
 /**

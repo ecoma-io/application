@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { NotificationTemplateRepository } from '../database/repositories/notification-template.repository';
 import { TemplateCreateDto, TemplateUpdateDto } from './template.dtos';
 import { TemplateAlreadyExistsException, TemplateNotFoundException } from './template.errors';
-import { PinoLogger } from '@ecoma/nestjs-logger';
+import { PinoLogger } from '@ecoma/nestjs';
 
 @Injectable()
 export class TemplateService {

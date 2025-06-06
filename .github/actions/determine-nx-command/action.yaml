@@ -1,0 +1,65 @@
+name: Determine Nx Command
+description: Determines the appropriate Nx command (affected or run-many) based on GitHub event context.
+outputs:
+  nx-command:
+    description: 'The Nx command to run (e.g., npx nx affected... or npx nx run-many...)'
+    value: ${{ steps.determine-command.outputs.generated_nx_command }}
+
+runs:
+  using: composite
+  steps:
+    - name: Configure Git and Fetch Tags
+      shell: bash
+      run: |
+        git config --global --add safe.directory /__w/application/application
+        git fetch origin --tags --no-recurse-submodules
+
+    - name: Determine Nx Command
+      id: determine-command
+      shell: bash
+      run: |
+        BASE=""
+        HEAD=""
+        NX_COMMAND_PREFIX="npx nx" # Tiền tố chung cho tất cả các lệnh Nx
+        NX_CORE_COMMAND="" # Phần lõi của lệnh Nx (affected, run-many)
+
+        # Logic xác định BASE và HEAD, và loại lệnh Nx
+        if [ "${{ github.event_name }}" == "pull_request_target" ]; then
+          BASE="origin/${{ github.base_ref }}"
+          HEAD="origin/${{ github.head_ref }}"
+          echo "Running on pull_request_target. Base: $BASE, Head: $HEAD"
+          NX_CORE_COMMAND="affected --base=$BASE --head=$HEAD"
+        elif [ "${{ github.event_name }}" == "merge_group" ]; then
+          BASE="${{ github.base_ref }}"
+          HEAD="${{ github.sha }}"
+          echo "Running on merge_group. Base: $BASE, Head: $HEAD"
+          NX_CORE_COMMAND="affected --base=$BASE --head=$HEAD"
+        elif [ "${{ github.event_name }}" == "push" ] && [ "${{ github.ref_name }}" == "main" ]; then
+          # Trường hợp push vào nhánh main: Chạy toàn bộ
+          echo "Running full build/test on push to main."
+          NX_CORE_COMMAND="run-many --all"
+          # Không cần BASE và HEAD cho run-many --all
+        else
+          # Các trường hợp push khác (ví dụ: push vào dev, feature branches)
+          # hoặc các event khác không phải pull_request_target/merge_group
+          # Vẫn sử dụng logic affected mặc định
+          LATEST_TAG_SHA=$(git rev-list --tags --max-count=1 --date-order origin/main)
+
+          if [ -z "$LATEST_TAG_SHA" ]; then
+            echo "No tags found on origin/main. Defaulting BASE to origin/main."
+            BASE="origin/main"
+          else
+            echo "Latest tag SHA on origin/main: $LATEST_TAG_SHA"
+            BASE="$LATEST_TAG_SHA"
+          fi
+          HEAD="${{ github.sha }}" # HEAD cho các trường hợp affected khác
+          echo "Running affected for other push events. Base: $BASE, Head: $HEAD"
+          NX_CORE_COMMAND="affected --base=$BASE --head=$HEAD"
+        fi
+
+        # Gộp tiền tố và phần lõi lệnh
+        GENERATED_NX_COMMAND="$NX_COMMAND_PREFIX $NX_CORE_COMMAND"
+
+        # Output câu lệnh để bước tiếp theo có thể sử dụng
+        echo "generated_nx_command=$GENERATED_NX_COMMAND" >> "$GITHUB_OUTPUT"
+        echo "Generated Nx Command: $GENERATED_NX_COMMAND"

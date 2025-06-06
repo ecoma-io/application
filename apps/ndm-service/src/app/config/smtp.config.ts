@@ -1,4 +1,4 @@
-import { registerConfig } from '@ecoma/nestjs-config';
+import { registerConfig } from '@ecoma/nestjs';
 import { IsString, IsOptional } from 'class-validator';
 
 export class SmtpEnvironmentVariables {

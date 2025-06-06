@@ -2,7 +2,7 @@ import { Injectable, OnModuleInit } from '@nestjs/common';
 import * as nodemailer from 'nodemailer';
 import { ConfigService } from '@nestjs/config';
 import { SmtpConfig } from '../config/smtp.config';
-import { PinoLogger } from '@ecoma/nestjs-logger';
+import { PinoLogger } from '@ecoma/nestjs';
 
 @Injectable()
 export class EmailService implements OnModuleInit {

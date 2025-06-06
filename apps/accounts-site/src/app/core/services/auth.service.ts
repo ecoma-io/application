@@ -1,35 +1,27 @@
-import { AuthIdentifyDTO, AuthIdentifyResponseDTO, AuthSignInResponseDto } from '@ecoma/iam-service-dtos';
-import { SucessResponseDto } from '@ecoma/dtos';
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Observable, of, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { Domains } from '@ecoma/nge-domain';
-import { WA_LOCAL_STORAGE } from '@ng-web-apis/common';
+import { Domains } from '@ecoma/angular';
 
-
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class AuthService {
-  constructor(private http: HttpClient, private domains: Domains, @Inject(WA_LOCAL_STORAGE) private localStorage: Storage) { }
+  constructor(private http: HttpClient, private domains: Domains) {}
 
   private readonly ACCESS_TOKEN_KEY = 'token';
 
-  identify(payload: AuthIdentifyDTO): Observable<AuthIdentifyResponseDTO> {
-    const url = `${this.domains.getIamServiceBaseUrl()}/auth/identify`;
-    return this.http
-      .post<AuthIdentifyResponseDTO>(url, payload)
-      .pipe();
+  identify(payload: any): Observable<any> {
+    const url = `${this.domains.getIamServiceBaseUrl()}/authenticate/identify`;
+    return this.http.post<any>(url, payload).pipe();
   }
 
-  requestOTP(email: string): Observable<SucessResponseDto> {
-    const url = `${this.domains.getIamServiceBaseUrl()}/auth/requestOtp`;
-    return this.http.post<SucessResponseDto>(url, { email }).pipe();
+  requestOTP(email: string): Observable<any> {
+    const url = `${this.domains.getIamServiceBaseUrl()}/authenticate/request-otp`;
+    return this.http.post<any>(url, { email }).pipe();
   }
 
-  verifyOTP(email: string, otp: string): Observable<AuthSignInResponseDto> {
-    const url = `${this.domains.getIamServiceBaseUrl()}/auth/login`;
-    return this.http.post<AuthSignInResponseDto>(url, { email, otp: otp.toString() }).pipe(
+  verifyOTP(email: string, otp: string): Observable<any> {
+    const url = `${this.domains.getIamServiceBaseUrl()}/authenticate/login`;
+    return this.http.post<any>(url, { email, otp: otp.toString() }).pipe(
       tap((response) => {
         this.setToken(response.data.token);
       })
@@ -37,17 +29,15 @@ export class AuthService {
   }
 
   logout(): Observable<any> {
-    this.localStorage.clear();
+    sessionStorage.clear();
     return of(true);
   }
 
   isAuthenticated(): boolean {
-    return this.localStorage.getItem(this.ACCESS_TOKEN_KEY) !== null;
+    return sessionStorage.getItem(this.ACCESS_TOKEN_KEY) !== null;
   }
 
   private setToken(token: string): void {
-    this.localStorage.setItem(this.ACCESS_TOKEN_KEY, token);
+    sessionStorage.setItem(this.ACCESS_TOKEN_KEY, token);
   }
-
-
 }

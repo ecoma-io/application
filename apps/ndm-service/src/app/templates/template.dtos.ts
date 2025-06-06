@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsArray, IsNotEmpty, IsOptional, IsString } from 'class-validator';
-import { BaseSucessResponseDataDTO, BaseSucessResponseDatasDTO } from '@ecoma/dtos';
+import { BaseSucessResponseDataDTO, BaseSucessResponseDatasDTO } from '@ecoma/common';
 
 export class TemplateCreateDto {
   @ApiProperty({ required: true })

@@ -3,7 +3,7 @@ import {
   MongoDBContainer,
   StartedMongoDBContainer,
   TestLogger,
-} from "@ecoma/testing";
+} from "@ecoma/test-utils";
 import axios from "axios";
 import mongoose from "mongoose";
 import { GenericContainer, StartedTestContainer } from "testcontainers";

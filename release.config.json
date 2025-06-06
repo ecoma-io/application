@@ -4,6 +4,22 @@
   "group-pull-request-title-pattern": "chore: release ${branch}",
   "tag-separator": "@",
   "packages": {
+    "libs/angular": {
+      "package-name": "angular",
+      "release-type": "node"
+    },
+    "libs/common": {
+      "package-name": "common",
+      "release-type": "node"
+    },
+    "libs/nestjs": {
+      "package-name": "nestjs",
+      "release-type": "node"
+    },
+    "libs/test-utils": {
+      "package-name": "test-utils",
+      "release-type": "node"
+    },
     "apps/accounts-site": {
       "package-name": "accounts-site",
       "release-type": "simple",
@@ -11,39 +27,6 @@
         {
           "type": "xml",
           "path": "apps/accounts-site/chart/Chart.yaml",
-          "xpath": "//version"
-        }
-      ]
-    },
-    "apps/admin-site": {
-      "package-name": "admin-site",
-      "release-type": "simple",
-      "extra-files": [
-        {
-          "type": "xml",
-          "path": "apps/admin-site/chart/Chart.yaml",
-          "xpath": "//version"
-        }
-      ]
-    },
-    "apps/app-site": {
-      "package-name": "app-site",
-      "release-type": "simple",
-      "extra-files": [
-        {
-          "type": "xml",
-          "path": "apps/app-site/chart/Chart.yaml",
-          "xpath": "//version"
-        }
-      ]
-    },
-    "apps/home-site": {
-      "package-name": "home-site",
-      "release-type": "simple",
-      "extra-files": [
-        {
-          "type": "xml",
-          "path": "apps/home-site/chart/Chart.yaml",
           "xpath": "//version"
         }
       ]
@@ -70,14 +53,6 @@
         }
       ]
     },
-    "apps/playwright-runner": {
-      "package-name": "playwright-runner",
-      "release-type": "simple"
-    },
-    "apps/dind-runner": {
-      "package-name": "dind-runner",
-      "release-type": "simple"
-    },
     "apps/nginx-spa": {
       "package-name": "nginx-spa",
       "release-type": "simple"
@@ -92,51 +67,6 @@
           "xpath": "//version"
         }
       ]
-    },
-    "libs/iam-service-dtos": {
-      "release-type": "node"
-    },
-    "libs/nestjs-config": {
-      "release-type": "node"
-    },
-    "libs/nestjs-logger": {
-      "release-type": "node"
-    },
-    "libs/nge-form-error": {
-      "release-type": "node"
-    },
-    "libs/nge-auth": {
-      "release-type": "node"
-    },
-    "libs/nge-cookie": {
-      "release-type": "node"
-    },
-    "libs/nge-logging": {
-      "release-type": "node"
-    },
-    "libs/nge-svg-injector": {
-      "release-type": "node"
-    },
-    "libs/nge-redirect": {
-      "release-type": "node"
-    },
-    "libs/nge-domain": {
-      "release-type": "node"
-    },
-    "libs/nx-typedoc": {
-      "release-type": "node"
-    },
-    "libs/testing": {
-      "release-type": "node"
-    },
-    "libs/types": {
-      "release-type": "node"
-    },
-    "libs/utils": {
-      "release-type": "node"
-    },
-    "libs/dtos": {
-      "release-type": "node"
     }
   }
 }

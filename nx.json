@@ -81,5 +81,5 @@
   "tui": {
     "enabled": false
   },
-  "nxCloudId": "6839f3fd345041dd19f7ac76"
+  "parallel": 4
 }

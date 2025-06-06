@@ -37,6 +37,9 @@ CONFIG_FILE="release.config.json" # Added config file
 declare -a MISSING_PROJECTS_MANIFEST # Array to store missing projects in manifest
 declare -a MISSING_PROJECTS_CONFIG # Array to store missing projects in config
 declare -a NX_PROJECTS_TO_CHECK # Array to store all projects from Nx
+declare -a NON_EXISTENT_PROJECTS # Array to store projects that don't exist
+declare -a MISSING_IN_MANIFEST # Array to store projects in config but not in manifest
+declare -a INVALID_SIMPLE_RELEASES # Array to store simple release projects with invalid package-name
 
 # Check if manifest file exists
 if [ ! -f "$MANIFEST_FILE" ]; then
@@ -95,6 +98,87 @@ check_project_in_config() {
     return 1 # Not found
 }
 
+# Function to check if a project actually exists
+check_project_exists() {
+    local project_name="$1"
+
+    # Check if it's an app
+    if [[ "$project_name" == apps/* ]]; then
+        local app_name=${project_name#apps/}
+        if [ -d "apps/$app_name" ]; then
+            echo "true"
+            return 0
+        fi
+    # Check if it's a lib
+    elif [[ "$project_name" == libs/* ]]; then
+        local lib_name=${project_name#libs/}
+        if [ -d "libs/$lib_name" ]; then
+            echo "true"
+            return 0
+        fi
+    fi
+    echo "false"
+    return 1
+}
+
+# Function to check project configuration
+check_project_config() {
+    local project_name="$1"
+
+    # First check if the project exists in packages
+    if ! jq -e --arg p "$project_name" '.packages | has($p)' "$CONFIG_FILE" > /dev/null; then
+        return 0  # Project not in config, skip check
+    fi
+
+    # Get release-type and package-name with proper null handling
+    local release_type=$(jq -r --arg p "$project_name" '.packages[$p]["release-type"] // ""' "$CONFIG_FILE")
+    local package_name=$(jq -r --arg p "$project_name" '.packages[$p]["package-name"] // ""' "$CONFIG_FILE")
+
+    debug_echo "Checking project '$project_name':"
+    debug_echo "  release-type: '$release_type'"
+    debug_echo "  package-name: '$package_name'"
+
+    # Check if both fields are present
+    if [ -z "$release_type" ]; then
+        debug_echo "  -> '$project_name' is missing release-type"
+        return 1
+    fi
+
+    if [ -z "$package_name" ]; then
+        debug_echo "  -> '$project_name' is missing package-name"
+        return 1
+    fi
+
+    # Extract project name without apps/ or libs/ prefix
+    local clean_project_name=${project_name#apps/}
+    clean_project_name=${clean_project_name#libs/}
+
+    # Package name must match project name for all projects
+    if [ "$package_name" != "$clean_project_name" ]; then
+        debug_echo "  -> '$project_name' has package-name '$package_name' which doesn't match project name '$clean_project_name'"
+        return 1
+    fi
+
+    return 0
+}
+
+# Function to get error message for a project
+get_project_error() {
+    local project="$1"
+    local release_type=$(jq -r --arg p "$project" '.packages[$p]["release-type"] // ""' "$CONFIG_FILE")
+    local package_name=$(jq -r --arg p "$project" '.packages[$p]["package-name"] // ""' "$CONFIG_FILE")
+    local clean_project_name=${project#apps/}
+    clean_project_name=${clean_project_name#libs/}
+
+    if [ -z "$release_type" ]; then
+        echo "  - Error: Project '$project' is missing release-type."
+    elif [ -z "$package_name" ]; then
+        echo "  - Error: Project '$project' is missing package-name."
+    elif [ "$package_name" != "$clean_project_name" ]; then
+        echo "  - Error: Project '$project' has package-name '$package_name' which doesn't match project name '$clean_project_name'."
+    fi
+}
+
 # --- Collect all projects from Nx first ---
 debug_echo "Collecting Apps list from nx show projects..."
 while read -r app_name; do
@@ -135,6 +219,25 @@ for project_entry in "${NX_PROJECTS_TO_CHECK[@]}"; do
     fi
 done
 
+# --- Check if projects in config actually exist ---
+for project in "${config_packages[@]}"; do
+    if [ "$(check_project_exists "$project")" = "false" ]; then
+        debug_echo "  -> '$project' does not exist in the filesystem. (Added to error list)"
+        NON_EXISTENT_PROJECTS+=("$project")
+    fi
+
+    # Check if project in config exists in manifest
+    if [ "$(check_project_in_manifest "$project")" = "false" ]; then
+        debug_echo "  -> '$project' exists in config but not in manifest. (Added to error list)"
+        MISSING_IN_MANIFEST+=("$project")
+    fi
+
+    # Check project configuration
+    if ! check_project_config "$project"; then
+        INVALID_SIMPLE_RELEASES+=("$project")
+    fi
+done
+
 # --- Report results in ESLint style ---
 echo "" # Empty line for separation
 
@@ -153,6 +256,35 @@ if [ ${#MISSING_PROJECTS_CONFIG[@]} -gt 0 ]; then
     echo "Errors found in '$CONFIG_FILE':"
     for project in "${MISSING_PROJECTS_CONFIG[@]}"; do
         echo "  - Error: Project '$project' NOT found in 'packages'."
+    done
+    echo ""
+    HAS_ERRORS=true
+fi
+
+if [ ${#NON_EXISTENT_PROJECTS[@]} -gt 0 ]; then
+    echo "Errors found in '$CONFIG_FILE':"
+    for project in "${NON_EXISTENT_PROJECTS[@]}"; do
+        echo "  - Error: Project '$project' does not exist in the filesystem."
+    done
+    echo ""
+    HAS_ERRORS=true
+fi
+
+if [ ${#MISSING_IN_MANIFEST[@]} -gt 0 ]; then
+    echo "Errors found in '$CONFIG_FILE':"
+    for project in "${MISSING_IN_MANIFEST[@]}"; do
+        echo "  - Error: Project '$project' exists in config but not in manifest."
+    done
+    echo ""
+    HAS_ERRORS=true
+fi
+
+if [ ${#INVALID_SIMPLE_RELEASES[@]} -gt 0 ]; then
+    echo "Errors found in '$CONFIG_FILE':"
+    for project in "${INVALID_SIMPLE_RELEASES[@]}"; do
+        if ! check_project_config "$project"; then
+            get_project_error "$project"
+        fi
     done
     echo ""
     HAS_ERRORS=true

@@ -1,6 +1,5 @@
 import nx from "@nx/eslint-plugin";
-import importPlugin from "eslint-plugin-import";
-import checkFilePlugin from "eslint-plugin-check-file";
+import unusedImportsPlugin from "eslint-plugin-unused-imports";
 
 export default [
   ...nx.configs["flat/base"],
@@ -45,16 +44,7 @@ export default [
       "**/*.mjs",
     ],
     plugins: {
-      import: importPlugin,
-      "check-file": checkFilePlugin,
-    },
-    settings: {
-      "import/resolver": {
-        node: true,
-        typescript: {
-          project: ["tsconfig.base.json", "apps/*/tsconfig.json", "libs/*/tsconfig.json"]
-        }
-      },
+      "unused-imports": unusedImportsPlugin, // Chỉ giữ lại plugin này
     },
     rules: {
       "no-console": "error",
@@ -71,12 +61,21 @@ export default [
           ],
         },
       ],
-      "import/no-unresolved": "error",
-      "import/default": "error",
-      "import/namespace": "error",
-      "import/export": "error",
-      "import/no-duplicates": "error",
-      // Naming convention rules
+      // Giữ lại và cấu hình các quy tắc của eslint-plugin-unused-imports
+      "no-unused-vars": "off", // Tắt quy tắc gốc
+      "@typescript-eslint/no-unused-vars": "off", // Tắt quy tắc TS
+      "unused-imports/no-unused-imports": "error", // Phát hiện import không dùng
+      "unused-imports/no-unused-vars": [ // Phát hiện biến không dùng
+        "warn",
+        {
+          vars: "all",
+          varsIgnorePattern: "^_",
+          args: "after-used",
+          argsIgnorePattern: "^_",
+        },
+      ],
+
+      // Naming convention rules (giữ nguyên nếu bạn muốn, chúng thuộc về @typescript-eslint)
       "@typescript-eslint/naming-convention": [
         "error",
         {

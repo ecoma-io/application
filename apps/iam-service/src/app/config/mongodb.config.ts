@@ -1,4 +1,4 @@
-import { MongodbEnvironmentVariables, registerConfig } from "@ecoma/nestjs-config";
+import { MongodbEnvironmentVariables, registerConfig } from "@ecoma/nestjs";
 import { MongooseModuleOptions } from "@nestjs/mongoose";
 
 export class MongodbConfig implements MongooseModuleOptions { }

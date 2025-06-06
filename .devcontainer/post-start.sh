@@ -1,11 +1,7 @@
 #!/bin/zsh
 
-echo "📌 Install pnpm..."
-curl -fsSL https://get.pnpm.io/install.sh | sh -
-echo "✅ Install pnpm done."
-
 echo "📌 Install depedencies..."
-pnpm install
+yarn install --frozen-lockfile
 echo "✅ Install depedencies done."
 
 echo "📌 Install paths..."
@@ -13,12 +9,9 @@ echo "export PATH=\"\$PATH:$(pwd)/scripts\"" >> ~/.zshrc
 echo "export PATH=\"\$PATH:$(pwd)/node_modules/.bin\"" >> ~/.zshrc
 echo "🔧 Added ./scripts and /node_modules/.bin  to PATH."
 
-echo "📌 Build local image..."
-NX_TUI=false npx nx run-many -t build
-echo "✅ Build local image done."
 
 echo "📌 Deploy local..."
-docker compose up -d --wait --progress=plain
+docker compose --profile infras up -d --wait
 echo "✅ Docker Compose started successfully."
 
 echo "📌 Running playwright install..."
@@ -30,5 +23,10 @@ echo "📌 Install helm..."
 curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 echo "✅ Install helm done."
 
+
+echo "📌 Build local image and deploy..."
+NX_TUI=false npx nx run-many -t build
+docker compose --profile app up -d --wait
+echo "✅ Build local image and deploy done."
 
 echo "🎉 postStartCommand completed successfully!"

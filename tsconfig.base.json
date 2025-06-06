@@ -16,22 +16,12 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@ecoma/dtos": ["libs/dtos/src/index.ts"],
-      "@ecoma/iam-service-dtos": ["libs/iam-service-dtos/src/index.ts"],
-      "@ecoma/nestjs-config": ["libs/nestjs-config/src/index.ts"],
-      "@ecoma/nestjs-logger": ["libs/nestjs-logger/src/index.ts"],
-      "@ecoma/nge-auth": ["libs/nge-auth/src/index.ts"],
-      "@ecoma/nge-cookie": ["libs/nge-cookie/src/index.ts"],
-      "@ecoma/nge-domain": ["libs/nge-domain/src/index.ts"],
-      "@ecoma/nge-form-error": ["libs/nge-form-error/src/index.ts"],
-      "@ecoma/nge-logging": ["libs/nge-logging/src/index.ts"],
-      "@ecoma/nge-redirect": ["libs/nge-redirect/src/index.ts"],
-      "@ecoma/nge-svg-injector": ["libs/nge-svg-injector/src/index.ts"],
+      "@ecoma/angular": ["libs/angular/src/index.ts"],
+      "@ecoma/common": ["libs/common/src/index.ts"],
+      "@ecoma/nestjs": ["libs/nestjs/src/index.ts"],
       "@ecoma/nx-internal": ["tools/nx-internal/src/index.ts"],
-      "@ecoma/nx-typedoc": ["libs/nx-typedoc/src/index.ts"],
-      "@ecoma/testing": ["libs/testing/src/index.ts"],
-      "@ecoma/types": ["libs/types/src/index.ts"],
-      "@ecoma/utils": ["libs/utils/src/index.ts"]
+      "@ecoma/test-utils": ["libs/test-utils/src/index.ts"],
+      "@ecoma/types": ["libs/types/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

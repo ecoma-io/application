@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { HealthCheck, HealthCheckResult, HealthCheckService, MongooseHealthIndicator } from '@nestjs/terminus';
-import { PinoLogger } from '@ecoma/nestjs-logger';
+import { PinoLogger } from '@ecoma/nestjs';
 
 @Controller('health')
 export class HealthController {

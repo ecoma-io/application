@@ -1,4 +1,4 @@
-import { AppEnvironmentVariables, registerConfig } from '@ecoma/nestjs-config';
+import { AppEnvironmentVariables, registerConfig } from '@ecoma/nestjs';
 
 export class ApplicationConfig {
   port: number;

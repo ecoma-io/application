@@ -4,10 +4,6 @@
 
 - `BaseSucessResponseDataDTO`\<[`AuthSignInResponseData`](/api/iam-service-dtos/Class.AuthSignInResponseData.md)\>
 
-## Indexable
-
-\[`x`: `string`\]: `any`
-
 ## Constructors
 
 <a id="constructor"></a>

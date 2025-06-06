@@ -13,7 +13,7 @@ Chọn project và branch phù hợp, sau đó chờ quá trình thiết lập *
 
 ### Bước 1: Lấy file chứng chỉ
 
-Sao chép file từ đường dẫn `.certs/wildcard.crt`.
+Sao chép file từ đường dẫn `.nginx/wildcard.crt`.
 
 ### Bước 2: Cài đặt chứng chỉ
 
@@ -39,7 +39,7 @@ Sao chép file từ đường dẫn `.certs/wildcard.crt`.
 
 1. Di chuyển file chứng chỉ vào thư mục hệ thống:
    ```sh
-   sudo cp wildcard.crt /usr/local/share/ca-certificates/wildcard.crt
+   sudo cp ./nginx/wildcard.crt /usr/local/share/ca-certificates/wildcard.crt
    ```
 2. Cập nhật danh sách chứng chỉ:
    ```sh

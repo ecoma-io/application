@@ -2,11 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { SvgInjector } from '@ecoma/nge-svg-injector';
-import { Domains } from '@ecoma/nge-domain';
+import { FormError, MessageableValidators, SvgInjector, Domains } from '@ecoma/angular';
 import { Title } from '@angular/platform-browser';
 import { AuthService } from '../../../core/services/auth.service';
-import { FormError, MessageableValidators } from '@ecoma/nge-form-error';
 
 @Component({
   selector: 'app-initialization',
@@ -70,7 +68,6 @@ import { FormError, MessageableValidators } from '@ecoma/nge-form-error';
   `,
 })
 export class InitializationComponent implements OnInit {
-
   iconsBaseUrl: string;
   initializationForm: FormGroup;
   isLoading = false;
@@ -84,7 +81,6 @@ export class InitializationComponent implements OnInit {
     private domain: Domains,
     private title: Title
   ) {
-
     // Thiết lập tiêu đề cho trang web
     this.title.setTitle('Account initialization');
 
@@ -96,16 +92,14 @@ export class InitializationComponent implements OnInit {
       firstName: ['', [MessageableValidators.required('Please enter your first name'), MessageableValidators.maxLength(18)]],
       lastName: ['', [MessageableValidators.maxLength(18)]]
     });
-
   }
-
 
   ngOnInit() {
     this.title.setTitle('Identity verification');
     const currentUserEmail = sessionStorage.getItem('current-user-email');
     if (!currentUserEmail) {
       this.router.navigate(['/authenticate/identification'], { queryParamsHandling: 'merge' });
-      sessionStorage.removeItem('current-user-firt-name');
+      sessionStorage.removeItem('current-user-first-name');
       sessionStorage.removeItem('current-user-last-name');
       return;
     } else {
@@ -135,7 +129,6 @@ export class InitializationComponent implements OnInit {
       } else {
         sessionStorage.removeItem('current-user-last-name');
       }
-
 
       this.router.navigate(['/authenticate/verification'], { queryParamsHandling: 'merge' });
     }

@@ -1,0 +1,24 @@
+name: Setup project
+description: Setup project dependencies
+runs:
+  using: composite
+  steps:
+
+    - uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4
+      id: playwright-cache
+      with:
+        path: |
+          ~/.cache/ms-playwright
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-playwright-
+
+    - name: Install Playwright with dependencies
+      shell: bash
+      if: steps.playwright-cache.outputs.cache-hit != 'true'
+      run: npx playwright install --with-deps chromium
+
+    - name: Install Playwright's dependencies
+      shell: bash
+      if: steps.playwright-cache.outputs.cache-hit == 'true'
+      run: npx playwright install-deps

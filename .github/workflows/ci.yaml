@@ -16,103 +16,127 @@ on:
       - main
       - dev
 env:
-  NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
+  CI: true
+  NODE_TLS_REJECT_UNAUTHORIZED: 0
 
 permissions:
   contents: write
   pull-requests: write
 jobs:
-  validation:
-    name: Code quality validation
+  lint:
+    name: Lint
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@85e6279cec87321a52edac9c87bce653a07cf6c2
-        with:
-          fetch-depth: 0
 
       - name: Setup project
-        uses: ./.github/actions/nx-sha
+        uses: ./.github/actions/setup-project
 
-      - name: Determine Nx Affected Base and Head SHA
-        uses: ./.github/actions/setup
+      - name: Determine Nx Command
+        id: determine-nx-command
+        uses: ./.github/actions/determine-nx-command
 
-      - name: Run lint projects
-        shell: bash
-        run: npx nx affected --targets=lint --base=$NX_AFFECTED_BASE --head=$NX_AFFECTED_HEAD --parallel 12
+      - name: Release lint
+        run: ./scripts/release-lint
 
-      - name: Run unit tests
-        shell: bash
-        run: npx nx affected --targets=test --base=$NX_AFFECTED_BASE --head=$NX_AFFECTED_HEAD --parallel 8
+      - name: Eslint
+        run: ${{ steps.determine-nx-command.outputs.nx-command }} -t lint
 
-      - name: Run build
-        shell: bash
-        run: npx nx affected --targets=build --base=$NX_AFFECTED_BASE --head=$NX_AFFECTED_HEAD --parallel 8
-
-      - name: Run containerize docker images
-        shell: bash
-        run: npx nx affected --targets=containerize --base=origin/main --head=$NX_AFFECTED_HEAD --parallel 4
-
-  integration-test:
-    name: Integration Tests
-    runs-on: ubuntu-latest
-    container:
-      image: ghcr.io/ecoma-io/playwright-runner:1.3.0
-      options: --privileged
-    steps:
-
-      - name: Checkout
-        uses: actions/checkout@85e6279cec87321a52edac9c87bce653a07cf6c2
-
-      - name:  Determine Nx Affected Base and Head SHA
-        uses: ./.github/actions/nx-sha
-
-      - name: Setup project
-        uses: ./.github/actions/setup
-
-      - name: Automate Integration
-        shell: bash
-        run: npx nx affected --target=automate-integration-test --base=$NX_AFFECTED_BASE --head=$NX_AFFECTED_HEAD --parallel 1
-
-
-  e2e-test:
-    name: E2E Tests
+  unit-test:
+    name: Unit test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@85e6279cec87321a52edac9c87bce653a07cf6c2
-        with:
-          fetch-depth: 0
-
-      - name: Determine Nx Affected Base and Head SHA
-        uses: ./.github/actions/nx-sha
 
       - name: Setup project
-        uses: ./.github/actions/setup
-        with:
-          run-playwright-install: true
+        uses: ./.github/actions/setup-project
 
-      - name: Pull images
-        shell: bash
-        run: |
-          docker compose pull
+      - name: Determine Nx Command
+        id: determine-nx-command
+        uses: ./.github/actions/determine-nx-command
 
-      - name: Automate E2E Test
-        shell: bash
-        run: npx nx affected --target=automate-e2e-test --base=$NX_AFFECTED_BASE --head=$NX_AFFECTED_HEAD --parallel 1
+      - name: Release lint
+        run: ./scripts/release-lint
 
-      - name: Upload blob report to GitHub Actions Artifacts
+      - name: Eslint
+        run: ${{ steps.determine-nx-command.outputs.nx-command }} -t test
+
+      - name: Upload dist to GitHub Actions Artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: e2e-report-${{ github.sha }}
-          path: dist/.playwright
-          retention-days: 1
+          name: test-${{ github.sha }}
+          path: dist
+          retention-days: 3
 
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@85e6279cec87321a52edac9c87bce653a07cf6c2
+
+      - name: Setup project
+        uses: ./.github/actions/setup-project
+
+      - name: Determine Nx Command
+        id: determine-nx-command
+        uses: ./.github/actions/determine-nx-command
+
+      - name: Setup helm
+        shell: bash
+        run: curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+
+      - name: Build, Containerize, Helm Packing
+        run: ${{ steps.determine-nx-command.outputs.nx-command }} -t build,containerize,packing
+
+      - name: Upload dist to GitHub Actions Artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-${{ github.sha }}
+          path: dist
+          retention-days: 3
+
+  e2e-test:
+    name: E2E test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@85e6279cec87321a52edac9c87bce653a07cf6c2
+
+      - name: Setup project
+        uses: ./.github/actions/setup-project
+
+      - name: Setup playwright
+        uses: ./.github/actions/setup-playwright
+
+      - name: Start infrastructure services
+        shell: bash
+        run: docker compose --profile infras up -d --wait
+
+      - name: Determine Nx Command
+        id: determine-nx-command
+        uses: ./.github/actions/determine-nx-command
+
+      - name: Test
+        run: |
+          ${{ steps.determine-nx-command.outputs.nx-command }} -t test-e2e --parallel 1
+          ./scripts/release-lint
+
+      - name: Upload dist to GitHub Actions Artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-test-${{ github.sha }}
+          path: dist
+          retention-days: 3
 
   release:
     name: Release
-    needs: [validation, integration-test, e2e-test]
+    needs: [lint, unit-test, build, e2e-test]
     if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     steps:

@@ -1,0 +1,38 @@
+{
+  "name": "accounts-site-e2e",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/accounts-site-e2e/src",
+  "implicitDependencies": [
+    "accounts-site",
+    "iam-service",
+    "ndm-service"
+  ],
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "deploy-local": {
+      "dependsOn": [
+        "^deploy-local"
+      ],
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "echo 'Deploy local done!'"
+      }
+    },
+    "test-e2e": {
+      "dependsOn": [
+        "deploy-local"
+      ],
+      "executor": "@nx/playwright:playwright",
+      "outputs": [
+        "{workspaceRoot}/dist/.playwright/apps/accounts-site-e2e"
+      ],
+      "options": {
+        "skipInstall": true,
+        "config": "apps/accounts-site-e2e/playwright.config.ts"
+      }
+    }
+  }
+}

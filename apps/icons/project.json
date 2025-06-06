@@ -14,7 +14,7 @@
       },
       "defaultConfiguration": "development"
     },
-    "helm": {
+    "packing": {
       "executor": "@nx-extensions/helm:package",
       "outputs": ["{options.outputFolder}"],
       "options": {
@@ -36,7 +36,7 @@
         "parallel": false,
         "commands": [
           "INPUT_TAGS=ghcr.io/ecoma-io/{projectName}:$(cat {projectRoot}/version.txt) npx nx containerize {projectName} -c production",
-          "npx nx helm {projectName} --push"
+          "npx nx packing {projectName} --push"
         ]
       }
     }

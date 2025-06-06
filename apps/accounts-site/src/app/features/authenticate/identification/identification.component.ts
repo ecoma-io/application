@@ -1,14 +1,11 @@
-import { SvgInjector } from '@ecoma/nge-svg-injector';
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Domains } from '@ecoma/nge-domain';
 import { Title } from '@angular/platform-browser';
 import { AuthService } from '../../../core/services/auth.service';
-import { AuthIdentifyResponseDTO } from '@ecoma/iam-service-dtos';
 import { HttpErrorResponse } from '@angular/common/http';
-import { FormError, MessageableValidators } from "@ecoma/nge-form-error";
+import { FormError, MessageableValidators, SvgInjector, Domains } from '@ecoma/angular';
 
 @Component({
   selector: 'app-identification',
@@ -28,8 +25,6 @@ import { FormError, MessageableValidators } from "@ecoma/nge-form-error";
       <h1 class="font-semibold text-2xl" data-test-id="identification-page-title">Identity Authentication</h1>
       <p class="text-base-content/70 text-sm">Sign in to your account or create a new one instantly</p>
     </div>
-
-
 
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-6">
 
@@ -96,10 +91,8 @@ import { FormError, MessageableValidators } from "@ecoma/nge-form-error";
   `,
 })
 export class IdentificationComponent {
-
   readonly termOfServiceHref = '#';
   readonly privacyPolicyHref = '#';
-
 
   loginForm: FormGroup;
   isLoading = false;
@@ -113,7 +106,6 @@ export class IdentificationComponent {
     private domain: Domains,
     private title: Title
   ) {
-
     // Thiết lập tiêu đề cho trang web
     this.title.setTitle('Identity Authentication');
 
@@ -121,7 +113,7 @@ export class IdentificationComponent {
     this.iconsBaseUrl = this.domain.getIconsBaseUrl();
 
     // Lấy email đã lưu trong session storage (nếu có)
-    const currentEmail = sessionStorage.getItem('auth_email');
+    const currentEmail = sessionStorage.getItem('current-user-email');
 
     // Khởi tạo form đăng nhập với trường email
     // Sử dụng email đã lưu hoặc chuỗi rỗng làm giá trị mặc định
@@ -134,7 +126,6 @@ export class IdentificationComponent {
     if (currentEmail) {
       this.loginForm.markAsTouched();
     }
-
   }
 
   /**
@@ -154,8 +145,7 @@ export class IdentificationComponent {
       const { email } = this.loginForm.value;
 
       this.authService.identify({ email }).subscribe({
-        next: (response: AuthIdentifyResponseDTO) => {
-
+        next: (response: any) => {
           sessionStorage.setItem('current-user-email', email);
 
           if (response.data.firstName) {

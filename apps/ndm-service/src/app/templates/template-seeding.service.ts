@@ -2,7 +2,7 @@ import { Injectable, OnModuleInit } from '@nestjs/common';
 import { NotificationTemplateRepository } from '../database/repositories/notification-template.repository';
 import { join } from 'path';
 import { existsSync, promises as fs } from 'fs';
-import { PinoLogger } from '@ecoma/nestjs-logger';
+import { PinoLogger } from '@ecoma/nestjs';
 
 @Injectable()
 export class TemplateSeedingService implements OnModuleInit {

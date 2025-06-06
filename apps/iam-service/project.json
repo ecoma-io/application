@@ -62,7 +62,9 @@
       "configurations": {
         "development": {
           "target": "debug",
-          "tags": ["{projectName}"],
+          "tags": [
+            "{projectName}"
+          ],
           "load": true
         },
         "production": {
@@ -72,7 +74,17 @@
       },
       "defaultConfiguration": "development"
     },
-    "helm": {
+    "deploy-local": {
+      "dependsOn": [
+        "build"
+      ],
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "{workspaceRoot}",
+        "command": "docker compose up {projectName} -d --wait"
+      }
+    },
+    "packing": {
       "executor": "@nx-extensions/helm:package",
       "outputs": [
         "{options.outputFolder}"
@@ -96,7 +108,7 @@
         "parallel": false,
         "commands": [
           "INPUT_TAGS=ghcr.io/ecoma-io/{projectName}:$(cat {projectRoot}/version.txt) npx nx containerize {projectName} -c production",
-          "npx nx helm {projectName} --push"
+          "npx nx packing {projectName} --push"
         ]
       }
     }

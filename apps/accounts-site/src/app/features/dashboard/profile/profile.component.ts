@@ -2,8 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
-import { SvgInjector } from '@ecoma/nge-svg-injector';
-import { Domains } from '@ecoma/nge-domain';
+import { SvgInjector, Domains } from '@ecoma/angular';
 
 @Component({
   selector: 'app-profile',

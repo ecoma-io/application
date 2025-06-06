@@ -1,8 +1,0 @@
-{
-  "name": "@ecoma/utils",
-  "version": "1.2.0",
-  "type": "commonjs",
-  "main": "./index.cjs",
-  "types": "./index.d.ts",
-  "dependencies": {}
-}

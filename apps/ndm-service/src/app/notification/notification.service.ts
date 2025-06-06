@@ -7,7 +7,7 @@ import { NotificationHistoryRepository } from '../database/repositories/notifica
 import * as Handlebars from 'handlebars';
 import { Types } from 'mongoose';
 import { NotificationStatus } from '../database/schemas/notification-history.schema';
-import { PinoLogger } from '@ecoma/nestjs-logger';
+import { PinoLogger } from '@ecoma/nestjs';
 
 @Injectable()
 export class NotificationService {

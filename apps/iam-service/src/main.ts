@@ -4,11 +4,11 @@
  */
 import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app/app.module';
-import { PinoLogger } from '@ecoma/nestjs-logger';
+import { PinoLogger } from '@ecoma/nestjs';
 import { ConfigService } from "@nestjs/config";
 import { ApplicationConfig } from './app/config/app.config';
 import { BadRequestException, ClassSerializerInterceptor, UnprocessableEntityException, ValidationError, ValidationPipe } from '@nestjs/common';
-import { ErrorResponseDetailsDTO } from '@ecoma/dtos';
+import { ErrorResponseDetailsDTO } from '@ecoma/common';
 
 async function bootstrap() {
   const logger = new PinoLogger('Boostrap');

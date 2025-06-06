@@ -10,7 +10,9 @@
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ],
       "options": {
         "jestConfig": "{projectRoot}/jest.config.ts"
       }
@@ -20,11 +22,15 @@
       "options": {
         "cwd": "{projectRoot}",
         "command": "webpack-cli build",
-        "args": ["node-env=production"]
+        "args": [
+          "node-env=production"
+        ]
       },
       "configurations": {
         "development": {
-          "args": ["node-env=development"]
+          "args": [
+            "node-env=development"
+          ]
         }
       }
     },
@@ -32,7 +38,9 @@
       "continuous": true,
       "executor": "@nx/js:node",
       "defaultConfiguration": "development",
-      "dependsOn": ["build"],
+      "dependsOn": [
+        "build"
+      ],
       "options": {
         "inspect": false,
         "runBuildTargetDependencies": false
@@ -47,12 +55,16 @@
       }
     },
     "containerize": {
-      "dependsOn": ["build"],
+      "dependsOn": [
+        "build"
+      ],
       "executor": "@nx-tools/nx-container:build",
       "configurations": {
         "development": {
           "target": "debug",
-          "tags": ["{projectName}"],
+          "tags": [
+            "{projectName}"
+          ],
           "load": true
         },
         "production": {
@@ -62,9 +74,21 @@
       },
       "defaultConfiguration": "development"
     },
-    "helm": {
+    "deploy-local": {
+      "dependsOn": [
+        "build"
+      ],
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "{workspaceRoot}",
+        "command": "docker compose up {projectName} -d --wait"
+      }
+    },
+    "packing": {
       "executor": "@nx-extensions/helm:package",
-      "outputs": ["{options.outputFolder}"],
+      "outputs": [
+        "{options.outputFolder}"
+      ],
       "options": {
         "chartFolder": "{projectRoot}/chart",
         "outputFolder": "{workspaceRoot}/dist/charts/{projectName}",
@@ -82,7 +106,7 @@
       "options": {
         "cwd": "{workspaceRoot}",
         "parallel": false,
-        "commands": [
+        "packing": [
           "INPUT_TAGS=ghcr.io/ecoma-io/{projectName}:$(cat {projectRoot}/version.txt) npx nx containerize {projectName} -c production",
           "npx nx helm {projectName} --push"
         ]

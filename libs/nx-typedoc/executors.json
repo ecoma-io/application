@@ -1,9 +1,0 @@
-{
-  "executors": {
-    "executor": {
-      "implementation": "./src/typedoc/executor",
-      "schema": "./src/typedoc/schema.json",
-      "description": "typedoc executor"
-    }
-  }
-}
