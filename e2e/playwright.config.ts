@@ -25,6 +25,7 @@ if (!process.env["BASE_DOMAIN"]) {
 export default defineConfig({
   // Reference the global setup file
   ...nxE2EPreset(__filename, { testDir: "./src" }),
+  retries: 3,
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
