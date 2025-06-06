@@ -18,7 +18,7 @@ export class AuthIdentifyResponseData {
   lastName?: string;
 }
 
-export class AuthIdentifyResponseDTO extends BaseSucessResponseDataDTO<AuthIdentifyResponseData> {}
+export class AuthIdentifyResponseDTO extends BaseSucessResponseDataDTO<AuthIdentifyResponseData> { }
 
 export class AuthRequestOtpDTO {
   @ApiProperty({ required: true, description: 'Email for request otp' })
@@ -39,7 +39,8 @@ export class AuthSignInDTO {
 
   @ApiProperty({ required: true, description: 'OTP code for sign-in' })
   @IsString()
-  @Length(6)
+  @IsNotEmpty()
+  @Length(6, 6, { message: 'OTP code should be 6 digits number' })
   otp!: string;
 }
 
@@ -60,4 +61,4 @@ export class AuthSignInResponseData {
   lastName!: string;
 }
 
-export class AuthSignInResponseDto extends BaseSucessResponseDataDTO<AuthSignInResponseData> {}
+export class AuthSignInResponseDto extends BaseSucessResponseDataDTO<AuthSignInResponseData> { }
