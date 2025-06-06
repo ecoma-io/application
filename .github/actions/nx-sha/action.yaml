@@ -6,9 +6,24 @@ runs:
     - name: Determine Nx Affected Base and Head
       shell: bash
       run: |
-        # Default to origin/main and current commit for push events
         BASE="origin/main"
         HEAD="${{ github.sha }}"
+
+        # Fetch all tags to ensure the latest tag is available
+        git config --global --add safe.directory /__w/application/application
+        git fetch origin --tags --no-recurse-submodules
+
+        # Get the SHA of the latest tag on origin/main
+        # This command finds the latest tag that is reachable from origin/main
+        LATEST_TAG_SHA=$(git rev-list --tags --max-count=1 --date-order origin/main)
+
+        if [ -z "$LATEST_TAG_SHA" ]; then
+          echo "No tags found on origin/main. Defaulting BASE to origin/main."
+          BASE="origin/main"
+        else
+          echo "Latest tag SHA on origin/main: $LATEST_TAG_SHA"
+          BASE="$LATEST_TAG_SHA"
+        fi
 
         # For pull_request_target, use the base branch of the PR
         if [ "${{ github.event_name }}" == "pull_request_target" ]; then

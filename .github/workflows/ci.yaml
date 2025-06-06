@@ -64,12 +64,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@85e6279cec87321a52edac9c87bce653a07cf6c2
 
-      - name: Setup repository
-        shell: bash
-        run: |
-          git config --global --add safe.directory /__w/application/application
-          git fetch origin
-
       - name:  Determine Nx Affected Base and Head SHA
         uses: ./.github/actions/nx-sha
 
