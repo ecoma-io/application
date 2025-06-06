@@ -51,4 +51,4 @@ runs:
     - name: Install playwright deps
       if: ${{ inputs.run-playwright-install == 'true' }}
       shell: bash
-      run: ./node_modules/.bin/playwright install --with-deps
+      run: ./node_modules/.bin/playwright install --with-deps chromium
