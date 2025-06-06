@@ -35,11 +35,12 @@ services:
     build:
       context: ..
       dockerfile: apps/accounts-site/Dockerfile
+      target: debug
     networks:
       ecomma:
         ipv4_address: 10.10.30.2
     healthcheck:
-      test: ['CMD', 'wget', '--spider', '--quiet', 'http://127.0.0.1']
+      test: ['CMD', 'wget', '--spider', '--quiet', 'http://127.0.0.1:4000/health']
       interval: 5s
       timeout: 8s
       retries: 10
@@ -50,11 +51,12 @@ services:
     build:
       context: ..
       dockerfile: apps/admin-site/Dockerfile
+      target: debug
     networks:
       ecomma:
         ipv4_address: 10.10.30.3
     healthcheck:
-      test: ['CMD', 'wget', '--spider', '--quiet', 'http://127.0.0.1']
+      test: ['CMD', 'wget', '--spider', '--quiet', 'http://127.0.0.1:4000/health']
       interval: 5s
       timeout: 8s
       retries: 10
@@ -65,11 +67,12 @@ services:
     build:
       context: ..
       dockerfile: apps/app-site/Dockerfile
+      target: debug
     networks:
       ecomma:
         ipv4_address: 10.10.30.4
     healthcheck:
-      test: ['CMD', 'wget', '--spider', '--quiet', 'http://127.0.0.1']
+      test: ['CMD', 'wget', '--spider', '--quiet', 'http://127.0.0.1:4000/health']
       interval: 5s
       timeout: 8s
       retries: 10

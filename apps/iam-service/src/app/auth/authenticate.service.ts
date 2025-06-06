@@ -2,18 +2,18 @@ import { Injectable } from "@nestjs/common";
 import { AuthIdentifyDTO, AuthIdentifyResponseDTO, AuthRequestOtpDTO, AuthSignInDTO, AuthSignInResponseDto } from "@ecoma/iam-service-dtos";
 import { SessionRepository, UserRepository } from "../database/repositories";
 import { OTPRepository } from "../database/repositories/otp.repository";
-import { TooMananyRequestOtpException, UserNotFoundException, InvalidOrExpiredOtpException } from "./auth.errors";
 import { PinoLogger } from "@ecoma/nestjs-logger";
 import { SucessResponseDto } from "@ecoma/dtos";
 import { v7 as uuidv7 } from 'uuid';
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
+import { TooMananyRequestOtpException, UserNotFoundException, InvalidOrExpiredOtpException } from "./authenticate.errors";
 
 
 @Injectable()
-export class AuthService {
+export class AuthenticateService {
 
 
-  private logger = new PinoLogger(AuthService.name);
+  private logger = new PinoLogger(AuthenticateService.name);
 
   constructor(
     private sessionRepo: SessionRepository,

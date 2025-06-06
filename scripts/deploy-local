@@ -1,0 +1,4 @@
+#!/bin/bash
+
+NX_TUI=false npx nx run-many -t build --configuration production
+docker compose up -d --wait

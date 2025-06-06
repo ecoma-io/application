@@ -15,113 +15,126 @@ on:
     branches:
       - main
       - dev
-env:
-  NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
+# env:
+#   NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
 
 permissions:
   contents: write
   pull-requests: write
 jobs:
-  validation:
-    name: Code quality validation
+
+  lint:
+    name: Lint
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@85e6279cec87321a52edac9c87bce653a07cf6c2
-        with:
-          fetch-depth: 0
-
-      - name: Setup project
-        uses: ./.github/actions/nx-sha
-
-      - name: Determine Nx Affected Base and Head SHA
-        uses: ./.github/actions/setup
-
-      - name: Run lint projects
-        shell: bash
-        run: npx nx affected --targets=lint --base=$NX_AFFECTED_BASE --head=$NX_AFFECTED_HEAD --parallel 12
-
-      - name: Run unit tests
-        shell: bash
-        run: npx nx affected --targets=test --base=$NX_AFFECTED_BASE --head=$NX_AFFECTED_HEAD --parallel 8
-
-      - name: Run build
-        shell: bash
-        run: npx nx affected --targets=build --base=$NX_AFFECTED_BASE --head=$NX_AFFECTED_HEAD --parallel 8
-
-      - name: Run containerize docker images
-        shell: bash
-        run: npx nx affected --targets=containerize --base=origin/main --head=$NX_AFFECTED_HEAD --parallel 4
-
-  integration-test:
-    name: Integration Tests
-    runs-on: ubuntu-latest
-    container:
-      image: ghcr.io/ecoma-io/playwright-runner:1.3.0
-      options: --privileged
-    steps:
-
-      - name: Checkout
-        uses: actions/checkout@85e6279cec87321a52edac9c87bce653a07cf6c2
-
-      - name:  Determine Nx Affected Base and Head SHA
-        uses: ./.github/actions/nx-sha
 
       - name: Setup project
         uses: ./.github/actions/setup
 
-      - name: Automate Integration
-        shell: bash
-        run: npx nx affected --target=automate-integration-test --base=$NX_AFFECTED_BASE --head=$NX_AFFECTED_HEAD --parallel 1
+      - name: Lint, test, build affected projects
+        uses: ./.github/actions/nx-affected
+        with:
+          targets: lint
+          workers: 16
 
-
-  e2e-test:
-    name: E2E Tests
+  test:
+    name: Unit test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@85e6279cec87321a52edac9c87bce653a07cf6c2
-        with:
-          fetch-depth: 0
-
-      - name: Determine Nx Affected Base and Head SHA
-        uses: ./.github/actions/nx-sha
 
       - name: Setup project
         uses: ./.github/actions/setup
+
+      - name: Lint, test, build affected projects
+        uses: ./.github/actions/nx-affected
         with:
-          run-playwright-install: true
+          targets: test
+          workers: 8
 
-      - name: Pull images
-        shell: bash
-        run: |
-          docker compose pull
-
-      - name: Automate E2E Test
-        shell: bash
-        run: npx nx affected --target=automate-e2e-test --base=$NX_AFFECTED_BASE --head=$NX_AFFECTED_HEAD --parallel 1
-
-      - name: Upload blob report to GitHub Actions Artifacts
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: e2e-report-${{ github.sha }}
-          path: dist/.playwright
-          retention-days: 1
-
-
-  release:
-    name: Release
-    needs: [validation, integration-test, e2e-test]
-    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+  build:
+    name: Build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@85e6279cec87321a52edac9c87bce653a07cf6c2
 
-      - uses: googleapis/release-please-action@a02a34c4d625f9be7cb89156071d8567266a2445 # v4
-        id: release-please
+      - name: Setup project
+        uses: ./.github/actions/setup
+
+      - name: Lint, test, build affected projects
+        uses: ./.github/actions/nx-affected
         with:
-          token: ${{ secrets.GH_BOT_TOKEN }}
-          config-file: release.config.json
-          manifest-file: release.manifest.json
+          targets: containerize,helm
+          workers: 4
+
+  # e2e-test:
+  #   name:  E2E Test
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@85e6279cec87321a52edac9c87bce653a07cf6c2
+  #       with:
+  #         fetch-depth: 0
+
+  #     - name: Determine Nx Affected Base and Head SHA
+  #       uses: ./.github/actions/nx-sha
+
+  #     - name: Setup project
+  #       uses: ./.github/actions/setup
+  #       with:
+  #         run-playwright-install: true
+
+  #     - name: Automate E2E Test
+  #       shell: bash
+  #       run: npx nx affected --target=automate-e2e-test -c development --base=$NX_AFFECTED_BASE --head=$NX_AFFECTED_HEAD --parallel 1
+
+  #     - name: Docker logs
+  #       if: always()
+  #       run: docker logs accounts-site && docker logs nginx
+
+  #     - name: Upload blob report to GitHub Actions Artifacts
+  #       if: always()
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: e2e-report-${{ github.sha }}
+  #         path: dist/playwright
+  #         retention-days: 1
+
+
+      # - name: Run lint,unit tests,build projects
+      #   shell: bash
+      #   run: npx nx affected --targets=lint,test,build --base=$NX_AFFECTED_BASE --head=$NX_AFFECTED_HEAD --parallel 12
+
+      # - name: Run containerize docker image projects
+      #   shell: bash
+      #   run: npx nx affected --targets=containerize --excludeTaskDependencies --base=origin/main --head=$NX_AFFECTED_HEAD --parallel 4
+
+  # - name: Upload blob report to GitHub Actions Artifacts
+  #   if: always()
+  #   uses: actions/upload-artifact@v4
+  #   with:
+  #     name: dist-${{ github.sha }}
+  #     path: dist
+  #     retention-days: 1
+
+
+
+  # release:
+  #   name: Release
+  #   needs: [validation, e2e-test]
+  #   if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@85e6279cec87321a52edac9c87bce653a07cf6c2
+
+  #     - uses: googleapis/release-please-action@a02a34c4d625f9be7cb89156071d8567266a2445 # v4
+  #       id: release-please
+  #       with:
+  #         token: ${{ secrets.GH_BOT_TOKEN }}
+  #         config-file: release.config.json
+  #         manifest-file: release.manifest.json

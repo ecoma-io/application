@@ -1,14 +1,14 @@
 import { Body, Controller, Post, HttpCode, HttpStatus, Headers } from "@nestjs/common";
-import { AuthService } from "./auth.service";
 import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';
 import { AuthIdentifyDTO, AuthIdentifyResponseDTO, AuthRequestOtpDTO, AuthSignInDTO, AuthSignInResponseDto } from "@ecoma/iam-service-dtos";
 import { ErrorResponseDetailsDTO, ErrorResponseDTO, SucessResponseDto } from "@ecoma/dtos";
+import { AuthenticateService } from "./authenticate.service";
 
-@Controller("auth")
-@ApiTags('Auth')
-export class AuthController {
+@Controller("authenticate")
+@ApiTags('Authenticate')
+export class AuthenticateController {
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthenticateService) { }
 
 
   /**
@@ -32,7 +32,7 @@ export class AuthController {
    * @param requestOtpDTO - Data transfer object for OTP request
    * @returns A response object indicating the status of the OTP request.
    */
-  @Post('requestOtp')
+  @Post('request-otp')
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: 'Request one-time password' })
   @ApiBody({ type: AuthRequestOtpDTO })

@@ -18,7 +18,7 @@ NX_TUI=false npx nx run-many -t build
 echo "✅ Build local image done."
 
 echo "📌 Deploy local..."
-docker compose up -d --wait --progress=plain
+docker compose up -d --wait
 echo "✅ Docker Compose started successfully."
 
 echo "📌 Running playwright install..."

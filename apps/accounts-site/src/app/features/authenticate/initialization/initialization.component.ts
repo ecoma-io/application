@@ -1,3 +1,4 @@
+import { Cookies } from '@ecoma/nge-cookie';
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -80,6 +81,7 @@ export class InitializationComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
+    private cookies: Cookies,
     private router: Router,
     private domain: Domains,
     private title: Title
@@ -102,11 +104,11 @@ export class InitializationComponent implements OnInit {
 
   ngOnInit() {
     this.title.setTitle('Identity verification');
-    const currentUserEmail = sessionStorage.getItem('current-user-email');
+    const currentUserEmail = this.cookies.get('current-user-email');
     if (!currentUserEmail) {
       this.router.navigate(['/authenticate/identification'], { queryParamsHandling: 'merge' });
-      sessionStorage.removeItem('current-user-firt-name');
-      sessionStorage.removeItem('current-user-last-name');
+      this.cookies.delete('current-user-firt-name');
+      this.cookies.delete('current-user-last-name');
       return;
     } else {
       this.email = currentUserEmail;
@@ -129,11 +131,11 @@ export class InitializationComponent implements OnInit {
 
       const { firstName, lastName } = this.initializationForm.value;
 
-      sessionStorage.setItem('current-user-first-name', firstName);
+      this.cookies.set('current-user-first-name', firstName);
       if (lastName && lastName !== '') {
-        sessionStorage.setItem('current-user-last-name', lastName);
+        this.cookies.set('current-user-last-name', lastName);
       } else {
-        sessionStorage.removeItem('current-user-last-name');
+        this.cookies.delete('current-user-last-name');
       }
 
 

@@ -1,5 +1,5 @@
 import { DOCUMENT, isPlatformBrowser } from "@angular/common";
-import { Inject, Injectable, InjectionToken, Optional, PLATFORM_ID, ValueProvider } from "@angular/core";
+import { Inject, Injectable, InjectionToken, Optional, PLATFORM_ID, Provider } from "@angular/core";
 import { Request } from 'express';
 
 /**
@@ -12,11 +12,14 @@ export const REQUEST_TOKEN: InjectionToken<Request> = new InjectionToken<Request
  * @param request - The Express Request object to be used in server-side environment
  * @returns Environment providers configuration
  */
-export const provideSsrCookie = (request: Request): ValueProvider => {
-  return {
-    provide: REQUEST_TOKEN,
-    useValue: request,
-  };
+export const provideSsrCookie = (request: Request): Provider[] => {
+  return [
+    {
+      provide: REQUEST_TOKEN,
+      useValue: request,
+    },
+    Cookies,
+  ];
 };
 
 
@@ -85,20 +88,20 @@ export class Cookies {
    * @param name Tên cookie cần lấy
    * @returns Giá trị của cookie. Trả về chuỗi rỗng nếu không tìm thấy
    */
-  get(name: string): string {
+  get(name: string): string | null {
     name = encodeURIComponent(name);
 
     const cookie = this.documentIsAccessible
       ? this.document.cookie
       : this.request?.headers?.cookie;
     if (!cookie) {
-      return "";
+      return null;
     } else {
       const regExp: RegExp = Cookies.getCookieRegExp(name);
       const result: RegExpExecArray | null = regExp.exec(cookie);
       return result && result[1]
         ? Cookies.safeDecodeURIComponent(result[1])
-        : "";
+        : null;
     }
   }
 

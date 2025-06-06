@@ -1,5 +1,13 @@
-name: Determine Nx Affected Base and Head SHA
-description: Determine Nx Affected Base and Head SHA
+name: Run nx affected
+description: Determine Nx Affected Base and Head SHA and run command
+inputs:
+  targets:
+    description: 'nx affected arguments'
+    required: true
+  workers:
+    description: 'nx affected arguments'
+    required: false
+    default: '12'
 runs:
   using: composite
   steps:
@@ -41,3 +49,7 @@ runs:
 
         echo "NX_AFFECTED_BASE=$BASE" >> $GITHUB_ENV
         echo "NX_AFFECTED_HEAD=$HEAD" >> $GITHUB_ENV
+
+    - name:  Run nx affected target
+      shell: bash
+      run: npx nx affected --base=$NX_AFFECTED_BASE --head=$NX_AFFECTED_HEAD --targets=${{ inputs.targets}} --parallel=${{ inputs.workers}}

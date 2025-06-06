@@ -1,7 +1,7 @@
 import { SvgInjector } from '@ecoma/nge-svg-injector';
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Domains } from '@ecoma/nge-domain';
 import { Title } from '@angular/platform-browser';
@@ -9,6 +9,7 @@ import { AuthService } from '../../../core/services/auth.service';
 import { AuthIdentifyResponseDTO } from '@ecoma/iam-service-dtos';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormError, MessageableValidators } from "@ecoma/nge-form-error";
+import { Cookies } from '@ecoma/nge-cookie';
 
 @Component({
   selector: 'app-identification',
@@ -111,7 +112,8 @@ export class IdentificationComponent {
     private authService: AuthService,
     private router: Router,
     private domain: Domains,
-    private title: Title
+    private title: Title,
+    private cookies: Cookies
   ) {
 
     // Thiết lập tiêu đề cho trang web
@@ -121,7 +123,7 @@ export class IdentificationComponent {
     this.iconsBaseUrl = this.domain.getIconsBaseUrl();
 
     // Lấy email đã lưu trong session storage (nếu có)
-    const currentEmail = sessionStorage.getItem('auth_email');
+    const currentEmail = this.cookies.get('auth_email');
 
     // Khởi tạo form đăng nhập với trường email
     // Sử dụng email đã lưu hoặc chuỗi rỗng làm giá trị mặc định
@@ -156,14 +158,14 @@ export class IdentificationComponent {
       this.authService.identify({ email }).subscribe({
         next: (response: AuthIdentifyResponseDTO) => {
 
-          sessionStorage.setItem('current-user-email', email);
+          this.cookies.set('current-user-email', email);
 
           if (response.data.firstName) {
-            sessionStorage.setItem('current-user-first-name', response.data.firstName);
+            this.cookies.set('current-user-first-name', response.data.firstName);
           }
 
           if (response.data.lastName) {
-            sessionStorage.setItem('current-user-last-name', response.data.lastName);
+            this.cookies.set('current-user-last-name', response.data.lastName);
           }
 
           if (response.data.firstName) {

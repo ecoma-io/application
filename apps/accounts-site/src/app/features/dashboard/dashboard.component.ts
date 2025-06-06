@@ -140,7 +140,7 @@ export class DashboardComponent {
   logout() {
     this.authService.logout().subscribe({
       complete: () => {
-        window.location.href = '/auth/login';
+        window.location.href = '/authenticate/identification';
       }
     });
   }

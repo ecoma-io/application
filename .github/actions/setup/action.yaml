@@ -37,14 +37,14 @@ runs:
         version: 10
 
     - shell: bash
-      run: pnpm install --frozen-lockfile
+      run: pnpm install
 
     - uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4
       if: ${{ inputs.run-playwright-install == 'true' }}
       with:
         path: |
           ~/.cache/ms-playwright
-        key: ${{ runner.os }}-playwright-${{ hashFiles('**/yarn.lock') }}
+        key: ${{ runner.os }}-playwright-${{ hashFiles('**/pnpm-lock.yaml') }}
         restore-keys: |
           ${{ runner.os }}-playwright-
 

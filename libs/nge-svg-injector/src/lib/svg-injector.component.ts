@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, EventEmitter, Inject, Input, OnChanges, Optional, Output, InjectionToken, ValueProvider } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Inject, Input, OnChanges, Optional, Output, InjectionToken, ValueProvider, Provider } from '@angular/core';
 
 import { SvgInjectorService } from './svg-injector.service';
 
@@ -17,7 +17,11 @@ export const provideSsrSvgInjector = (baseUrl: string): ValueProvider => {
   return {
     provide: BASE_URL,
     useValue: baseUrl,
-  };
+  }
+};
+
+export const provideSvgInject = (): Provider => {
+  return SvgInjectorService;
 };
 
 @Component({
@@ -33,7 +37,11 @@ export class SvgInjector implements OnChanges {
   @Input() public path!: string;
   @Output() public inserted: EventEmitter<void> = new EventEmitter();
 
-  constructor(private iconService: SvgInjectorService, private el: ElementRef, @Optional() @Inject(BASE_URL) private baseHref: string) {}
+  constructor(
+    private el: ElementRef,
+    private iconService:  SvgInjectorService,
+    @Optional() @Inject(BASE_URL) private baseHref: string
+  ) { }
 
   ngOnChanges() {
     this.initSource();

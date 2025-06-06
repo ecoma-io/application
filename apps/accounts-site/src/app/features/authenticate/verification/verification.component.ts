@@ -8,6 +8,7 @@ import { Title } from '@angular/platform-browser';
 import { AuthService } from '../../../core/services/auth.service';
 import { FormError, MessageableValidators } from '@ecoma/nge-form-error';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Cookies } from '@ecoma/nge-cookie';
 
 @Component({
   selector: 'app-verification',
@@ -95,7 +96,8 @@ export class VerificationComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private activatedRoute: ActivatedRoute,
     private domain: Domains,
-    private title: Title
+    private title: Title,
+    private cookies: Cookies
   ) {
     this.iconsBaseUrl = this.domain.getIconsBaseUrl();
     this.otpForm = this.fb.group({
@@ -105,7 +107,7 @@ export class VerificationComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.title.setTitle('Identity verification');
-    const currentUserEmail = sessionStorage.getItem('current-user-email');
+    const currentUserEmail = this.cookies.get('current-user-email');
     if (!currentUserEmail) {
       this.router.navigate(['/authenticate/identification']);
       return;
@@ -113,7 +115,7 @@ export class VerificationComponent implements OnInit, OnDestroy {
       this.email = currentUserEmail;
     }
 
-    const currentUserFirstName = sessionStorage.getItem('current-user-first-name');
+    const currentUserFirstName = this.cookies.get('current-user-first-name');
     if (!currentUserFirstName) {
       this.router.navigate(['/authenticate/initialization']);
       return;
@@ -121,7 +123,7 @@ export class VerificationComponent implements OnInit, OnDestroy {
       this.firstName = currentUserFirstName;
     }
 
-    const currentUserLastName = sessionStorage.getItem('current-user-last-name');
+    const currentUserLastName = this.cookies.get('current-user-last-name');
     if (currentUserLastName) {
       this.lastName = currentUserLastName;
     }
@@ -182,9 +184,9 @@ export class VerificationComponent implements OnInit, OnDestroy {
       const otp = this.otpForm.get('otp')?.value;
       this.authService.verifyOTP(this.email, otp).subscribe({
         next: () => {
-          sessionStorage.removeItem('current-user-email');
-          sessionStorage.removeItem('current-user-first-name');
-          sessionStorage.removeItem('current-user-last-name');
+          this.cookies.delete('current-user-email');
+          this.cookies.delete('current-user-first-name');
+          this.cookies.delete('current-user-last-name');
 
           const continueUrl = this.activatedRoute.snapshot.queryParams['continue'];
           if (continueUrl) {

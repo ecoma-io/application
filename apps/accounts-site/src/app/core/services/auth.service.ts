@@ -1,17 +1,18 @@
 import { AuthIdentifyDTO, AuthIdentifyResponseDTO, AuthSignInResponseDto } from '@ecoma/iam-service-dtos';
 import { SucessResponseDto } from '@ecoma/dtos';
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Observable, of, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Domains } from '@ecoma/nge-domain';
-import { WA_LOCAL_STORAGE } from '@ng-web-apis/common';
+import { Cookies } from '@ecoma/nge-cookie';
 
-
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root'})
 export class AuthService {
-  constructor(private http: HttpClient, private domains: Domains, @Inject(WA_LOCAL_STORAGE) private localStorage: Storage) { }
+  constructor(
+    private http: HttpClient,
+    private domains: Domains,
+    private cookies: Cookies
+  ) { }
 
   private readonly ACCESS_TOKEN_KEY = 'token';
 
@@ -37,17 +38,15 @@ export class AuthService {
   }
 
   logout(): Observable<any> {
-    this.localStorage.clear();
+    this.cookies.deleteAll();
     return of(true);
   }
 
   isAuthenticated(): boolean {
-    return this.localStorage.getItem(this.ACCESS_TOKEN_KEY) !== null;
+    return this.cookies.get(this.ACCESS_TOKEN_KEY) !== null;
   }
 
   private setToken(token: string): void {
-    this.localStorage.setItem(this.ACCESS_TOKEN_KEY, token);
+    this.cookies.set(this.ACCESS_TOKEN_KEY, token, { domain: this.domains.getRootDomain() });
   }
-
-
 }
