@@ -1,7 +1,6 @@
 import { nxE2EPreset } from "@nx/playwright/preset";
 import { defineConfig, devices } from "@playwright/test";
 import { execSync } from "child_process";
-import isCI from 'is-ci';
 
 // For CI, you may want to set BASE_URL to the deployed application.
 
@@ -32,8 +31,7 @@ export default defineConfig({
     trace: "on-first-retry",
     bypassCSP: true,
     ignoreHTTPSErrors: true,
-    screenshot: isCI ? 'off' : 'only-on-failure',
-    video: isCI ? 'off' : 'retain-on-failure',
+    video: 'on-first-retry',
     testIdAttribute: 'data-test-id'
   },
   /* Run your local dev server before starting the tests */
