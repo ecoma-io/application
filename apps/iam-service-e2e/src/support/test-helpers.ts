@@ -10,17 +10,11 @@ export class TestHelpers {
   }
 
   static async updateOtpExpiry(mongoConnection: any, otpId: ObjectId, expiryDate: Date) {
-    return await mongoConnection.db.collection('otps').updateOne(
-      { _id: otpId },
-      { $set: { expiresAt: expiryDate } }
-    );
+    return await mongoConnection.db.collection('otps').updateOne({ _id: otpId }, { $set: { expiresAt: expiryDate } });
   }
 
   static async updateOtpCreatedAt(mongoConnection: any, userId: ObjectId, createdAt: Date) {
-    return await mongoConnection.db.collection('otps').updateOne(
-      { userId, isUsed: false },
-      { $set: { createdAt } }
-    );
+    return await mongoConnection.db.collection('otps').updateOne({ userId, isUsed: false }, { $set: { createdAt } });
   }
 
   static async findUser(mongoConnection: any, email: string) {
@@ -34,5 +28,14 @@ export class TestHelpers {
   static async clearCollections(mongoConnection: any) {
     await mongoConnection.db.collection('users').deleteMany({});
     await mongoConnection.db.collection('otps').deleteMany({});
+    await mongoConnection.db.collection('sessions').deleteMany({});
+  }
+
+  static async createSession(mongoConnection: any, sessionData: any) {
+    return await mongoConnection.db.collection('sessions').insertOne(sessionData);
+  }
+
+  static async findSession(mongoConnection: any, token: string) {
+    return await mongoConnection.db.collection('sessions').findOne({ token });
   }
 }
