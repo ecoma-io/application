@@ -1,0 +1,44 @@
+{
+  "name": "res-service",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/res-service/src",
+  "targets": {
+    "containerize": {
+      "executor": "@nx-tools/nx-container:build",
+      "configurations": {
+        "development": {},
+        "production": {
+          "push": true
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "packing": {
+      "executor": "@nx-extensions/helm:package",
+      "outputs": ["{options.outputFolder}"],
+      "options": {
+        "chartFolder": "{projectRoot}/chart",
+        "outputFolder": "{workspaceRoot}/dist/charts/{projectName}",
+        "push": false,
+        "remote": "oci://ghcr.io/ecoma-io/charts",
+        "dependencies": {
+          "update": true,
+          "build": true,
+          "repositories": []
+        }
+      }
+    },
+    "publish": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "{workspaceRoot}",
+        "parallel": false,
+        "commands": [
+          "INPUT_TAGS=ghcr.io/ecoma-io/{projectName}:$(cat {projectRoot}/version.txt) npx nx containerize {projectName} -c production",
+          "npx nx packing {projectName} --push"
+        ]
+      }
+    }
+  }
+}
