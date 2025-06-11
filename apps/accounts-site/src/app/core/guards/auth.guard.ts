@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, GuardResult, MaybeAsync, Router } from '@angular/router';
-import { AuthService } from '../services/auth.service';
+import { AuthenticateService } from '../services/authenticate.service';
 import { Domains } from '@ecoma/angular';
 
 
@@ -18,7 +18,7 @@ import { Domains } from '@ecoma/angular';
 })
 export class AuthGuard implements CanActivate {
   constructor(
-    private authService: AuthService,
+    private authService: AuthenticateService,
     private router: Router,
     private domains: Domains
   ) {}
