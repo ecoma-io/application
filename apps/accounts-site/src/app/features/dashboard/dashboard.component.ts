@@ -2,7 +2,7 @@ import { SvgInjector, Domains } from '@ecoma/angular';
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterOutlet, RouterLinkActive } from '@angular/router';
-import { AuthService } from '../../core/services/auth.service';
+import { AuthenticateService } from '../../core/services/authenticate.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -111,7 +111,7 @@ export class DashboardComponent {
   iconsBaseUrl: string;
 
 
-  constructor(private authService: AuthService, private domain: Domains) {
+  constructor(private authService: AuthenticateService, private domain: Domains) {
     this.iconsBaseUrl = this.domain.getIconsBaseUrl();
   }
 
@@ -137,13 +137,6 @@ export class DashboardComponent {
   }
 
   logout() {
-    this.authService.signOut().subscribe({
-      next: () => {
-        window.location.href = '/authenticate/identification';
-      },
-      error() {
-        window.location.href = '/authenticate/identification';
-      },
-    });
+    this.authService.signOut().subscribe();
   }
 }
