@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
-import { AuthService } from '../../../core/services/auth.service';
+import { AuthenticateService } from '../../../core/services/authenticate.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormError, MessageableValidators, SvgInjector, Domains } from '@ecoma/angular';
 
@@ -101,7 +101,7 @@ export class IdentificationComponent {
 
   constructor(
     private fb: FormBuilder,
-    private authService: AuthService,
+    private authService: AuthenticateService,
     private router: Router,
     private domain: Domains,
     private title: Title

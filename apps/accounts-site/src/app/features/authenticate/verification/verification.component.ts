@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Title } from '@angular/platform-browser';
-import { AuthService } from '../../../core/services/auth.service';
+import { AuthenticateService } from '../../../core/services/authenticate.service';
 import { FormError, MessageableValidators, SvgInjector, Domains } from '@ecoma/angular';
 import { HttpErrorResponse } from '@angular/common/http';
 
@@ -90,7 +90,7 @@ export class VerificationComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private authService: AuthService,
+    private authService: AuthenticateService,
     private activatedRoute: ActivatedRoute,
     private domain: Domains,
     private title: Title

@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FormError, MessageableValidators, SvgInjector, Domains } from '@ecoma/angular';
 import { Title } from '@angular/platform-browser';
-import { AuthService } from '../../../core/services/auth.service';
+import { AuthenticateService } from '../../../core/services/authenticate.service';
 
 @Component({
   selector: 'app-initialization',
@@ -76,7 +76,7 @@ export class InitializationComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private authService: AuthService,
+    private authService: AuthenticateService,
     private router: Router,
     private domain: Domains,
     private title: Title
