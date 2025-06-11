@@ -28,21 +28,20 @@ afterAll(async () => {
 });
 
 describe('Authenticate Sign In Feature', () => {
-  it("should sign in successfully with valid OTP", async () => {
-    // Generate test user data
+  it('should sign in successfully with valid OTP', async () => {
+    // Generate and create test user
     const userData = TestDataGenerator.generateUserData();
-    await TestHelpers.createUser(mongoConnection, userData);
+    const user = await TestHelpers.createUser(mongoConnection, userData);
 
-    // Request OTP and get user
-    await axios.post("https://iam.fbi.com/authenticate/request-otp", { email: userData.email });
-    const user = await TestHelpers.findUser(mongoConnection, userData.email);
-    const otpDoc = await TestHelpers.findOtp(mongoConnection, user._id);
-    expect(otpDoc).toBeDefined();
+    // Create valid OTP
+    const otpData = TestDataGenerator.generateOtpData(user.insertedId);
+    await TestHelpers.createOtp(mongoConnection, otpData);
 
-    const response = await axios.post("https://iam.fbi.com/authenticate/sign-in", {
+    const response = await axios.post('https://iam.fbi.com/authenticate/sign-in', {
       email: userData.email,
-      otp: otpDoc.code
+      otp: otpData.code,
     });
+
     expect(response.status).toBe(HttpStatus.ACCEPTED);
     expect(response.data.data).toBeDefined();
     expect(response.data.data.token).toBeDefined();
@@ -50,25 +49,24 @@ describe('Authenticate Sign In Feature', () => {
     expect(response.data.data.email).toBe(userData.email);
   });
 
-  it("should update user info when signing in with new firstName", async () => {
-    // Generate test user data without firstName
+  it('should update user info when signing in with new firstName', async () => {
+    // Generate and create test user without firstName
     const userData = TestDataGenerator.generateUserData();
     delete userData.firstName;
-    await TestHelpers.createUser(mongoConnection, userData);
+    const user = await TestHelpers.createUser(mongoConnection, userData);
 
-    // Request OTP and get user
-    await axios.post("https://iam.fbi.com/authenticate/request-otp", { email: userData.email });
-    const user = await TestHelpers.findUser(mongoConnection, userData.email);
-    const otpDoc = await TestHelpers.findOtp(mongoConnection, user._id);
+    // Create valid OTP
+    const otpData = TestDataGenerator.generateOtpData(user.insertedId);
+    await TestHelpers.createOtp(mongoConnection, otpData);
 
     // Sign in with new firstName
-    const newFirstName = "NewFirstName";
-    const newLastName = "NewLastName";
-    const response = await axios.post("https://iam.fbi.com/authenticate/sign-in", {
+    const newFirstName = 'NewFirstName';
+    const newLastName = 'NewLastName';
+    const response = await axios.post('https://iam.fbi.com/authenticate/sign-in', {
       email: userData.email,
-      otp: otpDoc.code,
+      otp: otpData.code,
       firstName: newFirstName,
-      lastName: newLastName
+      lastName: newLastName,
     });
 
     // Verify response
@@ -82,55 +80,57 @@ describe('Authenticate Sign In Feature', () => {
     expect(updatedUser.lastName).toBe(newLastName);
   });
 
-  it("should return 400 if new user signs in without firstName", async () => {
-    // Generate test user data without firstName
+  it('should return 400 if new user signs in without firstName', async () => {
+    // Generate and create test user without firstName
     const userData = TestDataGenerator.generateUserData();
     delete userData.firstName;
-    await TestHelpers.createUser(mongoConnection, userData);
+    const user = await TestHelpers.createUser(mongoConnection, userData);
 
-    // Request OTP and get user
-    await axios.post("https://iam.fbi.com/authenticate/request-otp", { email: userData.email });
-    const user = await TestHelpers.findUser(mongoConnection, userData.email);
-    const otpDoc = await TestHelpers.findOtp(mongoConnection, user._id);
+    // Create valid OTP
+    const otpData = TestDataGenerator.generateOtpData(user.insertedId);
+    await TestHelpers.createOtp(mongoConnection, otpData);
 
     // Try to sign in without firstName
-    const response = await axios.post("https://iam.fbi.com/authenticate/sign-in", {
+    const response = await axios.post('https://iam.fbi.com/authenticate/sign-in', {
       email: userData.email,
-      otp: otpDoc.code
+      otp: otpData.code,
     });
 
     expect(response.status).toBe(HttpStatus.BAD_REQUEST);
-    expect(response.data.message).toBe("First name and last name is required for new user");
+    expect(response.data.message).toBe('First name and last name is required for new user');
   });
 
-  it("should return 400 if user does not exist", async () => {
+  it('should return 400 if user does not exist', async () => {
     const nonExistingEmail = TestDataGenerator.generateUniqueEmail();
-    const response = await axios.post("https://iam.fbi.com/authenticate/sign-in", {
+    const response = await axios.post('https://iam.fbi.com/authenticate/sign-in', {
       email: nonExistingEmail,
-      otp: "123456"
+      otp: '123456',
     });
 
     expect(response.status).toBe(HttpStatus.BAD_REQUEST);
-    expect(response.data.message).toBe("Email must be identified before sign in");
+    expect(response.data.message).toBe('Email must be identified before sign in');
   });
 
-  it("should return 422 if OTP is invalid", async () => {
-    // Generate test user data
+  it('should return 422 if OTP is invalid', async () => {
+    // Generate and create test user
     const userData = TestDataGenerator.generateUserData();
-    await TestHelpers.createUser(mongoConnection, userData);
+    const user = await TestHelpers.createUser(mongoConnection, userData);
 
-    await axios.post("https://iam.fbi.com/authenticate/request-otp", { email: userData.email });
-    const response = await axios.post("https://iam.fbi.com/authenticate/sign-in", {
+    // Create valid OTP but use different code in request
+    const otpData = TestDataGenerator.generateOtpData(user.insertedId);
+    await TestHelpers.createOtp(mongoConnection, otpData);
+
+    const response = await axios.post('https://iam.fbi.com/authenticate/sign-in', {
       email: userData.email,
-      otp: "000000"
+      otp: '000000',
     });
 
     expect(response.status).toBe(HttpStatus.UNPROCESSABLE_ENTITY);
-    expect(response.data.details.otp).toBe("OTP is invalid or expired.");
+    expect(response.data.details.otp).toBe('OTP is invalid or expired.');
   });
 
-  it("should return 422 if OTP is expired", async () => {
-    // Generate test user data
+  it('should return 422 if OTP is expired', async () => {
+    // Generate and create test user
     const userData = TestDataGenerator.generateUserData();
     const user = await TestHelpers.createUser(mongoConnection, userData);
 
@@ -138,12 +138,12 @@ describe('Authenticate Sign In Feature', () => {
     const expiredOtpData = TestDataGenerator.generateExpiredOtpData(user.insertedId);
     await TestHelpers.createOtp(mongoConnection, expiredOtpData);
 
-    const response = await axios.post("https://iam.fbi.com/authenticate/sign-in", {
+    const response = await axios.post('https://iam.fbi.com/authenticate/sign-in', {
       email: userData.email,
-      otp: expiredOtpData.code
+      otp: expiredOtpData.code,
     });
 
     expect(response.status).toBe(HttpStatus.UNPROCESSABLE_ENTITY);
-    expect(response.data.details.otp).toBe("OTP is invalid or expired.");
+    expect(response.data.details.otp).toBe('OTP is invalid or expired.');
   });
 });
