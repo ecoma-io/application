@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { Domains } from '@ecoma/angular';
-
+import { Cookies, Domains } from '@ecoma/angular';
 
 export interface IAuththenticateIdentifyPayload {
   email: string;
@@ -12,7 +11,7 @@ export interface IAuthenticateIdentifyResponse {
   data?: {
     firstName?: string;
     lastName?: string;
-  }
+  };
 }
 
 export interface IAuththenticateRequestOtpPayload {
@@ -26,13 +25,24 @@ export interface IAuththenticateSignInPayload {
   lastName?: string;
 }
 
+export interface IAuthenticateSignInResponseData {
+  token: string;
+  email: string;
+  id: string;
+  firstName: string;
+  lastName?: string;
+}
+
+export interface IAuthenticateSignInResponse {
+  data: IAuthenticateSignInResponseData;
+}
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  constructor(private http: HttpClient, private domains: Domains) {
-  }
+  constructor(private http: HttpClient, private domains: Domains, private cookie: Cookies) { }
 
-  private readonly ACCESS_TOKEN_KEY = 'token';
+  private readonly CURRENT_USER_KEY = 'USER';
+  private readonly CURRENT_ACCESS_TOKEN_KEY = 'TOKEN';
 
   identify(payload: IAuththenticateIdentifyPayload): Observable<IAuthenticateIdentifyResponse> {
     const url = `${this.domains.getIamServiceBaseUrl()}/authenticate/identify`;
@@ -44,11 +54,13 @@ export class AuthService {
     return this.http.post<unknown>(url, payload).pipe();
   }
 
-  signIn(payload: IAuththenticateSignInPayload): Observable<any> {
+  signIn(payload: IAuththenticateSignInPayload): Observable<IAuthenticateSignInResponse> {
     const url = `${this.domains.getIamServiceBaseUrl()}/authenticate/sign-in`;
-    return this.http.post<any>(url, payload).pipe(
+    return this.http.post<IAuthenticateSignInResponse>(url, payload).pipe(
       tap((response) => {
-        this.setToken(response.data.token);
+        const { token, ...userInfo } = response.data;
+        this.setAccessToken(token);
+        this.setCurrentUserInfo(userInfo);
       })
     );
   }
@@ -60,10 +72,27 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
-    return sessionStorage.getItem(this.ACCESS_TOKEN_KEY) !== null;
+    return this.cookie.check(this.CURRENT_USER_KEY);
   }
 
-  private setToken(token: string): void {
-    sessionStorage.setItem(this.ACCESS_TOKEN_KEY, token);
+  getCurrentUserInfo(): IAuthenticateSignInResponse['data'] | undefined {
+    const currentUserInfoCookie = this.cookie.get(this.CURRENT_USER_KEY);
+    if (currentUserInfoCookie) {
+      return JSON.parse(currentUserInfoCookie);
+    } else {
+      return undefined;
+    }
+  }
+
+  private setAccessToken(token: string): void {
+    this.cookie.set(this.CURRENT_ACCESS_TOKEN_KEY, token, {
+      domain: this.domains.getRootDomain(),
+    });
+  }
+
+  private setCurrentUserInfo(userInfo: Omit<IAuthenticateSignInResponseData, 'token'>): void {
+    this.cookie.set(this.CURRENT_USER_KEY, JSON.stringify(userInfo), {
+      domain: this.domains.getRootDomain(),
+    });
   }
 }
