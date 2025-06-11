@@ -26,7 +26,7 @@
 
 ### operator
 
-> **operator**: [`FilterOperator`](/api/common/Enumeration.FilterOperator.md)
+> **operator**: [`FilterOperator`](/api/nestjs/Enumeration.FilterOperator.md)
 
 ---
 
@@ -34,7 +34,7 @@
 
 ### value?
 
-> `optional` **value**: `string` \| `number` \| `boolean` \| `number`[] \| `string`[]
+> `optional` **value**: `string` \| `number` \| `boolean` \| `string`[] \| `number`[]
 
 ---
 
@@ -42,4 +42,4 @@
 
 ### values?
 
-> `optional` **values**: `number`[] \| `string`[]
+> `optional` **values**: `string`[] \| `number`[]

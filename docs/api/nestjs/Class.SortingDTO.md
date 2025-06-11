@@ -26,4 +26,4 @@
 
 ### sortOrder?
 
-> `optional` **sortOrder**: [`SortOrder`](/api/common/Enumeration.SortOrder.md) = `SortOrder.ASC`
+> `optional` **sortOrder**: [`SortOrder`](/api/nestjs/Enumeration.SortOrder.md) = `SortOrder.ASC`

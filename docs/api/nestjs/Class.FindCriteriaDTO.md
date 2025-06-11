@@ -2,7 +2,7 @@
 
 ## Extends
 
-- [`PaginationDTO`](/api/common/Class.PaginationDTO.md)
+- [`PaginationDTO`](/api/nestjs/Class.PaginationDTO.md)
 
 ## Constructors
 
@@ -18,7 +18,7 @@
 
 #### Inherited from
 
-[`PaginationDTO`](/api/common/Class.PaginationDTO.md).[`constructor`](/api/common/Class.PaginationDTO.md#constructor)
+[`PaginationDTO`](/api/nestjs/Class.PaginationDTO.md).[`constructor`](/api/nestjs/Class.PaginationDTO.md#constructor)
 
 ## Properties
 
@@ -26,7 +26,7 @@
 
 ### filters?
 
-> `optional` **filters**: [`FilterDTO`](/api/common/Class.FilterDTO.md)[]
+> `optional` **filters**: [`FilterDTO`](/api/nestjs/Class.FilterDTO.md)[]
 
 ---
 
@@ -38,7 +38,7 @@
 
 #### Inherited from
 
-[`PaginationDTO`](/api/common/Class.PaginationDTO.md).[`limit`](/api/common/Class.PaginationDTO.md#limit)
+[`PaginationDTO`](/api/nestjs/Class.PaginationDTO.md).[`limit`](/api/nestjs/Class.PaginationDTO.md#limit)
 
 ---
 
@@ -50,7 +50,7 @@
 
 #### Inherited from
 
-[`PaginationDTO`](/api/common/Class.PaginationDTO.md).[`page`](/api/common/Class.PaginationDTO.md#page)
+[`PaginationDTO`](/api/nestjs/Class.PaginationDTO.md).[`page`](/api/nestjs/Class.PaginationDTO.md#page)
 
 ---
 
@@ -66,4 +66,4 @@
 
 ### sort?
 
-> `optional` **sort**: [`SortingDTO`](/api/common/Class.SortingDTO.md)
+> `optional` **sort**: [`SortingDTO`](/api/nestjs/Class.SortingDTO.md)

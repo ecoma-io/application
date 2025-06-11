@@ -2,7 +2,7 @@
 
 ## Extended by
 
-- [`FindCriteriaDTO`](/api/common/Class.FindCriteriaDTO.md)
+- [`FindCriteriaDTO`](/api/nestjs/Class.FindCriteriaDTO.md)
 
 ## Constructors
 

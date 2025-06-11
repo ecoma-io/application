@@ -1,24 +1,10 @@
-# @ecoma/common
+# common
 
-## Enumerations
-
-- [FilterOperator](/api/common/Enumeration.FilterOperator.md)
-- [SortOrder](/api/common/Enumeration.SortOrder.md)
+Library containing utils and types shared across the ecoma system
 
 ## Classes
 
-- [BaseSucessResponseDataDTO](/api/common/Class.BaseSucessResponseDataDTO.md)
-- [BaseSucessResponseDatasDTO](/api/common/Class.BaseSucessResponseDatasDTO.md)
-- [ErrorResponseDetail](/api/common/Class.ErrorResponseDetail.md)
-- [ErrorResponseDetailsDTO](/api/common/Class.ErrorResponseDetailsDTO.md)
-- [ErrorResponseDTO](/api/common/Class.ErrorResponseDTO.md)
-- [FilterDTO](/api/common/Class.FilterDTO.md)
-- [FindCriteriaDTO](/api/common/Class.FindCriteriaDTO.md)
 - [Guard](/api/common/Class.Guard.md)
-- [PaginationDTO](/api/common/Class.PaginationDTO.md)
-- [ResponseDTO](/api/common/Class.ResponseDTO.md)
-- [SortingDTO](/api/common/Class.SortingDTO.md)
-- [SucessResponseDto](/api/common/Class.SucessResponseDto.md)
 
 ## Interfaces
 
