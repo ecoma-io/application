@@ -1,15 +1,14 @@
-import { Body, Controller, Post, HttpCode, HttpStatus, Headers } from "@nestjs/common";
+import { Body, Controller, Post, HttpCode, HttpStatus, Headers, Req } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';
-import { AuthIdentifyDTO, AuthIdentifyResponseDTO, AuthRequestOtpDTO, AuthSignInDTO, AuthSignInResponseDto } from "./authenticate.dtos";
-import { ErrorResponseDTO, SucessResponseDto } from "@ecoma/nestjs";
-import { AuthenticateService } from "./authenticate.service";
+import { AuthIdentifyDTO, AuthIdentifyResponseDTO, AuthRequestOtpDTO, AuthSignInDTO, AuthSignInResponseDto } from './authenticate.dtos';
+import { ErrorResponseDTO, SucessResponseDto } from '@ecoma/nestjs';
+import { AuthenticateService } from './authenticate.service';
+import { Request } from 'express';
 
-@Controller("authenticate")
+@Controller('authenticate')
 @ApiTags('Authenticate')
 export class AuthenticateController {
-
-  constructor(private authService: AuthenticateService) { }
-
+  constructor(private authService: AuthenticateService) {}
 
   /**
    * @summary Get basic user identification information
@@ -25,7 +24,6 @@ export class AuthenticateController {
   public identify(@Body() authIdentifyDTO: AuthIdentifyDTO): Promise<AuthIdentifyResponseDTO> {
     return this.authService.identify(authIdentifyDTO);
   }
-
 
   /**
    * @summary Request one-time password
@@ -64,16 +62,16 @@ export class AuthenticateController {
 
   /**
    * @summary User logout
+   * @param req - The request object containing cookies
    * @returns A response object indicating the status of the logout attempt.
    */
   @Post('sign-out')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'User logout' })
-  @ApiResponse({ status: 200, description: 'Logout successful', type: SucessResponseDto })
-  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: HttpStatus.OK, description: 'Logout successful', type: SucessResponseDto })
+  @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: 'Unauthorized' })
   @ApiResponse({ status: HttpStatus.INTERNAL_SERVER_ERROR, description: 'A technical error occurred on the server side.' })
-  public logout() {
-    return this.authService.signOut();
+  public logout(@Req() req: Request) {
+    return this.authService.signOut(req);
   }
-
 }
