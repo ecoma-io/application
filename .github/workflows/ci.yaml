@@ -1,0 +1,151 @@
+name: Intergration
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+
+  pull_request_target:
+    branches:
+      - main
+      - dev
+
+  merge_group:
+    branches:
+      - main
+      - dev
+env:
+  CI: true
+  NODE_TLS_REJECT_UNAUTHORIZED: 0
+
+permissions:
+  contents: write
+  pull-requests: write
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@85e6279cec87321a52edac9c87bce653a07cf6c2
+
+      - name: Setup project
+        uses: ./.github/actions/setup-project
+
+      - name: Determine Nx Command
+        id: determine-nx-command
+        uses: ./.github/actions/determine-nx-command
+
+      - name: Release lint
+        run: ./scripts/release-lint
+
+      - name: Eslint
+        run: ${{ steps.determine-nx-command.outputs.nx-command }} -t lint
+
+  unit-test:
+    name: Unit test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@85e6279cec87321a52edac9c87bce653a07cf6c2
+
+      - name: Setup project
+        uses: ./.github/actions/setup-project
+
+      - name: Determine Nx Command
+        id: determine-nx-command
+        uses: ./.github/actions/determine-nx-command
+
+      - name: Release lint
+        run: ./scripts/release-lint
+
+      - name: Eslint
+        run: ${{ steps.determine-nx-command.outputs.nx-command }} -t test
+
+      - name: Upload dist to GitHub Actions Artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-${{ github.sha }}
+          path: dist
+          retention-days: 3
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@85e6279cec87321a52edac9c87bce653a07cf6c2
+
+      - name: Setup project
+        uses: ./.github/actions/setup-project
+
+      - name: Determine Nx Command
+        id: determine-nx-command
+        uses: ./.github/actions/determine-nx-command
+
+      - name: Setup helm
+        shell: bash
+        run: curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+
+      - name: Build, Containerize, Helm Packing
+        run: ${{ steps.determine-nx-command.outputs.nx-command }} -t build,containerize,packing
+
+      - name: Upload dist to GitHub Actions Artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-${{ github.sha }}
+          path: dist
+          retention-days: 3
+
+  e2e-test:
+    name: E2E test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@85e6279cec87321a52edac9c87bce653a07cf6c2
+
+      - name: Setup project
+        uses: ./.github/actions/setup-project
+
+      - name: Setup playwright
+        uses: ./.github/actions/setup-playwright
+
+      - name: Start infrastructure services
+        shell: bash
+        run: docker compose --profile infras up -d --wait
+
+      - name: Determine Nx Command
+        id: determine-nx-command
+        uses: ./.github/actions/determine-nx-command
+
+      - name: Test
+        run: |
+          ${{ steps.determine-nx-command.outputs.nx-command }} -t test-e2e --parallel 1
+          ./scripts/release-lint
+
+      - name: Upload dist to GitHub Actions Artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-test-${{ github.sha }}
+          path: dist
+          retention-days: 3
+
+  release:
+    name: Release
+    needs: [lint, unit-test, build, e2e-test]
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@85e6279cec87321a52edac9c87bce653a07cf6c2
+
+      - uses: googleapis/release-please-action@a02a34c4d625f9be7cb89156071d8567266a2445 # v4
+        id: release-please
+        with:
+          token: ${{ secrets.GH_BOT_TOKEN }}
+          config-file: release.config.json
+          manifest-file: release.manifest.json

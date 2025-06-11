@@ -1,0 +1,51 @@
+name: Deployment
+
+on:
+  push:
+    tags:
+      - "*@v*.*.*"
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+      packages: write
+    steps:
+      - name: Extract component name and version
+        id: extract_tag
+        run: |
+          TAG="${{ github.ref }}"
+          TAG_NAME="${TAG#refs/tags/}"
+
+          # Extract component name
+          COMPONENT_NAME=$(echo "$TAG_NAME" | cut -d'@' -f1)
+
+          # Extract version
+          VERSION=$(echo "$TAG_NAME" | cut -d'@' -f2 | sed 's/^v//')
+
+          echo "Component Name: $COMPONENT_NAME"
+          echo "Version: $VERSION"
+
+          echo "component_name=$COMPONENT_NAME" >> "$GITHUB_OUTPUT"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout
+        uses: actions/checkout@85e6279cec87321a52edac9c87bce653a07cf6c2
+
+      - name: Setup project
+        uses: ./.github/actions/setup
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772 # v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GH_BOT_TOKEN }}
+
+      - name: Publish
+        run: npx nx publish ${{ steps.extract_tag.outputs.component_name }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          INPUT_GITHUB_TOKEN: ${{ secrets.GH_BOT_TOKEN }}

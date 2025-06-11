@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../dist/out-tsc",
+    "types": ["node"]
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/generators/angularlib/files/src/lib/index.ts.template",
+    "src/generators/angularlib/files/src/index.ts.template",
+    "src/generators/angularlib/files/src/test-setup.ts.template"
+, "src/generators/angularapp/files/jest.config.ts.template", "src/generators/nestjslib/files/jest.config.ts.template", "src/generators/nestjslib/files/src/index.ts.template"  ],
+  "exclude": ["jest.config.ts", "src/**/*.spec.ts", "src/**/*.test.ts"]
+}

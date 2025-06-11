@@ -1,0 +1,68 @@
+{
+  "always-update": true,
+  "separate-pull-requests": false,
+  "group-pull-request-title-pattern": "chore: release ${branch}",
+  "tag-separator": "@",
+  "packages": {
+    "libs/angular": {
+      "package-name": "angular",
+      "release-type": "node"
+    },
+    "libs/common": {
+      "package-name": "common",
+      "release-type": "node"
+    },
+    "libs/nestjs": {
+      "package-name": "nestjs",
+      "release-type": "node"
+    },
+    "libs/test-utils": {
+      "package-name": "test-utils",
+      "release-type": "node"
+    },
+    "apps/accounts-site": {
+      "package-name": "accounts-site",
+      "release-type": "simple",
+      "extra-files": [
+        {
+          "type": "xml",
+          "path": "apps/accounts-site/chart/Chart.yaml",
+          "xpath": "//version"
+        }
+      ]
+    },
+    "apps/res-service": {
+      "package-name": "res-service",
+      "release-type": "simple",
+      "extra-files": [
+        {
+          "type": "xml",
+          "path": "apps/icons/chart/Chart.yaml",
+          "xpath": "//version"
+        }
+      ]
+    },
+    "apps/iam-service": {
+      "package-name": "iam-service",
+      "release-type": "simple",
+      "extra-files": [
+        {
+          "type": "xml",
+          "path": "apps/iam-service/chart/Chart.yaml",
+          "xpath": "//version"
+        }
+      ]
+    },
+    "apps/ndm-service": {
+      "package-name": "ndm-service",
+      "release-type": "simple",
+      "extra-files": [
+        {
+          "type": "xml",
+          "path": "apps/ndm-service/chart/Chart.yaml",
+          "xpath": "//version"
+        }
+      ]
+    }
+  }
+}

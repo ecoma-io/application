@@ -1,0 +1,29 @@
+{
+  "generators": {
+    "generator": {
+      "factory": "./src/generators/generator/generator",
+      "schema": "./src/generators/generator/schema.json",
+      "description": "generator generator"
+    },
+    "angularlib": {
+      "factory": "./src/generators/angularlib/generator",
+      "schema": "./src/generators/angularlib/schema.json",
+      "description": "angularlib generator"
+    },
+    "angularapp": {
+      "factory": "./src/generators/angularapp/generator",
+      "schema": "./src/generators/angularapp/schema.json",
+      "description": "angularapp generator"
+    },
+    "nestjslib": {
+      "factory": "./src/generators/nestjslib/generator",
+      "schema": "./src/generators/nestjslib/schema.json",
+      "description": "nestjslib generator"
+    },
+    "nestjsapp": {
+      "factory": "./src/generators/nestjsapp/generator",
+      "schema": "./src/generators/nestjsapp/schema.json",
+      "description": "nestjsapp generator"
+    }
+  }
+}
