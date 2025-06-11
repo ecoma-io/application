@@ -10,6 +10,7 @@ if (!process.env['BASE_DOMAIN']) {
 export default defineConfig({
   testDir: join(__dirname, 'src'),
   outputDir: join(workspaceRoot, 'dist', 'playwright', 'report'),
+  testMatch: 'src/specs/**/*.spec.ts',
   fullyParallel: isCI ? false : true,
   forbidOnly: isCI,
   retries: isCI ? 1 : undefined,

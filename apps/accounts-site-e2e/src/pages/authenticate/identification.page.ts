@@ -1,5 +1,5 @@
 import { Locator, Page } from '@playwright/test';
-import { ACCOUNTS_SITE_URL } from './domains';
+import { ACCOUNTS_SITE_URL } from '../../utils/domains';
 
 export class AuthenticateIdentificationPage {
   readonly page: Page;
