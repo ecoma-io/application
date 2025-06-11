@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Observable, tap } from 'rxjs';
+import { finalize, Observable, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Cookies, Domains } from '@ecoma/angular';
+import { Router } from '@angular/router';
 
 export interface IAuththenticateIdentifyPayload {
   email: string;
@@ -38,8 +39,8 @@ export interface IAuthenticateSignInResponse {
 }
 
 @Injectable({ providedIn: 'root' })
-export class AuthService {
-  constructor(private http: HttpClient, private domains: Domains, private cookie: Cookies) { }
+export class AuthenticateService {
+  constructor(private http: HttpClient, private domains: Domains, private cookie: Cookies, private router: Router) { }
 
   private readonly CURRENT_USER_KEY = 'USER';
   private readonly CURRENT_ACCESS_TOKEN_KEY = 'TOKEN';
@@ -67,8 +68,15 @@ export class AuthService {
 
   signOut(): Observable<unknown> {
     const url = `${this.domains.getIamServiceBaseUrl()}/authenticate/sign-out`;
-    sessionStorage.clear();
-    return this.http.post<unknown>(url, {}).pipe();
+    return this.http.post<unknown>(url, {}, { withCredentials: true }).pipe(
+      finalize(() => {
+        // Clear cookies and session storage regardless of success or failure
+        this.cookie.delete(this.CURRENT_USER_KEY, undefined, this.domains.getRootDomain());
+        this.cookie.delete(this.CURRENT_ACCESS_TOKEN_KEY, undefined, this.domains.getRootDomain());
+        sessionStorage.clear();
+        this.router.navigateByUrl('/authenticate/identification');
+      })
+    );
   }
 
   isAuthenticated(): boolean {
