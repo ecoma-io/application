@@ -1,0 +1,13 @@
+{
+  "name": "@ecoma/angular",
+  "version": "0.0.0",
+  "peerDependencies": {
+    "@angular/common": "19.2.0",
+    "@angular/core": "19.2.0",
+    "express": "^4.21.2",
+    "@angular/forms": "19.2.0",
+    "pino": "^9.7.0",
+    "rxjs": "~7.8.0"
+  },
+  "sideEffects": false
+}
