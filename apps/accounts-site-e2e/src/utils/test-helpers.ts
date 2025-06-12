@@ -61,7 +61,7 @@ export class TestHelpers {
         sameSite: 'None',
         expires: -1,
         httpOnly: false,
-        secure: false,
+        secure: true,
       },
       {
         name: 'USER',
@@ -76,7 +76,7 @@ export class TestHelpers {
         sameSite: 'None',
         expires: -1,
         httpOnly: false,
-        secure: false,
+        secure: true,
       },
     ]);
   }
