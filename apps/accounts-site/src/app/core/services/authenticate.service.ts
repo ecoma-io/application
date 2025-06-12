@@ -45,6 +45,7 @@ export class AuthenticateService {
 
   constructor(private http: HttpClient, private domains: Domains, private cookie: Cookies, private router: Router) {
     this.cookieDomain = '.' + this.domains.getRootDomain();
+    console.log(this.cookieDomain);
   }
 
   private readonly CURRENT_USER_KEY = 'USER';
@@ -85,7 +86,7 @@ export class AuthenticateService {
   }
 
   isAuthenticated(): boolean {
-    return this.cookie.check(this.CURRENT_USER_KEY);
+    return this.cookie.check(this.CURRENT_ACCESS_TOKEN_KEY);
   }
 
   getCurrentUserInfo(): IAuthenticateSignInResponse['data'] | undefined {
@@ -101,7 +102,9 @@ export class AuthenticateService {
     this.cookie.set(this.CURRENT_ACCESS_TOKEN_KEY, token, {
       path: '/',
       domain: this.cookieDomain,
-      expires: -1
+      secure: true,
+      sameSite: "None",
+      expires: new Date(Date.now() + 28 * 86400 * 1000)
     });
   }
 
@@ -109,7 +112,9 @@ export class AuthenticateService {
     this.cookie.set(this.CURRENT_USER_KEY, JSON.stringify(userInfo), {
       path: '/',
       domain: this.cookieDomain,
-      expires: -1
+      secure: true,
+      sameSite: "None",
+      expires: new Date(Date.now() + 28 * 86400 * 1000)
     });
   }
 }
