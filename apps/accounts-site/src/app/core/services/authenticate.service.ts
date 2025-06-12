@@ -45,7 +45,6 @@ export class AuthenticateService {
 
   constructor(private http: HttpClient, private domains: Domains, private cookie: Cookies, private router: Router) {
     this.cookieDomain = '.' + this.domains.getRootDomain();
-    console.log(this.cookieDomain);
   }
 
   private readonly CURRENT_USER_KEY = 'USER';
