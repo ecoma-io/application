@@ -94,13 +94,17 @@ export class AuthenticateService {
 
   private setAccessToken(token: string): void {
     this.cookie.set(this.CURRENT_ACCESS_TOKEN_KEY, token, {
-      domain: this.domains.getRootDomain(),
+      path: '/',
+      domain: '.'+this.domains.getRootDomain(),
+      expires: -1
     });
   }
 
   private setCurrentUserInfo(userInfo: Omit<IAuthenticateSignInResponseData, 'token'>): void {
     this.cookie.set(this.CURRENT_USER_KEY, JSON.stringify(userInfo), {
-      domain: this.domains.getRootDomain(),
+      path: '/',
+      domain: '.'+this.domains.getRootDomain(),
+      expires: -1
     });
   }
 }
