@@ -1,4 +1,7 @@
-import { ObjectId } from 'mongoose';
+import { Page } from '@playwright/test';
+import mongoose, { ObjectId } from 'mongoose';
+import { TestDataGenerator } from './test-data-generator';
+import { v7 as uuidv7 } from 'uuid';
 
 export class TestHelpers {
   static async createUser(mongoConnection: any, userData: any) {
@@ -7,6 +10,10 @@ export class TestHelpers {
 
   static async createOtp(mongoConnection: any, otpData: any) {
     return await mongoConnection.collection('otps').insertOne(otpData);
+  }
+
+  static async createSesssion(mongoConnection: any, sessionData: any) {
+    return await mongoConnection.collection('seesions').insertOne(sessionData);
   }
 
   static async updateOtpExpiry(mongoConnection: any, otpId: ObjectId, expiryDate: Date) {
@@ -25,8 +32,52 @@ export class TestHelpers {
     return await mongoConnection.db.collection('otps').findOne({ userId, isUsed: false });
   }
 
-  static async clearCollections(mongoConnection: any) {
-    await mongoConnection.db.collection('users').deleteMany({});
-    await mongoConnection.db.collection('otps').deleteMany({});
+  static async setupAuth(page: Page, iamMongoConnection: mongoose.Connection) {
+    // Generate test user data
+    const testUser = TestDataGenerator.generateUserData();
+
+    const userId = (await TestHelpers.createUser(iamMongoConnection, testUser)).insertedId;
+
+    // Create session
+    const token = uuidv7();
+    const expiresAt = new Date(Date.now() + 6 * 60 * 60 * 1000); // 6 hours
+    await iamMongoConnection.collection('sessions').insertOne({
+      userId,
+      token,
+      expiresAt,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
+
+    // Set cookies
+    const baseDomain = '.' + process.env['BASE_DOMAIN'];
+
+    await page.context().addCookies([
+      {
+        name: 'TOKEN',
+        value: token,
+        domain: baseDomain,
+        path: '/',
+        sameSite: 'Lax',
+        expires: -1,
+        httpOnly: false,
+        secure: false,
+      },
+      {
+        name: 'USER',
+        value: JSON.stringify({
+          id: userId.toString(),
+          email: testUser.email,
+          firstName: testUser.firstName,
+          lastName: testUser.lastName,
+        }),
+        domain: baseDomain,
+        path: '/',
+        sameSite: 'Lax',
+        expires: -1,
+        httpOnly: false,
+        secure: false,
+      },
+    ]);
   }
 }
