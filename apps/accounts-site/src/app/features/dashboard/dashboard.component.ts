@@ -11,13 +11,13 @@ import { AuthenticateService } from '../../core/services/authenticate.service';
   template: `
     <div class="min-h-screen bg-base-200">
       <!-- Fixed Header -->
-      <div class="fixed top-0 left-[280px] right-0 bg-base-100 z-10">
+      <div class="fixed top-0 left-[280px] right-0 bg-base-100 z-10" data-test-id="dashboard-header">
         <div class="navbar min-h-[70px] px-6">
           <div class="flex-1">
-            <div class="text-sm breadcrumbs">
+            <div class="text-sm breadcrumbs" data-test-id="breadcrumbs">
               <ul>
-                <li>Home</li>
-                <li>Account</li>
+                <li data-test-id="breadcrumb-home">Home</li>
+                <li data-test-id="breadcrumb-account">Account</li>
               </ul>
             </div>
           </div>
@@ -40,18 +40,18 @@ import { AuthenticateService } from '../../core/services/authenticate.service';
 
             <!-- User Menu -->
             <div class="dropdown dropdown-end">
-              <div class="flex items-center gap-3" tabindex="0" role="button">
+              <div class="flex items-center gap-3" tabindex="0" role="button" data-test-id="user-menu-button">
                 <div class="avatar placeholder">
                   <div class="bg-neutral text-neutral-content rounded-xl w-10">
                     <span>{{ getUserInitials() }}</span>
                   </div>
                 </div>
               </div>
-              <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow-lg bg-base-100 rounded-box w-52 mt-2">
-                <li><a routerLink="profile">Profile</a></li>
-                <li><a routerLink="settings">Settings</a></li>
+              <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow-lg bg-base-100 rounded-box w-52 mt-2" data-test-id="user-menu">
+                <li><a routerLink="profile" data-test-id="menu-profile">Profile</a></li>
+                <li><a routerLink="settings" data-test-id="menu-settings">Settings</a></li>
                 <li><hr class="my-1" /></li>
-                <li><button (click)="logout()">Sign Out</button></li>
+                <li><button (click)="logout()" data-test-id="menu-signout">Sign Out</button></li>
               </ul>
             </div>
           </div>
@@ -63,7 +63,7 @@ import { AuthenticateService } from '../../core/services/authenticate.service';
       </div>
 
       <!-- Fixed Sidebar -->
-      <div class="fixed top-0 left-0 h-screen w-[280px] bg-base-100 z-20 flex flex-col">
+      <div class="fixed top-0 left-0 h-screen w-[280px] bg-base-100 z-20 flex flex-col" data-test-id="dashboard-sidebar">
         <!-- Logo -->
         <div class="p-6">
           <div class="flex items-center gap-1">
@@ -76,19 +76,19 @@ import { AuthenticateService } from '../../core/services/authenticate.service';
         <nav class="flex-1 px-4 py-6">
           <ul class="menu menu-lg gap-2">
             <li>
-              <a routerLink="profile" routerLinkActive="active [&>*]:fill-secondary" class="flex items-center gap-4 min-h-8 rounded-xl text-base">
+              <a routerLink="profile" routerLinkActive="active [&>*]:fill-secondary" class="flex items-center gap-4 min-h-8 rounded-xl text-base" data-test-id="nav-profile">
                 <nge-svg-injector [path]="iconUrl('/duotone/id-card.svg')" class="w-5 h-5 fill-primary"></nge-svg-injector>
                 Profile
               </a>
             </li>
             <li>
-              <a routerLink="sessions" routerLinkActive="active [&>*]:fill-secondary" class="flex items-center gap-4 min-h-8 rounded-xl text-base">
+              <a routerLink="sessions" routerLinkActive="active [&>*]:fill-secondary" class="flex items-center gap-4 min-h-8 rounded-xl text-base" data-test-id="nav-sessions">
                 <nge-svg-injector [path]="iconUrl('/duotone/chalkboard-user.svg')" class="w-5 h-5 fill-primary/50"></nge-svg-injector>
                 Sessions
               </a>
             </li>
             <li>
-              <a routerLink="settings" routerLinkActive="active [&>*]:fill-secondary" class="flex items-center gap-4 min-h-8 rounded-xl text-base">
+              <a routerLink="settings" routerLinkActive="active [&>*]:fill-secondary" class="flex items-center gap-4 min-h-8 rounded-xl text-base" data-test-id="nav-settings">
                 <nge-svg-injector [path]="iconUrl('/duotone/gears.svg')" class="w-5 h-5 fill-primary"></nge-svg-injector>
                 Settings
               </a>
@@ -99,7 +99,7 @@ import { AuthenticateService } from '../../core/services/authenticate.service';
 
       <!-- Main Content -->
       <div class="pl-[280px] pt-[70px]">
-        <div class="p-6">
+        <div class="p-6" data-test-id="main-content">
           <router-outlet></router-outlet>
         </div>
       </div>
