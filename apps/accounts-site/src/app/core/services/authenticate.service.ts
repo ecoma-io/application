@@ -40,7 +40,12 @@ export interface IAuthenticateSignInResponse {
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticateService {
-  constructor(private http: HttpClient, private domains: Domains, private cookie: Cookies, private router: Router) { }
+
+  private cookieDomain: string;
+
+  constructor(private http: HttpClient, private domains: Domains, private cookie: Cookies, private router: Router) {
+    this.cookieDomain = '.' + this.domains.getRootDomain();
+  }
 
   private readonly CURRENT_USER_KEY = 'USER';
   private readonly CURRENT_ACCESS_TOKEN_KEY = 'TOKEN';
@@ -71,8 +76,8 @@ export class AuthenticateService {
     return this.http.post<unknown>(url, {}, { withCredentials: true }).pipe(
       finalize(() => {
         // Clear cookies and session storage regardless of success or failure
-        this.cookie.delete(this.CURRENT_USER_KEY, undefined, this.domains.getRootDomain());
-        this.cookie.delete(this.CURRENT_ACCESS_TOKEN_KEY, undefined, this.domains.getRootDomain());
+        this.cookie.delete(this.CURRENT_USER_KEY, '/', this.cookieDomain);
+        this.cookie.delete(this.CURRENT_ACCESS_TOKEN_KEY, '/', this.cookieDomain);
         sessionStorage.clear();
         this.router.navigateByUrl('/authenticate/identification');
       })
@@ -95,7 +100,7 @@ export class AuthenticateService {
   private setAccessToken(token: string): void {
     this.cookie.set(this.CURRENT_ACCESS_TOKEN_KEY, token, {
       path: '/',
-      domain: '.'+this.domains.getRootDomain(),
+      domain: this.cookieDomain,
       expires: -1
     });
   }
@@ -103,7 +108,7 @@ export class AuthenticateService {
   private setCurrentUserInfo(userInfo: Omit<IAuthenticateSignInResponseData, 'token'>): void {
     this.cookie.set(this.CURRENT_USER_KEY, JSON.stringify(userInfo), {
       path: '/',
-      domain: '.'+this.domains.getRootDomain(),
+      domain: this.cookieDomain,
       expires: -1
     });
   }
