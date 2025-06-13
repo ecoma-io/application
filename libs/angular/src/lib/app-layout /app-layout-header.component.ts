@@ -75,9 +75,9 @@ import { AppAuthenticateService } from './app-authenticate.service';
                   <nge-svg-injector [path]="iconUrl('/regular/camera.svg')" class="fill-base-content/50 hover:fill-base-content/80" />
                 </div>
               </div>
-              <div class="font-medium text-base-content">Hi {{ firstName }}{{ lastName ? ' ' + lastName : '' }}!</div>
+              <div class="font-medium text-base-content text-lg">Hi {{ firstName }}{{ lastName ? ' ' + lastName : '' }}!</div>
               <div class="text-xs text-base-content">{{ email }}</div>
-              <div class="join join-horizontal w-full">
+              <div class="join join-horizontal w-full mt-8">
                 <a class="btn join-item flex-1" routerLink="/my-account/profile">Profile</a>
                 <a class="btn join-item flex-1" routerLink="/my-account/logout">Sign Out</a>
               </div>
