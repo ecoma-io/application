@@ -19,7 +19,7 @@ export const myAccountsRoutes: Routes = [
     loadComponent: () => import('./settings/settings.component').then((m) => m.SettingsComponent),
   },
   {
-    path: 'logout',
-    loadComponent: () => import('./logout/logout.component').then((m) => m.LogoutComponent),
+    path: 'sign-out',
+    loadComponent: () => import('./sign-out/sign-out.component').then((m) => m.SignOutComponent),
   },
 ];
