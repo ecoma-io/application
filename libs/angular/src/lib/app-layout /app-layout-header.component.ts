@@ -78,8 +78,8 @@ import { AppAuthenticateService } from './app-authenticate.service';
               <div class="font-medium text-base-content text-lg">Hi {{ firstName }}{{ lastName ? ' ' + lastName : '' }}!</div>
               <div class="text-xs text-base-content">{{ email }}</div>
               <div class="join join-horizontal w-full mt-8">
-                <a class="btn join-item flex-1" routerLink="/my-account/profile">Profile</a>
-                <a class="btn join-item flex-1" routerLink="/my-account/logout">Sign Out</a>
+                <button class="btn join-item flex-1" (click)="gotoMyAccountProfile()">Profile</button>
+                <button class="btn join-item flex-1" (click)="gotoMyAccountLogout()" >Sign Out</button>
               </div>
             </div>
           </div>
@@ -89,6 +89,7 @@ import { AppAuthenticateService } from './app-authenticate.service';
   `,
 })
 export class AppLayoutHeaderComponent {
+
   iconsBaseUrl: string;
   firstName?: string;
   lastName?: string;
@@ -113,4 +114,13 @@ export class AppLayoutHeaderComponent {
   iconUrl(path: string): string {
     return this.iconsBaseUrl + path;
   }
+
+  gotoMyAccountLogout() {
+    window.location.href = this.domain.getAccountsSiteBaseUrl() + '/my-account/sign-out';
+  }
+
+  gotoMyAccountProfile() {
+    window.location.href = this.domain.getAccountsSiteBaseUrl() + '/my-account/profile';
+  }
+
 }
