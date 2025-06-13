@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { SvgInjector } from '../svg-injector';
 import { Domains } from '../domains';
 import { AppLayoutService } from './app-layout.service';
+import { AppAuthenticateService } from './app-authenticate.service';
 
 @Component({
   selector: 'nge-app-layout-header',
@@ -16,7 +17,6 @@ import { AppLayoutService } from './app-layout.service';
     <div class="flex items-center justify-between h-full px-3">
       <!-- Left section -->
       <div class="flex items-center gap-2 lg:w-64">
-
         <!-- Mobile menu button -->
         <button (click)="layoutService.toggleSidebar()" class="lg:hidden flex justify-center items-center btn btn-ghost btn-circle btn-sm">
           <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
@@ -42,10 +42,8 @@ import { AppLayoutService } from './app-layout.service';
         <nge-svg-injector [path]="iconUrl('/brands/ecoma-wordmark.svg')" class="h-5" />
       </div>
 
-
       <!-- Right section -->
       <div class="flex items-center lg:gap-3">
-
         <!-- Applications -->
         <div class="dropdown dropdown-end">
           <button class="btn btn-circle btn-ghost">
@@ -77,7 +75,7 @@ import { AppLayoutService } from './app-layout.service';
                   <nge-svg-injector [path]="iconUrl('/regular/camera.svg')" class="fill-base-content/50 hover:fill-base-content/80" />
                 </div>
               </div>
-              <div class="font-medium text-base-content">Hi {{ firstName }}{{ lastName?' '+lastName:'' }}!</div>
+              <div class="font-medium text-base-content">Hi {{ firstName }}{{ lastName ? ' ' + lastName : '' }}!</div>
               <div class="text-xs text-base-content">{{ email }}</div>
               <div class="join join-horizontal w-full">
                 <a class="btn join-item flex-1" routerLink="/my-account/profile">Profile</a>
@@ -88,7 +86,7 @@ import { AppLayoutService } from './app-layout.service';
         </div>
       </div>
     </div>
-  `
+  `,
 })
 export class AppLayoutHeaderComponent {
   iconsBaseUrl: string;
@@ -96,18 +94,15 @@ export class AppLayoutHeaderComponent {
   lastName?: string;
   email?: string;
 
-  constructor(
-    private domain: Domains,
-    protected layoutService: AppLayoutService,
-  ) {
-
+  constructor(private domain: Domains, protected layoutService: AppLayoutService, private appAuthenticateService: AppAuthenticateService) {
     // Lấy đường dẫn cơ sở cho các biểu tượng từ domain service
     this.iconsBaseUrl = this.domain.getIconsBaseUrl();
 
-    // const userInfo = this.authenticateService.getCurrentUserInfo();
-    // this.firstName = userInfo?.firstName;
-    // this.lastName = userInfo?.lastName;
-    // this.email = userInfo?.email;
+    this.appAuthenticateService.getUserInfo().subscribe((userInfo) => {
+      this.firstName = userInfo?.firstName;
+      this.lastName = userInfo?.lastName;
+      this.email = userInfo?.email;
+    });
   }
 
   /**
@@ -118,6 +113,4 @@ export class AppLayoutHeaderComponent {
   iconUrl(path: string): string {
     return this.iconsBaseUrl + path;
   }
-
-
 }

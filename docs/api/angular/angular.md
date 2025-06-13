@@ -2,6 +2,7 @@
 
 ## Classes
 
+- [AppAuthenticateService](/api/angular/Class.AppAuthenticateService.md)
 - [AppLayoutComponent](/api/angular/Class.AppLayoutComponent.md)
 - [AppLayoutService](/api/angular/Class.AppLayoutService.md)
 - [Cookies](/api/angular/Class.Cookies.md)
@@ -14,6 +15,7 @@
 ## Interfaces
 
 - [IAppSidebarNavItem](/api/angular/Interface.IAppSidebarNavItem.md)
+- [ICurrentUserInfo](/api/angular/Interface.ICurrentUserInfo.md)
 
 ## Functions
 
