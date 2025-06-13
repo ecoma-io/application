@@ -31,10 +31,7 @@ import { AuthenticateService } from '../../core/services/authenticate.service';
           <!-- Left section -->
           <div class="flex items-center gap-2 lg:w-64">
             <!-- Mobile menu button -->
-            <button
-              (click)="layoutService.toggleSidebar()"
-              class="lg:hidden p-2 rounded-lg hover:bg-dark-700 text-dark-300 hover:text-white transition-colors focus-ring"
-            >
+            <button (click)="layoutService.toggleSidebar()" class="lg:hidden flex justify-center items-center btn btn-ghost btn-circle btn-sm">
               <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
                 <path
                   fill-rule="evenodd"
@@ -45,10 +42,7 @@ import { AuthenticateService } from '../../core/services/authenticate.service';
             </button>
 
             <!-- Desktop collapse button -->
-            <button
-              (click)="layoutService.toggleCollapse()"
-              class="hidden lg:block p-2 rounded-lg hover:bg-dark-700 text-dark-300 hover:text-white transition-colors focus-ring"
-            >
+            <button (click)="layoutService.toggleCollapse()" class="hidden lg:flex justify-center items-center btn btn-ghost btn-circle btn-sm">
               <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                 <path
                   fill-rule="evenodd"
@@ -61,7 +55,7 @@ import { AuthenticateService } from '../../core/services/authenticate.service';
             <nge-svg-injector [path]="iconUrl('/brands/ecoma-wordmark.svg')" class="h-5 hidden lg:block" />
           </div>
 
-          <nge-svg-injector [path]="iconUrl('/brands/ecoma-wordmark.svg')" class="h-5 lg:hidden" />
+          <nge-svg-injector [path]="iconUrl('/brands/ecoma-wordmark.svg')" class="h-[1.1rem] lg:hidden" />
 
           <!-- Right section -->
           <div class="flex items-center gap-3">
@@ -100,14 +94,14 @@ import { AuthenticateService } from '../../core/services/authenticate.service';
                       class="w-28 h-28 rounded-full object-cover"
                     />
                     <div class="bg-base-300/80 hover:bg-base-200/80 w-8 h-8 absolute bottom-0 right-0 rounded-full p-1.5">
-                      <nge-svg-injector [path]="iconUrl('/regular/camera.svg')"  class="fill-base-content/50 hover:fill-base-content/80" />
+                      <nge-svg-injector [path]="iconUrl('/regular/camera.svg')" class="fill-base-content/50 hover:fill-base-content/80" />
                     </div>
                   </div>
                   <div class="font-medium text-white">{{ firstName }} {{ lastName }}</div>
-                  <div class="text-xs text-dark-400">{{email}}</div>
+                  <div class="text-xs text-dark-400">{{ email }}</div>
                   <div class="join join-horizontal w-full">
                     <a class="btn join-item flex-1" routerLink="/my-account/profile">Profile</a>
-                    <a class="btn join-item flex-1"  routerLink="/my-account/logout" >Sign Out</a>
+                    <a class="btn join-item flex-1" routerLink="/my-account/logout">Sign Out</a>
                   </div>
                 </div>
               </div>
@@ -248,7 +242,7 @@ import { AuthenticateService } from '../../core/services/authenticate.service';
         </aside>
 
         <!-- Main Content - Takes remaining space -->
-        <main class="flex-1 overflow-y-auto bg-base-200 min-w-0 h-[calc(100vh-4rem)] lg:rounded-tl-2xl" data-test-id="main-content">
+        <main class="flex-1 overflow-y-auto bg-base-200 min-w-0 h-[calc(100vh-4rem)] lg:rounded-tl-2xl px-8" data-test-id="main-content">
           <router-outlet></router-outlet>
         </main>
       </div>
@@ -268,7 +262,6 @@ import { AuthenticateService } from '../../core/services/authenticate.service';
   ],
 })
 export class MyAccountComponent implements OnInit {
-
   primaryNavItems = navigationItems;
 
   isHovered = false;
@@ -349,6 +342,4 @@ export class MyAccountComponent implements OnInit {
     }
     this.layoutService.toggleMenu(menuId);
   }
-
-
 }
