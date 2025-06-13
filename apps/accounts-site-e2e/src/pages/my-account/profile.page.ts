@@ -45,7 +45,7 @@ export class ProfilePage {
   }
 
   async goto() {
-    await this.page.goto(ACCOUNTS_SITE_URL + '/dashboard/profile');
+    await this.page.goto(ACCOUNTS_SITE_URL + '/my-account/profile');
   }
 
   async updateProfile(name: string, email: string) {

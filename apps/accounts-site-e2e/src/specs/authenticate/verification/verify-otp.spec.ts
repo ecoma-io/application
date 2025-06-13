@@ -89,8 +89,8 @@ test.describe('Verify OTP Functionality', { tag: ['@accounts-site', '@authentica
     await verificationPageWithoutContinue.fillOTP(otp!);
     await verificationPageWithoutContinue.clickVerify();
 
-    await page.waitForURL(ACCOUNTS_SITE_URL + '/dashboard/profile');
-    expect(page.url()).toBe(ACCOUNTS_SITE_URL + '/dashboard/profile');
+    await page.waitForURL(ACCOUNTS_SITE_URL + '/my-account/profile');
+    expect(page.url()).toBe(ACCOUNTS_SITE_URL + '/my-account/profile');
 
     const authEmailAfterVerification = await page.evaluate(() => sessionStorage.getItem('current-user-email'));
     expect(authEmailAfterVerification).toBeNull();

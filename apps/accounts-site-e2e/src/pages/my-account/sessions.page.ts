@@ -51,7 +51,7 @@ export class SessionsPage {
   }
 
   async goto() {
-    await this.page.goto(ACCOUNTS_SITE_URL + '/dashboard/sessions');
+    await this.page.goto(ACCOUNTS_SITE_URL + '/my-account/sessions');
   }
 
   async getSessionCount() {

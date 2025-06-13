@@ -67,7 +67,7 @@ export class SettingsPage {
   }
 
   async goto() {
-    await this.page.goto(ACCOUNTS_SITE_URL + '/dashboard/settings');
+    await this.page.goto(ACCOUNTS_SITE_URL + '/my-account/settings');
   }
 
   async updateAccountSettings(language: string, timezone: string) {

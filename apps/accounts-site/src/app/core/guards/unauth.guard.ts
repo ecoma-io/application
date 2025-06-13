@@ -3,13 +3,10 @@ import { CanActivate, GuardResult, MaybeAsync, Router } from '@angular/router';
 import { AuthenticateService } from '../services/authenticate.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UnAuthGuard implements CanActivate {
-  constructor(
-    private authService: AuthenticateService,
-    private router: Router
-  ) { }
+  constructor(private authService: AuthenticateService, private router: Router) {}
 
   canActivate(): MaybeAsync<GuardResult> {
     if (!this.authService.isAuthenticated()) {
@@ -22,7 +19,7 @@ export class UnAuthGuard implements CanActivate {
       window.location.href = continueUrl;
       return false;
     } else {
-      return this.router.parseUrl('/dashboard/profile');
+      return this.router.parseUrl('/my-account/profile');
     }
   }
 }

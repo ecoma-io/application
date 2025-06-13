@@ -19,15 +19,15 @@ import { HttpErrorResponse } from '@angular/common/http';
     <div class="text-center space-y-2">
       <div class="avatar placeholder">
         <div class="bg-primary/10 text-primary rounded-full w-24">
-        <nge-svg-injector [path]="iconUrl('/brands/ecoma.svg')" class="p-4" />
+          <nge-svg-injector [path]="iconUrl('/brands/ecoma.svg')" class="p-4" />
         </div>
       </div>
       <h2 class="text-2xl font-bold" data-test-id="verification-title">Identity verification</h2>
       <p class="text-base-content/70" data-test-id="verification-intro">
-        Hi {{ firstName }}{{ lastName?' '+lastName:''}}! please confirm it is you
+        Hi {{ firstName }}{{ lastName ? ' ' + lastName : '' }}! please confirm it is you
       </p>
       <a routerLink="/authenticate/identification" class="flex justify-center text-primary" data-test-id="verification-email-link">
-        {{email}}
+        {{ email }}
       </a>
     </div>
 
@@ -37,7 +37,7 @@ import { HttpErrorResponse } from '@angular/common/http';
         <span>{{ errorMessage }}</span>
       </div>
 
-      <div class="flex flex-col justify-center items-center" >
+      <div class="flex flex-col justify-center items-center">
         <input
           formControlName="otp"
           type="number"
@@ -47,30 +47,36 @@ import { HttpErrorResponse } from '@angular/common/http';
           class="input input-bordered w-full max-w-64 text-center text-xl font-bold p-0"
           data-test-id="verification-otp-input"
         />
-        <nge-form-error [control]="otpForm.get('otp')" data-test-id="verification-otp-error"/>
+        <nge-form-error [control]="otpForm.get('otp')" data-test-id="verification-otp-error" />
       </div>
 
       <div class="flex flex-col items-center space-y-4">
-        <button type="submit" class="btn btn-accent w-full" #verifyButton [disabled]="!otpForm.valid || isLoading" data-test-id="verification-verify-button">
+        <button
+          type="submit"
+          class="btn btn-accent w-full"
+          #verifyButton
+          [disabled]="!otpForm.valid || isLoading"
+          data-test-id="verification-verify-button"
+        >
           <span class="loading loading-spinner" *ngIf="isLoading" data-test-id="verification-verify-spinner"></span>
           {{ isLoading ? 'Verifying...' : 'Verify Code' }}
         </button>
-        <button type="button" class="btn btn-link btn-sm px-2 normal-case" [disabled]="!canResend" (click)="requestOTP()" data-test-id="verification-resend-button">
-            <nge-svg-injector
-              [path]="iconUrl('/duotone/arrow-down-to-square.svg')"
-              class="w-4 h-4 fill-primary/50"
-              [class.animate-spin]="isResending"
-            >
-            </nge-svg-injector>
-            Get OTP <span *ngIf="resendTimer > 0" data-test-id="verification-resend-timer">({{ resendTimer }}s)</span>
+        <button
+          type="button"
+          class="btn btn-link btn-sm px-2 normal-case"
+          [disabled]="!canResend"
+          (click)="requestOTP()"
+          data-test-id="verification-resend-button"
+        >
+          <nge-svg-injector [path]="iconUrl('/duotone/arrow-down-to-square.svg')" class="w-4 h-4 fill-primary/50" [class.animate-spin]="isResending">
+          </nge-svg-injector>
+          Get OTP <span *ngIf="resendTimer > 0" data-test-id="verification-resend-timer">({{ resendTimer }}s)</span>
         </button>
       </div>
-
     </form>
   `,
 })
 export class VerificationComponent implements OnInit, OnDestroy {
-
   readonly GET_OTP_COLD_DOWN_SECONDS = 10;
 
   iconsBaseUrl: string;
@@ -84,7 +90,6 @@ export class VerificationComponent implements OnInit, OnDestroy {
   firstName = '';
   lastName?: string;
 
-
   private timerInterval: any;
 
   constructor(
@@ -97,7 +102,10 @@ export class VerificationComponent implements OnInit, OnDestroy {
   ) {
     this.iconsBaseUrl = this.domain.getIconsBaseUrl();
     this.otpForm = this.fb.group({
-      otp: ['', [MessageableValidators.required("Please enter OTP code"), MessageableValidators.pattern(/^[0-9]{6}$/, 'Please enter valid OTP code')]],
+      otp: [
+        '',
+        [MessageableValidators.required('Please enter OTP code'), MessageableValidators.pattern(/^[0-9]{6}$/, 'Please enter valid OTP code')],
+      ],
     });
   }
 
@@ -161,9 +169,9 @@ export class VerificationComponent implements OnInit, OnDestroy {
             for (const field of Object.keys(error.error?.details)) {
               this.otpForm.get(field)?.setErrors({
                 server: {
-                  message: error.error?.details[field]
-                }
-              })
+                  message: error.error?.details[field],
+                },
+              });
             }
             this.otpForm.updateValueAndValidity();
           }
@@ -182,8 +190,8 @@ export class VerificationComponent implements OnInit, OnDestroy {
         email: this.email,
         otp,
         firstName: this.firstName,
-        lastName: this.lastName
-      }
+        lastName: this.lastName,
+      };
       this.authService.signIn(payload).subscribe({
         next: () => {
           sessionStorage.removeItem('current-user-email');
@@ -194,7 +202,7 @@ export class VerificationComponent implements OnInit, OnDestroy {
           if (continueUrl) {
             window.location.href = continueUrl;
           } else {
-            this.router.navigate(['/dashboard']);
+            this.router.navigate(['/my-account']);
           }
         },
         error: (error) => {
@@ -204,9 +212,9 @@ export class VerificationComponent implements OnInit, OnDestroy {
             for (const field of Object.keys(error.error?.details)) {
               this.otpForm.get(field)?.setErrors({
                 server: {
-                  message: error.error?.details[field]
-                }
-              })
+                  message: error.error?.details[field],
+                },
+              });
             }
             this.otpForm.updateValueAndValidity();
           }
