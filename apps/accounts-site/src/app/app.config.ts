@@ -2,6 +2,8 @@ import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { appRoutes } from './app.routes';
 import { provideHttpClient } from '@angular/common/http';
+import { provideSidebarNavItems } from '@ecoma/angular';
+import { appNavItems } from './app.nav-items';
 
 /**
  * Cấu hình chính của ứng dụng Angular.
@@ -14,5 +16,6 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(appRoutes),
     provideHttpClient(),
+    provideSidebarNavItems(appNavItems),
   ],
 };
