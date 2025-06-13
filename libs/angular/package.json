@@ -7,7 +7,8 @@
     "express": "^4.21.2",
     "@angular/forms": "19.2.0",
     "pino": "^9.7.0",
-    "rxjs": "~7.8.0"
+    "rxjs": "~7.8.0",
+    "@angular/router": "19.2.0"
   },
   "sideEffects": false
 }
