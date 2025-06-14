@@ -43,34 +43,39 @@ import { AppAuthenticateService } from './app-authenticate.service';
       </div>
 
       <!-- Right section -->
-      <div class="flex items-center lg:gap-3">
+      <div class="flex items-center lg:gap-1">
         <!-- Applications -->
         <div class="dropdown dropdown-end">
           <button class="btn btn-circle btn-ghost">
-            <nge-svg-injector [path]="iconUrl('/duotone/browser.svg')" class="h-6 fill-base-content" />
+            <nge-svg-injector [path]="iconUrl('/duotone/grid-2.svg')" class="h-5 fill-base-content" />
           </button>
-          <div class="dropdown-content shadow-lg bg-base-100 rounded-box w-80 max-w-screen-sm mt-2 p-2 z-[1]">
-            <div class="flex flex-col items-center w-full p-2 rounded-lg transition-all"></div>
+          <div class="dropdown-content shadow-lg bg-base-200 rounded-box w-80 mt-4 p-2 z-[1]">
+            <div class="flex flex-wrap">
+              <a [href]="accountSiteUrl" class="w-1/3 py-3 text-center rounded-lg hover:bg-primary/20 ">
+                <div class="flex flex-col items-center gap-2">
+                  <div class="w-14 h-14 p-4 bg-primary rounded-full">
+                    <nge-svg-injector [path]="iconUrl('/duotone/user.svg')" class="fill-white" />
+                  </div>
+                  <span class="text-sm">Account</span>
+                </div>
+              </a>
+            </div>
           </div>
         </div>
 
         <!-- User menu -->
         <div class="dropdown dropdown-end">
-          <button class="btn btn-circle btn-ghost p-1.5">
-            <img
-              src="https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=40&h=40&fit=crop&crop=face"
-              alt="User avatar"
-              class="rounded-full object-cover"
-            />
+          <button class="btn btn-circle btn-ghost p-1">
+            <div class="flex justify-center items-center bg-primary rounded-full w-full h-full">
+              <nge-svg-injector [path]="iconUrl('/duotone/user.svg')" class="fill-white block w-1/2" />
+            </div>
           </button>
-          <div class="dropdown-content shadow-lg bg-base-100 rounded-box w-80 mt-2 p-2 z-[1]">
+          <div class="dropdown-content shadow-lg bg-base-200 rounded-box w-80 mt-4 p-2 z-[1]">
             <div class="flex flex-col items-center w-full p-2 rounded-lg transition-all">
               <div class="relative">
-                <img
-                  src="https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=40&h=40&fit=crop&crop=face"
-                  alt="User avatar"
-                  class="w-20 h-20 rounded-full object-cover"
-                />
+                <div class="w-20 h-20 p-4 bg-primary rounded-full">
+                  <nge-svg-injector [path]="iconUrl('/duotone/user.svg')" class="fill-white" />
+                </div>
                 <div class="bg-base-300/80 hover:bg-base-200/80 w-8 h-8 absolute bottom-0 right-0 rounded-full p-1.5">
                   <nge-svg-injector [path]="iconUrl('/regular/camera.svg')" class="fill-base-content/50 hover:fill-base-content/80" />
                 </div>
@@ -79,7 +84,7 @@ import { AppAuthenticateService } from './app-authenticate.service';
               <div class="text-xs text-base-content">{{ email }}</div>
               <div class="join join-horizontal w-full mt-8">
                 <button class="btn join-item flex-1" (click)="gotoMyAccountProfile()">Profile</button>
-                <button class="btn join-item flex-1" (click)="gotoMyAccountLogout()" >Sign Out</button>
+                <button class="btn join-item flex-1" (click)="gotoMyAccountLogout()">Sign Out</button>
               </div>
             </div>
           </div>
@@ -89,8 +94,8 @@ import { AppAuthenticateService } from './app-authenticate.service';
   `,
 })
 export class AppLayoutHeaderComponent {
-
   iconsBaseUrl: string;
+  accountSiteUrl: string;
   firstName?: string;
   lastName?: string;
   email?: string;
@@ -98,6 +103,7 @@ export class AppLayoutHeaderComponent {
   constructor(private domain: Domains, protected layoutService: AppLayoutService, private appAuthenticateService: AppAuthenticateService) {
     // Lấy đường dẫn cơ sở cho các biểu tượng từ domain service
     this.iconsBaseUrl = this.domain.getIconsBaseUrl();
+    this.accountSiteUrl = this.domain.getAccountsSiteBaseUrl();
 
     this.appAuthenticateService.getUserInfo().subscribe((userInfo) => {
       this.firstName = userInfo?.firstName;
@@ -122,5 +128,4 @@ export class AppLayoutHeaderComponent {
   gotoMyAccountProfile() {
     window.location.href = this.domain.getAccountsSiteBaseUrl() + '/my-account/profile';
   }
-
 }
