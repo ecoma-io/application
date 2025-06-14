@@ -24,15 +24,15 @@ import { AppNavComponent } from './app-nav.component';
     ></div>
 
     <!-- Main Container - Full viewport height -->
-    <div class="min-h-screen bg-base-200 flex flex-col">
+    <div class="min-h-screen bg-base-300 flex flex-col">
       <!-- Header - Fixed height, full width -->
-      <nge-app-layout-header class="h-16 bg-base-200 flex-shrink-0 relative z-30" data-test-id="header" />
+      <nge-app-layout-header class="h-16 bg-base-300 flex-shrink-0 relative z-30" data-test-id="header" />
 
       <!-- Content Area - Flex container for sidebar and main content -->
       <div class="flex flex-1 relative h-[calc(100vh-4rem)]">
         <!-- Sidebar - Responsive positioning -->
         <aside
-          class="bg-base-200 flex flex-col transition-all duration-300 ease-in-out overflow-y-auto flex-shrink-0 h-screen lg:h-[calc(100vh-4rem)]"
+          class="bg-base-300 flex flex-col transition-all duration-300 ease-in-out overflow-y-auto flex-shrink-0 h-screen lg:h-[calc(100vh-4rem)]"
           [ngClass]="{
             'lg:w-64': !layoutService.sidebarCollapsed() || isHovered,
             'lg:w-16': layoutService.sidebarCollapsed() && !isHovered,
@@ -58,7 +58,7 @@ import { AppNavComponent } from './app-nav.component';
         </aside>
 
         <!-- Main Content - Takes remaining space -->
-        <main class="flex-1 overflow-y-auto bg-base-100 min-w-0 h-[calc(100vh-4rem)] lg:rounded-tl-2xl px-8" data-test-id="main-content">
+        <main class="flex-1 overflow-y-auto bg-base-200 min-w-0 h-[calc(100vh-4rem)] lg:rounded-tl-2xl px-8" data-test-id="main-content">
           <router-outlet></router-outlet>
         </main>
       </div>
